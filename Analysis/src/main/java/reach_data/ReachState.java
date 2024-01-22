@@ -1,71 +1,63 @@
 package reach_data;
 
-import cache_data.CacheState;
 import data.Fact;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.Writable;
-import org.python.antlr.op.In;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 import java.util.*;
 
-public class PredList extends Fact {
+public class ReachState extends Fact {
     public boolean flag;
     public Set<IntWritable> PC;
 
-    public PredList() {
+    public ReachState() {
         flag = false;
         PC = new HashSet<>();
     }
 
-    public void merge(Fact fact){
-        if (fact == null) return;
-        PredList tmp_pred = (PredList) fact;
-
-        for(IntWritable pc : tmp_pred.PC){
-        }
-
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
-    private Text getTypeById(IntWritable id) {
-        for (Map.Entry<Text, Set<IntWritable>> entry : typeIdsMap.entrySet()) {
-            if (entry.getValue().contains(id)) {
-                return entry.getKey();
-            }
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public Set<IntWritable> getPC(){
+        return PC;
+    }
+    public void merge(Fact fact){
+    }
+
+    public boolean isPCEmpty(){
+        return PC.isEmpty();
+    }
+
+    public void addPC(IntWritable vertex){
+        this.flag = true;
+        if (!this.PC.contains(vertex)) {
+            this.PC.add(vertex);
         }
-        return null;
     }
 
     public Fact getNew(){
-        PredList newPredList = new PredList();
-
-        for (Map.Entry<Text, Set<IntWritable>> entry : this.typeIdsMap.entrySet()) {
-            Text type = entry.getKey();
-            Set<IntWritable> ids = entry.getValue();
-
-            Set<IntWritable> newIds = new HashSet<>(ids);
-            newPredList.typeIdsMap.put(new Text(type), newIds);
-        }
-
-        return newPredList;
+        ReachState state = new ReachState();
+        state.setFlag(this.flag);
+        state.PC.addAll(this.PC);
+        return state;
     }
 
-    public Text getType() {
-        for (Text type : Arrays.asList(new Text("PC"), new Text("PA"), new Text("PU"))) {
-            Set<IntWritable> ids = this.typeIdsMap.get(type);
-            if (ids != null && !ids.isEmpty()) {
-                return type;
+    public boolean consistent(Fact oldfact){
+        ReachState oldState = (ReachState)oldfact;
+        if(!oldState.flag && this.flag){
+            return false;
+        }
+        for(IntWritable vertex : this.PC){
+            if(!oldState.PC.contains(vertex)){
+                return false;
             }
         }
-        return new Text("PU");
+        return true;
     }
-    public boolean consistent(Fact fact){
-        return false;
-    }
-
-
 
 }

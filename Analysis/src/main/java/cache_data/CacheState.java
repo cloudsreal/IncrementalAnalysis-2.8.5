@@ -29,7 +29,7 @@ public class CacheState extends Fact {
 
     HashMap<Integer, Integer> IRs_Set = (HashMap<Integer, Integer>) this.IRs_Icache[setNum];
 
-    if (IRs_Set.containsKey(ir)) {//case1:  in the cache set, so is hit
+    if (IRs_Set.containsKey(ir)) { //case1:  in the cache set, so is hit
         flag = 1;
         int CacheLoc = IRs_Set.get(ir);
         int age = CacheLoc % 128;

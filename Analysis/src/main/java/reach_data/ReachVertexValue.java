@@ -1,5 +1,7 @@
 package reach_data;
 
+import data.VertexValue;
+import org.apache.giraph.graph.Vertex;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 
@@ -7,28 +9,26 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class ReachEdgeValue implements Writable {
-    private Text type;
+public class ReachVertexValue extends VertexValue {
+    private Text vertexType;
 
-    public ReachEdgeValue() {
-        type = new Text();
+    public ReachVertexValue() {
+        stmts = null;
+        fact = new ReachState();
+        vertexType = new Text();
     }
 
-    public ReachEdgeValue(String type) {
-        this.type = new Text(type);
+    public ReachVertexValue(String type){
+        stmts = null;
+        fact = new ReachState();
+        vertexType = new Text(type);
     }
 
-    public Text getType() {
-        return type;
+    public void setVertexType(Text vertexType) {
+        this.vertexType = vertexType;
     }
 
-    @Override
-    public void write(DataOutput dataOutput) throws IOException {
-        type.write(dataOutput);
-    }
-
-    @Override
-    public void readFields(DataInput dataInput) throws IOException {
-        type.readFields(dataInput);
+    public Text getVertexType(){
+        return vertexType;
     }
 }

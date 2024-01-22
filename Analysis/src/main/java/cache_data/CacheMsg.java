@@ -13,7 +13,6 @@ public class CacheMsg extends Msg{
     fact = null;
   }
 
-
   @Override
   public void write(DataOutput dataOutput) throws IOException {
     vertexID.write(dataOutput);

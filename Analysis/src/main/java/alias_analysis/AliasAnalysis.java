@@ -7,8 +7,9 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import alias_data.*;
 import alias_stmt.*;
+import org.apache.hadoop.io.NullWritable;
 
-public class AliasAnalysis extends Analysis<AliasVertexValue, AliasMsg> {
+public class AliasAnalysis extends Analysis<AliasVertexValue, NullWritable, AliasMsg> {
 
     @Override
     public void setAnalysisConf(){

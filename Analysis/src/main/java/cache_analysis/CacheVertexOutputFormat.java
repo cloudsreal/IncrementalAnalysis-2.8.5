@@ -25,8 +25,6 @@ public class CacheVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
     public TextVertexWriter createVertexWriter(TaskAttemptContext context) {
         return new LabelPropagationTextVertexLineWriter();
     }
-
-    
     
     private class LabelPropagationTextVertexLineWriter extends TextVertexWriterToEachLine {
         @Override

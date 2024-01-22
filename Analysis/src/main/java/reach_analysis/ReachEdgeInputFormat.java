@@ -1,40 +1,48 @@
 package reach_analysis;
 
+import org.apache.giraph.io.EdgeReader;
 import org.apache.giraph.io.formats.TextEdgeInputFormat;
 import org.apache.hadoop.io.IntWritable;
-import reach_data.ReachEdgeValue;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.InputSplit;
+import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import reach_data.Triple;
 
-public class ReachEdgeInputForm extends TextEdgeInputFormat<IntWritable, ReachEdgeValue> {
+import java.io.IOException;
+import java.util.regex.Pattern;
+
+public class ReachEdgeInputFormat extends TextEdgeInputFormat<IntWritable, Text> {
     private static final Pattern SEPARATOR = Pattern.compile("\t");
 
     @Override
-    public EdgeReader<IntWritable, ReachEdge> createEdgeReader(InputSplit split, TaskAttemptContext context) {
-        return new IntCacheEdgeValueTextEdgeReader();
+    public EdgeReader<IntWritable, Text> createEdgeReader
+            (InputSplit split, TaskAttemptContext context) {
+        return new IntReachEdgeValueTextEdgeReader();
     }
 
-    public class IntCacheEdgeValueTextEdgeReader extends TextEdgeReaderFromEachLineProcessed<IntTriple> {
+    public class IntReachEdgeValueTextEdgeReader extends TextEdgeReaderFromEachLineProcessed<Triple> {
         @Override
-        protected IntTriple preprocessLine(Text line) {
+        protected Triple preprocessLine(Text line) {
             String[] tokens = SEPARATOR.split(line.toString());
-            int id = Integer.parseInt(tokens[0]);
-            String type = tokens[1];
-            return new IntTriple(id, type);
+            int sourceId = Integer.parseInt(tokens[0]);
+            int targetId = Integer.parseInt(tokens[1]);
+            String edgeType = tokens[2];
+            return new Triple(sourceId, targetId, edgeType);
         }
 
         @Override
-        protected IntWritable getSourceVertexId(IntTriple endpoints) {
-            return new IntWritable(endpoints.getFirst());
+        protected IntWritable getSourceVertexId(Triple endpoints) {
+            return new IntWritable(endpoints.getSourceId());
         }
 
         @Override
-        protected IntWritable getTargetVertexId(IntTriple endpoints) {
-            // You can modify this based on your graph structure
-            return new IntWritable(endpoints.getFirst());
+        protected IntWritable getTargetVertexId(Triple endpoints) {
+            return new IntWritable(endpoints.getTargetId());
         }
 
         @Override
-        protected CacheEdgeValue getValue(IntTriple endpoints) throws IOException {
-            return new CacheEdgeValue(endpoints.getSecond());
+        protected Text getValue(Triple endpoints) throws IOException {
+            return new Text(endpoints.getEdgeType());
         }
     }
 }

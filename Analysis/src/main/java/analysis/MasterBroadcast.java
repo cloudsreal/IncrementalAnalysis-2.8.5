@@ -50,10 +50,6 @@ public class MasterBroadcast extends MasterCompute
         // MasterCompute body
         if (getSuperstep() == 0)
         {
-            // File file = new File(Tools.entry);
-            // SetWritable entrys = new SetWritable();
-            // readEntrysLocal(file, entrys);
-
             SetWritable entrys = new SetWritable();
             try {
                 // BufferedReader start = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));

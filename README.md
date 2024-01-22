@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # BigDataflow
 
 BigDataflow is a distributed interprocedural dataflow analysis framework for analyzing the program of millions lines of code in minutes.
@@ -389,6 +388,3 @@ fi
 $ hadoop fs -mv /cache_entrys/entry /cache_entrys/CFG.entry 
 $ hadoop fs -mv /client/analysis_conf /client/cache_analysis_conf
 ```
-=======
-# IncrementalAnalysis
->>>>>>> cd57d09a3b4a1ebe93553718292432c8d023c480

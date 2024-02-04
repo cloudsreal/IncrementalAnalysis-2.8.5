@@ -3,7 +3,7 @@ if hadoop jar ./reach_analysis.jar \
   -vif reach_analysis.ReachVertexInputFormat \
   -vip /new_alias_graphs/CFG/id_stmt_info \
   -vof reach_analysis.ReachVertexOutputFormat \
-  -op /reach_res/CFG_W4 \
+  -op /reach_res/CFG_W1 \
   -eif reach_analysis.ReachEdgeInputFormat \
   -eip /new_alias_graphs/CFG/final \
   -w 1 \

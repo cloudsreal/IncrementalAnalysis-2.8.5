@@ -8,17 +8,18 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import org.python.antlr.op.In;
 import reach_data.ReachVertexValue;
 
 import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, ReachVertexValue, NullWritable> {
+public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, ReachVertexValue, IntWritable> {
     private static final Pattern SEPARATOR = Pattern.compile("\t");
 
     @Override
-    public TextVertexInputFormat<IntWritable, ReachVertexValue, NullWritable>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
+    public TextVertexInputFormat<IntWritable, ReachVertexValue, IntWritable>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
     {
         return new ReachVertexReader();
     }
@@ -39,11 +40,11 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
 
             @Override
             protected ReachVertexValue getValue(String[] tokens) {
-                return new ReachVertexValue(tokens[1].toString());
+                return new ReachVertexValue(tokens[tokens.length - 1]);
             }
 
             @Override
-            protected Iterable<Edge<IntWritable, NullWritable>> getEdges(String[] tokens) throws IOException
+            protected Iterable<Edge<IntWritable, IntWritable>> getEdges(String[] tokens) throws IOException
             {
                 return ImmutableList.of();
             }

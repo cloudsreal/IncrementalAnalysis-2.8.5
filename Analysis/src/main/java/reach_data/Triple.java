@@ -2,16 +2,28 @@ package reach_data;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.Writable;
+import org.python.antlr.op.In;
 
-public class Triple {
+public class Triple{
     private final int sourceId;
     private final int targetId;
-    private final String edgeType;
+    private final int edgeType;
 
     public Triple(int sourceId, int targetId, String edgeType) {
         this.sourceId = sourceId;
         this.targetId = targetId;
-        this.edgeType = edgeType;
+        if ("A".equals(edgeType)) {
+            this.edgeType = 1;
+        } else {
+            this.edgeType = 2;
+        }
+    }
+
+    public Triple(int sourceId, int targetId) {
+        this.sourceId = sourceId;
+        this.targetId = targetId;
+        this.edgeType = 0;
     }
 
     public int getSourceId() {
@@ -22,7 +34,7 @@ public class Triple {
         return targetId;
     }
 
-    public String getEdgeType() {
+    public int getEdgeType() {
         return edgeType;
     }
 }

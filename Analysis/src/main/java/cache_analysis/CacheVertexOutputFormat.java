@@ -1,6 +1,7 @@
 package cache_analysis;
 
 import cache_data.CacheTool;
+import cache_data.CacheVertexValue;
 import org.apache.giraph.graph.Vertex;
 import org.apache.giraph.io.formats.TextVertexOutputFormat;
 import org.apache.hadoop.io.IntWritable;
@@ -9,16 +10,9 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
-import java.io.*;
-import org.apache.hadoop.conf.Configuration;
-
 import data.Fact;
 import data.Tool;
 import cache_data.CacheState;
-import cache_data.CacheVertexValue;
 
 public class CacheVertexOutputFormat extends TextVertexOutputFormat<IntWritable, CacheVertexValue, NullWritable> {
     @Override

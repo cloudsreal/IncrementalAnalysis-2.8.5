@@ -177,9 +177,9 @@ $ mvn clean package
 $ cd ..
 
 # prepare the jar of giraph under your own jar_directoty
-$ cp emr-giraph-examples-1.4.0-SNAPSHOT-shaded.jar jar_directoty/
+$ cp giraph-examples-1.4.0-SNAPSHOT-shaded.jar jar_directoty/
 $ cd jar_directoty/
-$ mv emr-giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHOT-shaded.jar
+$ mv giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHOT-shaded.jar
 
 # add your analysis class files into the jar
 $ cd target/classes/

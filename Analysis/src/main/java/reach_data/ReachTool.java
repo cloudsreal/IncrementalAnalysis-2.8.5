@@ -8,6 +8,8 @@ import java.util.Set;
 
 public class ReachTool implements Tool<ReachMsg> {
 
+    public ReachTool(){}
+
     public Fact combine(Iterable<ReachMsg> message, VertexValue vertexValue){
         ReachState old_state = (ReachState) vertexValue.getFact();
         ReachState new_state;

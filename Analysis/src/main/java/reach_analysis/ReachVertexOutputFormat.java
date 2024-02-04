@@ -12,7 +12,7 @@ import reach_data.ReachVertexValue;
 
 import java.io.IOException;
 
-public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable, ReachVertexValue, NullWritable> {
+public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable, ReachVertexValue, IntWritable> {
 
     @Override
     public TextVertexWriter createVertexWriter(TaskAttemptContext context) {
@@ -20,20 +20,25 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
     }
 
     private class LabelPropagationTextVertexLineWriter extends TextVertexWriterToEachLine {
+//        @Override
+//        protected Text convertVertexToLine(Vertex<IntWritable, ReachVertexValue, Text> vertex)
+//        {
+//            ReachState fact = (ReachState) vertex.getValue().getFact();
+//            if(!fact.isFlag()) return null;
+//            StringBuilder stringBuilder = new StringBuilder();
+//            stringBuilder.append("id: ").append(vertex.getId()).append(" PC : ");
+//            if (!fact.isPCEmpty()){
+//                stringBuilder.append(fact.getPC());
+//            }
+//            else{
+//                stringBuilder.append("0");
+//            }
+//            return new Text(stringBuilder.toString());
+//        }
         @Override
-        protected Text convertVertexToLine(Vertex<IntWritable, ReachVertexValue, NullWritable> vertex)
+        protected Text convertVertexToLine(Vertex<IntWritable, ReachVertexValue, IntWritable> vertex)
         {
-            ReachState fact = (ReachState) vertex.getValue().getFact();
-            if(!fact.isFlag()) return null;
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("id: ").append(vertex.getId()).append(" PC : ");
-            if (!fact.isPCEmpty()){
-                stringBuilder.append(fact.getPC());
-            }
-            else{
-                stringBuilder.append("0");
-            }
-            return new Text(stringBuilder.toString());
+            return new Text("id: " + vertex.getId());
         }
 
     }

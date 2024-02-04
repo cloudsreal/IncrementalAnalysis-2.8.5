@@ -18,5 +18,4 @@ public abstract class Fact implements Writable{
   public void readFields(DataInput in) throws IOException{
 
   }
-
 }

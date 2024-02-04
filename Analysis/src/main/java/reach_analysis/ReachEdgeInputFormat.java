@@ -2,20 +2,23 @@ package reach_analysis;
 
 import org.apache.giraph.io.EdgeReader;
 import org.apache.giraph.io.formats.TextEdgeInputFormat;
+import org.apache.giraph.utils.IntPair;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import org.python.antlr.op.In;
 import reach_data.Triple;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class ReachEdgeInputFormat extends TextEdgeInputFormat<IntWritable, Text> {
+public class ReachEdgeInputFormat extends TextEdgeInputFormat<IntWritable, IntWritable> {
     private static final Pattern SEPARATOR = Pattern.compile("\t");
 
     @Override
-    public EdgeReader<IntWritable, Text> createEdgeReader
+    public EdgeReader<IntWritable, IntWritable> createEdgeReader
             (InputSplit split, TaskAttemptContext context) {
         return new IntReachEdgeValueTextEdgeReader();
     }
@@ -26,8 +29,10 @@ public class ReachEdgeInputFormat extends TextEdgeInputFormat<IntWritable, Text>
             String[] tokens = SEPARATOR.split(line.toString());
             int sourceId = Integer.parseInt(tokens[0]);
             int targetId = Integer.parseInt(tokens[1]);
-            String edgeType = tokens[2];
-            return new Triple(sourceId, targetId, edgeType);
+            if (tokens.length > 2) {
+                return new Triple(sourceId, targetId, tokens[2]);
+            }
+            return new Triple(sourceId, targetId);
         }
 
         @Override
@@ -41,8 +46,8 @@ public class ReachEdgeInputFormat extends TextEdgeInputFormat<IntWritable, Text>
         }
 
         @Override
-        protected Text getValue(Triple endpoints) throws IOException {
-            return new Text(endpoints.getEdgeType());
+        protected IntWritable getValue(Triple endpoints) throws IOException {
+            return new IntWritable(endpoints.getEdgeType());
         }
     }
 }

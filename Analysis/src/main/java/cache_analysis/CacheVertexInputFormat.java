@@ -1,5 +1,6 @@
 package cache_analysis;
 
+import cache_data.CacheVertexValue;
 import com.google.common.collect.ImmutableList;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.io.formats.TextVertexInputFormat;
@@ -11,8 +12,6 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
-
-import cache_data.CacheVertexValue;
 
 public class CacheVertexInputFormat extends TextVertexInputFormat<IntWritable, CacheVertexValue, NullWritable> {
 

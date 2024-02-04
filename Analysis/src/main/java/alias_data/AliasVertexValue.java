@@ -32,22 +32,22 @@ public class AliasVertexValue extends VertexValue{
   }
 
   public MapWritable getGraphStore() {
-        return graphStore;
+    return graphStore;
   }
 
   public void setGraphStore(MapWritable graphStore) {
-        this.graphStore = graphStore;
+    this.graphStore = graphStore;
   }
 
   @Override
   public void write(DataOutput dataOutput) throws IOException {
     stmts.write(dataOutput);
     if(graphStore != null){
-        dataOutput.writeByte(1);
-        graphStore.write(dataOutput);
+      dataOutput.writeByte(1);
+      graphStore.write(dataOutput);
     }
     else{
-        dataOutput.writeByte(0);
+      dataOutput.writeByte(0);
     }
 
     if (fact != null) {

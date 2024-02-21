@@ -1,12 +1,14 @@
 package reach_analysis;
 
 import data.Fact;
+import org.apache.giraph.edge.Edge;
 import org.apache.giraph.graph.Vertex;
 import org.apache.giraph.io.formats.TextVertexOutputFormat;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
+import org.python.antlr.op.In;
 import reach_data.ReachState;
 import reach_data.ReachVertexValue;
 
@@ -20,27 +22,23 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
     }
 
     private class LabelPropagationTextVertexLineWriter extends TextVertexWriterToEachLine {
-//        @Override
-//        protected Text convertVertexToLine(Vertex<IntWritable, ReachVertexValue, Text> vertex)
-//        {
-//            ReachState fact = (ReachState) vertex.getValue().getFact();
-//            if(!fact.isFlag()) return null;
-//            StringBuilder stringBuilder = new StringBuilder();
-//            stringBuilder.append("id: ").append(vertex.getId()).append(" PC : ");
-//            if (!fact.isPCEmpty()){
-//                stringBuilder.append(fact.getPC());
-//            }
-//            else{
-//                stringBuilder.append("0");
-//            }
-//            return new Text(stringBuilder.toString());
-//        }
         @Override
         protected Text convertVertexToLine(Vertex<IntWritable, ReachVertexValue, IntWritable> vertex)
         {
-            return new Text("id: " + vertex.getId());
+            ReachState fact = (ReachState) vertex.getValue().getFact();
+            StringBuilder stringBuilder = new StringBuilder();
+            if(!fact.isFlag()){
+                return null;
+            } else {
+                stringBuilder.append(vertex.getId()).append("\t");
+            }
+            if (!fact.isPCEmpty()){
+                for(IntWritable pc : fact.getPC()){
+                    stringBuilder.append(pc).append("\t");
+                }
+            }
+            return new Text(stringBuilder.toString());
         }
-
     }
 
 }

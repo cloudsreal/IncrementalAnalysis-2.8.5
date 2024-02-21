@@ -2,6 +2,7 @@ package reach_data;
 
 import cache_data.CacheState;
 import data.*;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 
 import java.util.Set;
@@ -13,18 +14,17 @@ public class ReachTool implements Tool<ReachMsg> {
     public Fact combine(Iterable<ReachMsg> message, VertexValue vertexValue){
         ReachState old_state = (ReachState) vertexValue.getFact();
         ReachState new_state;
-        if(old_state == null){
+        if(old_state == null) {
             new_state = new ReachState();
-        }
-        else{
+        } else {
             new_state = (ReachState) old_state.getNew();
         }
         for (ReachMsg item : message) {
-            String messageType = item.getMsgType().toString();
-            if(messageType.equals("PC")){
-                new_state.addPC(item.getVertexID());
-            }
-            if(messageType.equals("PA")){
+            IntWritable messageType = item.getMsgType();
+            if(messageType.get() == 2) {
+                new_state.setFlag(true);
+                new_state.addPC(item.getPredID());
+            } else if(messageType.get() == 1) {
                 new_state.setFlag(true);
             }
         }
@@ -40,10 +40,9 @@ public class ReachTool implements Tool<ReachMsg> {
     public boolean propagate(Fact oldFact, Fact newFact){
         ReachState oldState = (ReachState) oldFact;
         ReachState newState = (ReachState) newFact;
-        if(oldFact == null){
+        if(oldFact == null) {
             return true;
-        }
-        else{
+        } else {
             return !newState.consistent(oldState);
         }
     }

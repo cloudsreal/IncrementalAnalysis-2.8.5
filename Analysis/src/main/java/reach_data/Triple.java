@@ -15,8 +15,10 @@ public class Triple{
         this.targetId = targetId;
         if ("A".equals(edgeType)) {
             this.edgeType = 1;
-        } else {
+        } else if ("D".equals(edgeType)) {
             this.edgeType = 2;
+        } else {
+            this.edgeType = 0;
         }
     }
 

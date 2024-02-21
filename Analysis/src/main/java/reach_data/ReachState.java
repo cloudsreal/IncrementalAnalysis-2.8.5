@@ -2,6 +2,7 @@ package reach_data;
 
 import data.Fact;
 import org.apache.hadoop.io.IntWritable;
+import org.python.antlr.op.In;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -10,7 +11,7 @@ import java.util.*;
 
 public class ReachState extends Fact {
     public boolean flag;
-    public Set<IntWritable> PC;
+    public HashSet<IntWritable> PC;
 
     public ReachState() {
         this.flag = false;
@@ -25,8 +26,8 @@ public class ReachState extends Fact {
         return flag;
     }
 
-    public Set<IntWritable> getPC(){
-        return PC;
+    public HashSet<IntWritable> getPC(){
+        return this.PC;
     }
     public void merge(Fact fact){
     }
@@ -36,16 +37,13 @@ public class ReachState extends Fact {
     }
 
     public void addPC(IntWritable vertex){
-        this.flag = true;
-        if (!this.PC.contains(vertex)) {
-            this.PC.add(vertex);
-        }
+        this.PC.add(new IntWritable(vertex.get()));
     }
 
     public Fact getNew(){
         ReachState state = new ReachState();
         state.setFlag(this.flag);
-        state.PC.addAll(this.PC);
+        state.PC = new HashSet<>(this.PC);
         return state;
     }
 

@@ -27,6 +27,8 @@ public class ReachVertexValue extends VertexValue {
             vertexType = new IntWritable(1);
         } else if ("D".equals(type)) {
             vertexType = new IntWritable(2);
+        } else if ("C".equals(type)) {
+            vertexType = new IntWritable(3);
         } else {
             vertexType = new IntWritable(0);
         }

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
 import data.Fact;
+import java.util.regex.Pattern;
 
 public class CacheState extends Fact {
   public Map[] IRs_Icache;
@@ -17,6 +18,27 @@ public class CacheState extends Fact {
       IRs_Icache[i] = new HashMap<Integer, Integer>();
     }
   }
+
+  public CacheState(String fact_text){
+    IRs_Icache = new Map[128];
+
+    Pattern SEPARATOR = Pattern.compile("\t");
+
+    String[] tokens = SEPARATOR.split(fact_text);
+    int k = 0;
+    for (int i = 0; i < 128; i++) {
+      //// IRs_Icache[i] = new HashMap<Integer, Integer>();
+      HashMap<Integer, Integer> hashMap = (HashMap<Integer, Integer>) IRs_Icache[i];
+      hashMap.clear();
+      int size = Integer.parseInt(tokens[k]);
+      while (size > 0) {
+          hashMap.put(Integer.parseInt(tokens[k+1]), Integer.parseInt(tokens[k+2]));
+          --size;
+          k = k+2;
+      }
+    }
+  }
+
 
   public Map[] getIRsCache(){
     return IRs_Icache;

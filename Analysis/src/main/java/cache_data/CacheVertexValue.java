@@ -20,6 +20,13 @@ public class CacheVertexValue extends VertexValue {
     fact = null;
   }
 
+  public CacheVertexValue(String text, String fact_text) {
+    Scanner sc = new Scanner(text);
+    stmts = new CacheIRs(sc);
+    fact = null;
+    // fact = new CacheState(fact_text);
+  }
+
   public CacheIRs getCacheIRs(){
     return (CacheIRs)stmts;
   }

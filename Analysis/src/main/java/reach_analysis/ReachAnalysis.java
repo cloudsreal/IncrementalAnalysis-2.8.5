@@ -67,14 +67,6 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
         }
         else {
             if(beActive(messages, vertex.getValue())){
-//                ReachState reachState = new ReachState();
-//                for(ReachMsg message : messages){
-//                    IntWritable messageType = message.getMsgType();
-//                    if(messageType.get() != 0){
-//                        reachState.addPC(message.getPredID());
-//                    }
-//                }
-//                vertex.getValue().setFact(reachState);
                 Fact oldFact = vertex.getValue().getFact();
                 Fact newFact = tool.combine(messages, vertex.getValue());
                 boolean canPropagate = tool.propagate(oldFact, newFact);

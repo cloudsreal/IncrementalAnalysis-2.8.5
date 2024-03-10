@@ -14,15 +14,15 @@ public class CacheVertexValue extends VertexValue {
     fact = null;
   }
 
-  public CacheVertexValue(String text) {
+  public CacheVertexValue(String text, boolean flag) {
     Scanner sc = new Scanner(text);
-    stmts = new CacheIRs(sc);
+    stmts = new CacheIRs(sc, flag);
     fact = null;
   }
 
-  public CacheVertexValue(String text, String fact_text) {
+  public CacheVertexValue(String text, boolean flag, String fact_text) {
     Scanner sc = new Scanner(text);
-    stmts = new CacheIRs(sc);
+    stmts = new CacheIRs(sc, flag);
     /// fact = null;
     fact = new CacheState(fact_text);
   }

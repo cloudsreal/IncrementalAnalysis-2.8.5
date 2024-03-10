@@ -36,7 +36,7 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
         @Override
         protected IntWritable getId(String[] tokens) {
           int id = Integer.parseInt(tokens[0]);
-          CommonWrite.method2("\nId:" + tokens[0]);
+          /// CommonWrite.method2("\nId:" + tokens[0]);
           return new IntWritable(id);
         }
 
@@ -57,7 +57,7 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
             StringBuilder stmt = new StringBuilder();
             int i = 1;
             for(; i < tokens.length; i++){
-                CommonWrite.method2("token-idx: "+ String.valueOf(i) + ": " + tokens[i]);
+                /// CommonWrite.method2("token-idx: "+ String.valueOf(i) + ": " + tokens[i]);
                 if(tokens[i].equals("S:")){
                     break;
                 }
@@ -72,11 +72,12 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
                 return new CacheVertexValue(stmt.toString());
             }
             else{
-                i++;
+                i= i + 2;
                 for(; i < tokens.length; i++){
                     fact.append(tokens[i]);
                     fact.append('\t');
                 }
+                /// CommonWrite.method2(fact.toString());
                 return new CacheVertexValue(stmt.toString(), fact.toString());
             }
         }

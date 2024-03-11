@@ -20,6 +20,11 @@ public class SkipAStmt extends AStmt
 	public AStmt decopy() {
 		return new SkipAStmt();
 	}
+	
+	@Override
+	public String toString() {
+		return "";
+	}
 
 	@Override
 	public void write(DataOutput dataOutput) throws IOException {

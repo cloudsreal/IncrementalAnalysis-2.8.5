@@ -122,6 +122,19 @@ public class Pegraph extends Fact{
     return true;
   }
 
+  public String graphtoString(){
+    StringBuilder strBuilder = new StringBuilder();
+    strBuilder.append(graph.size()).append("\t");
+    for (Map.Entry<Integer, EdgeArray> entry : graph.entrySet()) {
+      // dataOutput.writeInt(entry.getKey());
+      // entry.getValue().write(dataOutput);
+      strBuilder.append(entry.getKey()).append("\t");
+      strBuilder.append(entry.getValue().toString()).append("\t");
+    }
+    return strBuilder.toString();
+  }
+
+
   @Override
   public void write(DataOutput dataOutput) throws IOException {
     int size = graph.size();

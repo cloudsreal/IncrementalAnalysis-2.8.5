@@ -44,6 +44,9 @@ public class Analysis<V extends VertexValue, E extends Writable, M extends Msg> 
         //initialize new fact
         // fact = new Fact(); // done by setAnalysisConf
         vertex.getValue().setFact(fact);
+        if(vertex.getValue().getTool() == null){
+          vertex.getValue().setTool(tool);
+        }
         // transfer
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
         for(Edge<IntWritable, E> edge : vertex.getEdges()) {
@@ -59,6 +62,10 @@ public class Analysis<V extends VertexValue, E extends Writable, M extends Msg> 
       if(beActive(messages, vertex.getValue())){
         // merge based on old incoming fact and current messages to get the new incoming fact
         fact = tool.combine(messages, vertex.getValue());
+
+        if(vertex.getValue().getTool() == null){
+          vertex.getValue().setTool(tool);
+        }
 
         // transfer
         Fact out_old_fact = null;

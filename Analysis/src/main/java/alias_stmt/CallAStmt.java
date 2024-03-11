@@ -71,6 +71,17 @@ public class CallAStmt extends AStmt
 	}
 
 	@Override
+	public String toString() {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append(length).append("\t");
+		strBuilder.append(ret).append("\t");
+		for (int i = 0; i < length; i++) {
+			strBuilder.append(args[i]).append("\t");
+		}
+		return strBuilder.toString();
+	}
+
+	@Override
 	public AStmt decopy() {
 		CallAStmt stmt = new CallAStmt();
 		stmt.length = this.length;

@@ -181,4 +181,30 @@ public class CacheState extends Fact {
   public String toString() {
     return String.valueOf(this.size());
   }
+
+  public String statetoString() {
+    /// return String.valueOf(this.size());
+
+    StringBuilder stateStr = new StringBuilder();
+
+    if(IRs_Icache != null){
+      /// out.writeBoolean(true);
+      stateStr.append("1\t");
+      for (int i = 0; i < 128; i++) {
+        HashMap<Integer, Integer> hashMap = (HashMap<Integer, Integer>) IRs_Icache[i];
+        /// out.writeInt(hashMap.size());
+        stateStr.append(hashMap.size()).append("\t");
+        for (Map.Entry<Integer, Integer> tmp : hashMap.entrySet()) {
+          /// out.writeInt(tmp.getKey());
+          /// out.writeInt(tmp.getValue());
+          stateStr.append(tmp.getKey()).append("\t").append(tmp.getValue()).append("\t");
+        }
+      }
+    }
+    else{
+      /// out.writeBoolean(false);
+      /// stateStr.append("0");
+    }
+    return stateStr.toString();
+  }
 }

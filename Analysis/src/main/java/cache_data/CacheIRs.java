@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import cache_data.IRStmt;
 import data.Stmt;
 import data.StmtList;
 
@@ -16,15 +17,26 @@ public class CacheIRs extends StmtList{
     super();
   }
 
-  public CacheIRs(Scanner sc) {
+  public CacheIRs(Scanner sc, boolean flag) {
     List<Stmt> newStmts = new ArrayList<>();
     
-    while (sc.hasNext()) {
-      String str = sc.next();
-      IRStmt irstmt =  new IRStmt();
-      irstmt.setStmt(Integer.decode(str));
-      newStmts.add(irstmt);
+    if(!flag){
+      while (sc.hasNext()) {
+        String str = sc.next();
+        IRStmt irstmt =  new IRStmt();
+        irstmt.setStmt(Integer.decode(str));
+        newStmts.add(irstmt);
+      }
     }
+    else{
+      while (sc.hasNext()) {
+        String str = sc.next();
+        IRStmt irstmt =  new IRStmt();
+        irstmt.setStmt(Integer.parseInt(str));
+        newStmts.add(irstmt);
+      }
+    }
+    
     setStmts(newStmts);
   }
 
@@ -56,5 +68,15 @@ public class CacheIRs extends StmtList{
       stmts[k] = irstmt;
       k++;
     }
+  }
+
+  public String toString() {
+    StringBuilder stmtsStr = new StringBuilder();
+    for (int k = 0; k < size; k++){
+      IRStmt irstmt = (IRStmt)stmts[k];
+      stmtsStr.append(irstmt.getStmt() + "\t");
+    }
+
+    return stmtsStr.toString();
   }
 }

@@ -58,6 +58,16 @@ public class LoadAStmt extends AStmt
 	}
 
 	@Override
+	public String toString() {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append(src).append("\t");
+		strBuilder.append(dst).append("\t");
+		strBuilder.append(auxiliary).append("\t");
+		return strBuilder.toString();
+	}
+
+
+	@Override
 	public void write(DataOutput dataOutput) throws IOException {
 		dataOutput.writeInt(src);
 		dataOutput.writeInt(dst);

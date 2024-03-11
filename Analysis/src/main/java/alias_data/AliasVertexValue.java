@@ -6,6 +6,7 @@ import org.apache.hadoop.io.MapWritable;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Scanner;
 
 import data.*;
@@ -38,6 +39,45 @@ public class AliasVertexValue extends VertexValue{
   public void setGraphStore(MapWritable graphStore) {
         this.graphStore = graphStore;
   }
+
+  public String stmtstoString() {
+    /// return String.valueOf(this.size());
+
+    StringBuilder strBuilder = new StringBuilder();
+    strBuilder.append(((AliasStmts)stmts).toString());
+    return strBuilder.toString();
+  }
+
+  public String gstoretoString() {
+    StringBuilder strBuilder = new StringBuilder();
+    if(graphStore != null){
+      strBuilder.append("GS1\t").append(graphStore.size()).append("\t");
+      for (Map.Entry<Writable, Writable> item: graphStore.entrySet()){
+        strBuilder.append("k").append(item.getKey()).append("-");
+        strBuilder.append(((NodeTuple)item.getValue()).nodetupleToString());
+      }
+    }
+    else{
+      strBuilder.append("GS0\t");
+    }
+    /// Wait for implementation
+    return strBuilder.toString();
+  }
+
+
+  public String pegtoString() {
+    StringBuilder strBuilder = new StringBuilder();
+    /// Wait for implementation
+    if(fact != null){
+      strBuilder.append("1\t");
+      strBuilder.append(((Pegraph)fact).toString()).append("\t");
+    }
+    else{
+      strBuilder.append("0");
+    }
+    return strBuilder.toString();
+  }
+
 
   @Override
   public void write(DataOutput dataOutput) throws IOException {

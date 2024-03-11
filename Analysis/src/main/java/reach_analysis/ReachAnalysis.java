@@ -1,6 +1,5 @@
 package reach_analysis;
 
-import alias_analysis.MyWorkerContext;
 import analysis.Analysis;
 import data.Fact;
 import data.SetWritable;
@@ -24,11 +23,13 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
 
     @Override
     public boolean beActive(Iterable<ReachMsg> messages, VertexValue vertexValue){
-        ReachVertexValue reachVertexValue = (ReachVertexValue) vertexValue;
+        ReachState fact = (ReachState) vertexValue.getFact();
+        if(!fact.isFlag()) return true;
         boolean beActive = false;
         for(ReachMsg message : messages){
             IntWritable messageType = message.getMsgType();
-            if(messageType.get() != 0){
+            IntWritable predId = message.getPredID();
+            if(messageType.get() == 2 && !fact.PC.contains(predId)){
                 beActive = true;
                 break;
             }
@@ -45,6 +46,8 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
             int vertexId = vertex.getId().get();
             IntWritable vertexType = vertex.getValue().getVertexType();
             for (Edge<IntWritable, IntWritable> edge : vertex.getEdges()) {
+                IntWritable edgeType = edge.getValue();
+                if (vertexType.get() == 0 && edgeType.get() == 0) continue;
                 msg.setVertexID(vertex.getId());
                 msg.setPredID(vertexId);
                 if (vertexType.get() == 1) {
@@ -52,35 +55,32 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
                 } else if (vertexType.get() == 2 || vertexType.get() == 3) {
                     msg.setMsgType(new IntWritable(2));
                 } else {
-                    IntWritable edgeType = edge.getValue();
                     if (edgeType.get() == 1) {
                         msg.setMsgType(new IntWritable(1));
                     } else if (edgeType.get() == 2) {
                         msg.setMsgType(new IntWritable(2));
-                    } else {
-                        msg.setMsgType(new IntWritable(0));
                     }
                 }
                 sendMessage(edge.getTargetVertexId(), msg);
             }
             vertex.voteToHalt();
         }
-        else {
-            if(beActive(messages, vertex.getValue())){
+        else{
+            if (beActive(messages, vertex.getValue())) {
                 Fact oldFact = vertex.getValue().getFact();
                 Fact newFact = tool.combine(messages, vertex.getValue());
                 boolean canPropagate = tool.propagate(oldFact, newFact);
                 int vertexId = vertex.getId().get();
-                if(canPropagate){
+                if (canPropagate) {
                     vertex.getValue().setFact(newFact);
                     msg.setVertexID(vertex.getId());
                     msg.setPredID(vertexId);
-                    if(((ReachState)newFact).isPCEmpty()){
+                    if (((ReachState) newFact).isPCEmpty()) {
                         msg.setMsgType(new IntWritable(1));
                     } else {
                         msg.setMsgType(new IntWritable(2));
                     }
-                    for(Edge<IntWritable, IntWritable> edge : vertex.getEdges()){
+                    for (Edge<IntWritable, IntWritable> edge : vertex.getEdges()) {
                         sendMessage(edge.getTargetVertexId(), msg);
                     }
                 }

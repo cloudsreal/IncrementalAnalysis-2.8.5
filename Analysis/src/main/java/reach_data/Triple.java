@@ -13,9 +13,9 @@ public class Triple{
     public Triple(int sourceId, int targetId, String edgeType) {
         this.sourceId = sourceId;
         this.targetId = targetId;
-        if ("A".equals(edgeType)) {
+        if ("a".equals(edgeType)) {
             this.edgeType = 1;
-        } else if ("D".equals(edgeType)) {
+        } else if ("d".equals(edgeType)) {
             this.edgeType = 2;
         } else {
             this.edgeType = 0;

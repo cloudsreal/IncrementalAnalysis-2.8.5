@@ -30,7 +30,7 @@ public class ReachEdgeInputFormat extends TextEdgeInputFormat<IntWritable, IntWr
             int sourceId = Integer.parseInt(tokens[0]);
             int targetId = Integer.parseInt(tokens[1]);
             if (tokens.length > 2) {
-                return new Triple(sourceId, targetId, tokens[2]);
+                return new Triple(sourceId, targetId, tokens[tokens.length-1]);
             }
             return new Triple(sourceId, targetId);
         }

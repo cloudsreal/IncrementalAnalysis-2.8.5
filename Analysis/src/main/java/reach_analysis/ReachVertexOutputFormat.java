@@ -27,10 +27,11 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
         {
             ReachState fact = (ReachState) vertex.getValue().getFact();
             StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(vertex.getId()).append("\t");
             if(!fact.isFlag()){
-                return null;
+                stringBuilder.append("0").append("\t");
             } else {
-                stringBuilder.append(vertex.getId()).append("\t");
+                stringBuilder.append("1").append("\t");
             }
             if (!fact.isPCEmpty()){
                 for(IntWritable pc : fact.getPC()){

@@ -46,6 +46,9 @@ public class PreVertexInputFormat extends TextVertexInputFormat<IntWritable, Pre
             protected PreVertexValue getValue(String[] tokens) {
                 PreVertexValue preVertexValue = new PreVertexValue();
                 if (Integer.parseInt(tokens[1]) == 1) {
+                    preVertexValue.setExist(true);
+                }
+                if (Integer.parseInt(tokens[2]) == 1) {
                     preVertexValue.setFlag(true);
                 }
                 for(int i = 2; i < tokens.length; i++)

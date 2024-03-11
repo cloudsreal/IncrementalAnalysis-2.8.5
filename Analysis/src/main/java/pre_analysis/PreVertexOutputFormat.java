@@ -30,7 +30,7 @@ public class PreVertexOutputFormat extends TextVertexOutputFormat<IntWritable, P
         {
             StringBuilder stringBuilder = new StringBuilder();
             PreVertexValue preVertexValue = vertex.getValue();
-            if(!preVertexValue.isFlag()) return null;
+            if(!preVertexValue.isFlag() || !preVertexValue.isExist()) return null;
             stringBuilder.append(vertex.getId()).append("\t");
             HashSet<IntWritable> preds = ((PreState)vertex.getValue().getFact()).getPreds();
             if(!preds.isEmpty()) {

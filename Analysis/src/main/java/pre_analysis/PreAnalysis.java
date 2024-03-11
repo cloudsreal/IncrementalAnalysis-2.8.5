@@ -35,21 +35,24 @@ public class PreAnalysis extends Analysis<PreVertexValue, NullWritable, PreMsg> 
     public void compute(Vertex<IntWritable, PreVertexValue, NullWritable> vertex, Iterable<PreMsg> messages) {
         setAnalysisConf();
         if (getSuperstep() == 0) {
-            PreState preState = new PreState();
-            vertex.getValue().setFact(preState);
-            int vertexId = vertex.getId().get();
-            for (Edge<IntWritable, NullWritable> edge : vertex.getEdges()) {
-                msg.setVertexID(vertex.getId());
-                msg.setPredID(vertexId);
-                sendMessage(edge.getTargetVertexId(), msg);
+//            vertex.getValue().setFact(preState);
+            if(vertex.getValue().isExist()){
+                PreState preState = new PreState();
+                for (Edge<IntWritable, NullWritable> edge : vertex.getEdges()) {
+                    int predID = edge.getTargetVertexId().get();
+                    if(!vertex.getValue().hasPC(predID)){
+                        preState.addPred(predID);
+                    }
+                }
+                vertex.getValue().setFact(preState);
             }
             vertex.voteToHalt();
         }
         else {
-            if(beActive(messages, vertex.getValue())){
-                Fact newFact = ((PreTool)tool).combine(messages, vertex.getValue());
-                vertex.getValue().setFact(newFact);
-            }
+//            if(beActive(messages, vertex.getValue())){
+//                Fact newFact = ((PreTool)tool).combine(messages, vertex.getValue());
+//                vertex.getValue().setFact(newFact);
+//            }
             vertex.voteToHalt();
         }
     }

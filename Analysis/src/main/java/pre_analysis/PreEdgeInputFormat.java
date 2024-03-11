@@ -28,7 +28,7 @@ public class PreEdgeInputFormat extends TextEdgeInputFormat<IntWritable, NullWri
         @Override
         protected IntPair preprocessLine(Text line) {
             String[] tokens = SEPARATOR.split(line.toString());
-            return new IntPair(Integer.parseInt(tokens[0]),Integer.parseInt(tokens[1]));
+            return new IntPair(Integer.parseInt(tokens[1]),Integer.parseInt(tokens[0]));
         }
 
         @Override

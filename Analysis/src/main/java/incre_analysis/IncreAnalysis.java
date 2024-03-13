@@ -35,83 +35,55 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
   @Override
   public void compute(Vertex<IntWritable, V, E> vertex, Iterable<M> messages) {
     setAnalysisConf();
-
     if (getSuperstep() == 0) {
-      // Wait for implementation:
-      //   If \in PA∪PU, send its OUT to its successors
+//      final SetWritable entry = getBroadcast("entry1");
+//      if(entry.getValues().contains(vertex.getId().get())) {
+//        Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
+//        for(Edge<IntWritable, E> edge : vertex.getEdges()) {
+//          msg.setVertexID(vertex.getId());
+//          msg.setExtra(vertex.getValue());
+//          msg.setFact(out_fact.getNew());
+//          sendMessage(edge.getTargetVertexId(), msg);
+//        }
+//      }
+//      else {
+//        vertex.getValue().setFact(fact);
+//      }
       vertex.voteToHalt();
     }
-    else if (getSuperstep() == 1) {
-      /** Wait for implementation:
-       *    calculate its IN based on OUT_p \in PA∪PU
-       * 
-       *    1) if vertex in W, send its OUT to its successors
-       *    2) else, nothing to do
-       * */
-       vertex.voteToHalt();
-    } 
+//    else if (getSuperstep() == 1) {
+//      fact = tool.combine(messages, vertex.getValue());
+//      vertex.getValue().setFact(fact);
+//      final SetWritable entry = getBroadcast("entry2");
+//      if(entry.getValues().contains(vertex.getId().get())){
+//        Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
+//        for(Edge<IntWritable, E> edge : vertex.getEdges()) {
+//          msg.setVertexID(vertex.getId());
+//          msg.setExtra(vertex.getValue());
+//          msg.setFact(out_fact.getNew());
+//          sendMessage(edge.getTargetVertexId(), msg);
+//        }
+//      }
+//       vertex.voteToHalt();
+//    }
     else {
-      // Wait for implementation:
-      //  merge new OUT_p with Old In 
+//      if(beActive(messages, vertex.getValue())){
+//        fact = tool.combine(messages, vertex.getValue());
+//        Fact out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
+//        Fact out_new_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+//        boolean canPropagate = tool.propagate(out_old_fact, out_new_fact);
+//        if (canPropagate) {
+//          vertex.getValue().setFact(fact);
+//          msg.setVertexID(vertex.getId());
+//          msg.setExtra(vertex.getValue());
+//          msg.setFact(out_new_fact.getNew());
+//          for(Edge<IntWritable,E> edge : vertex.getEdges()){
+//            sendMessage(edge.getTargetVertexId(), msg);
+//          }
+//        }
+//      }
       vertex.voteToHalt();
     }
-    
-
-
-    // if (getSuperstep() == 0) {
-    //   final SetWritable entry = getBroadcast("entry");
-    //   /// CommonWrite.method2(entry.toString());
-    //   if(entry.getValues().contains(vertex.getId().get()))
-    //   { 
-    //     //initialize new fact
-    //     // fact = new Fact(); // done by setAnalysisConf
-    //     vertex.getValue().setFact(fact);
-    //     // transfer
-    //     Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
-    //     for(Edge<IntWritable, E> edge : vertex.getEdges()) {
-    //         msg.setVertexID(vertex.getId());
-    //         msg.setExtra(vertex.getValue());
-    //         msg.setFact(out_fact.getNew());
-    //         sendMessage(edge.getTargetVertexId(), msg);
-    //     }
-    //   }
-    //   vertex.voteToHalt();
-    // }
-    // else {
-    //   if(beActive(messages, vertex.getValue())){
-    //     // merge based on old incoming fact and current messages to get the new incoming fact
-    //     fact = tool.combine(messages, vertex.getValue());
-
-    //     // transfer
-    //     Fact out_old_fact = null;
-    //     if(vertex.getValue().getFact() == null){
-    //       out_old_fact = null;
-    //     }
-    //     else{
-    //       out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
-    //     }
-    //     Fact out_new_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
-
-    //     // after transfer(in_fact), different in_facts can result in same out_fact,
-    //     // so omitted, just compare out_facts
-    //     // if(!fact.consistent(vertex.getValue().getFact())){
-    //     //   vertex.getValue().setFact(fact);
-    //     // }
-        
-    //     // propagate
-    //     boolean canPropagate = tool.propagate(out_old_fact, out_new_fact);
-    //     if (canPropagate) {
-    //       vertex.getValue().setFact(fact);
-    //       msg.setVertexID(vertex.getId());
-    //       msg.setExtra(vertex.getValue());
-    //       msg.setFact(out_new_fact.getNew());
-    //       for(Edge<IntWritable,E> edge : vertex.getEdges()){
-    //         sendMessage(edge.getTargetVertexId(), msg);
-    //       }
-    //     }
-    //   }
-    //   vertex.voteToHalt();
-    // }
   }
 }
 

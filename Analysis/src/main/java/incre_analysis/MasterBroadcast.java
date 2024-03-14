@@ -70,7 +70,7 @@ public class MasterBroadcast extends MasterCompute
                 e.printStackTrace();
             }
             broadcast("entry1", entrys);
-//            broadcast("entry2", worklist);
+            broadcast("entry2", worklist);
         }
     }
 

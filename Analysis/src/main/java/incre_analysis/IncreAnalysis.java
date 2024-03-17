@@ -35,7 +35,9 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
 
   @Override
   public void compute(Vertex<IntWritable, V, E> vertex, Iterable<M> messages) {
+
     setAnalysisConf();
+
     if (getSuperstep() == 0) {
       entry = getBroadcast("entry");
       if(entry.getValues().contains(vertex.getId().get())) {

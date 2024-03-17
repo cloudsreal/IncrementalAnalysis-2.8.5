@@ -23,7 +23,7 @@ public class CacheVertexValue extends VertexValue {
   public CacheVertexValue(String text, boolean flag, String fact_text) {
     Scanner sc = new Scanner(text);
     stmts = new CacheIRs(sc, flag);
-    /// fact = null;
+    // fact = null;
     fact = new CacheState(fact_text);
   }
 

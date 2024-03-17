@@ -25,20 +25,14 @@ public class MasterBroadcast extends MasterCompute
         return new InputStreamReader(hdfsInStream, StandardCharsets.UTF_8);
     }
 
-    public void readEntrys(String entryPath, SetWritable entrys, SetWritable worklist)
+    public void readEntrys(String entryPath, SetWritable entrys)
     {
         try {
             BufferedReader br = new BufferedReader(readHDFS(entryPath));
             String s;
             while((s = br.readLine())!=null)
             {
-                String[] parts = s.split("\t");
-                if (parts[1].equals("0")){
-                    entrys.addEntry(Integer.parseInt(parts[0]));
-                }
-                else{
-                    worklist.addEntry(Integer.parseInt(parts[0]));
-                }
+                entrys.addEntry(Integer.parseInt(s));
             }
             br.close();
         } catch(Exception e) {
@@ -57,20 +51,17 @@ public class MasterBroadcast extends MasterCompute
         if (getSuperstep() == 0)
         {
             SetWritable entrys = new SetWritable();
-            SetWritable worklist = new SetWritable();
             try {
                 // BufferedReader start = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
                 // BufferedReader start = new BufferedReader(readHDFS("hdfs://emr-header-1.cluster-289320:9000/analysis/start"));
                 BufferedReader start = new BufferedReader(readHDFS(conf_path));
                 String entryPath = start.readLine();
                 start.close();
-//                readEntrys(entryPath, entrys);
-                readEntrys(entryPath, entrys, worklist);
+                readEntrys(entryPath, entrys);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            broadcast("entry1", entrys);
-            broadcast("entry2", worklist);
+            broadcast("entry", entrys);
         }
     }
 

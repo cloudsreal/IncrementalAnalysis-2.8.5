@@ -15,4 +15,4 @@ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../data/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../incre_cache_analysis/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../cache_data/*.class
 
-cp giraph-examples-1.4.0-SNAPSHOT-shaded.jar /Users/zhangyujin/hadoop-2.7.2/share/hadoop/giraph
+cp giraph-examples-1.4.0-SNAPSHOT-shaded.jar /Users/zhangyujin/Desktop/jar

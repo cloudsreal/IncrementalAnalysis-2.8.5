@@ -17,8 +17,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
   public Tool tool = null;
   public Fact fact = null;
   public M msg  = null;
-  public static SetWritable entry1 = null;
-  public static SetWritable entry2 = null;
+  public static SetWritable entry = null;
 
   public void setAnalysisConf(){
     // TODO for initialize tool. fact/msg type according to specific dataflow analysis
@@ -38,32 +37,14 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
   public void compute(Vertex<IntWritable, V, E> vertex, Iterable<M> messages) {
     setAnalysisConf();
     if (getSuperstep() == 0) {
-      entry1 = getBroadcast("entry1");
-      entry2 = getBroadcast("entry2");
-      if(entry1.getValues().contains(vertex.getId().get())) {
+      entry = getBroadcast("entry");
+      if(entry.getValues().contains(vertex.getId().get())) {
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
         for(Edge<IntWritable, E> edge : vertex.getEdges()) {
           msg.setVertexID(vertex.getId());
           msg.setExtra(vertex.getValue());
           msg.setFact(out_fact.getNew());
           sendMessage(edge.getTargetVertexId(), msg);
-        }
-      }
-      vertex.voteToHalt();
-    }
-    else if (getSuperstep() == 1) {
-      if(beActive(messages, vertex.getValue())) {
-        fact = tool.combine(messages, vertex.getValue());
-        vertex.getValue().setFact(fact);
-//        final SetWritable entry2 = getBroadcast("entry2");
-        if (entry2.getValues().contains(vertex.getId().get())) {
-          Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
-          for (Edge<IntWritable, E> edge : vertex.getEdges()) {
-            msg.setVertexID(vertex.getId());
-            msg.setExtra(vertex.getValue());
-            msg.setFact(out_fact.getNew());
-            sendMessage(edge.getTargetVertexId(), msg);
-          }
         }
       }
       vertex.voteToHalt();

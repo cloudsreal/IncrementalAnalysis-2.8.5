@@ -4,7 +4,7 @@ import java.io.*;
 import java.lang.*;
 
 public class CommonWrite{
-  public  static String file = "/home/szw/wen/zyj_exten/jar/cache_inc_res/cache_inc_serial.txt";
+  public  static String file = "/Users/zhangyujin/hadoop-2.7.2-new/share/hadoop/giraph/CFG2/cache_inc_serial.txt";
   
   public static void method2(String conent) {
     BufferedWriter out = null;

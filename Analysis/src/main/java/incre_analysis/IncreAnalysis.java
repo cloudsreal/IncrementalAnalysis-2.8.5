@@ -1,5 +1,6 @@
 package incre_analysis;
 
+import cache_data.CacheState;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.graph.BasicComputation;
@@ -41,6 +42,10 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     if (getSuperstep() == 0) {
       entry = getBroadcast("entry");
       if(entry.getValues().contains(vertex.getId().get())) {
+        Fact in_fact = vertex.getValue().getFact();
+        if(in_fact == null){
+          vertex.getValue().setFact(new CacheState());
+        }
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
         for(Edge<IntWritable, E> edge : vertex.getEdges()) {
           msg.setVertexID(vertex.getId());
@@ -54,7 +59,11 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     else {
       if(beActive(messages, vertex.getValue())){
         fact = tool.combine(messages, vertex.getValue());
+        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+",State:"+fact.toString());
         Fact out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
+        if(out_old_fact == null){
+          vertex.getValue().setFact(new CacheState());
+        }
         Fact out_new_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
         boolean canPropagate = tool.propagate(out_old_fact, out_new_fact);
         if (canPropagate) {

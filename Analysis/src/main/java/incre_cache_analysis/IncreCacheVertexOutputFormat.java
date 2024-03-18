@@ -1,6 +1,7 @@
 package incre_cache_analysis;
 
 import cache_data.CacheTool;
+import org.apache.giraph.edge.Edge;
 import org.apache.giraph.graph.Vertex;
 import org.apache.giraph.io.formats.TextVertexOutputFormat;
 import org.apache.hadoop.io.IntWritable;

@@ -35,6 +35,11 @@ public class CacheVertexValue extends VertexValue {
     return (CacheState)fact;
   }
 
+  @Override
+  public void setNewFact() {
+    fact = new CacheState(); 
+  }
+
   public void write(DataOutput out) throws IOException {
     stmts.write(out);
     if (fact != null) {

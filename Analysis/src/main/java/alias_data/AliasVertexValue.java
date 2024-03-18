@@ -35,6 +35,12 @@ public class AliasVertexValue extends VertexValue{
         return graphStore;
   }
 
+  @Override
+  public void setNewFact() {
+    fact = new Pegraph(); 
+  }
+
+
   public void setGraphStore(MapWritable graphStore) {
         this.graphStore = graphStore;
   }

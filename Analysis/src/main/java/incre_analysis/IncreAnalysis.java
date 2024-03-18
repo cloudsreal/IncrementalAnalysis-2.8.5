@@ -44,9 +44,11 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
       if(entry.getValues().contains(vertex.getId().get())) {
         Fact in_fact = vertex.getValue().getFact();
         if(in_fact == null){
-          vertex.getValue().setFact(new CacheState());
+          /// vertex.getValue().setFact(new CacheState());
+          vertex.getValue().setNewFact();
         }
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
+        /// CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+out_fact.toString());
         for(Edge<IntWritable, E> edge : vertex.getEdges()) {
           msg.setVertexID(vertex.getId());
           msg.setExtra(vertex.getValue());
@@ -59,12 +61,22 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     else {
       if(beActive(messages, vertex.getValue())){
         fact = tool.combine(messages, vertex.getValue());
-        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+",State:"+fact.toString());
-        Fact out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
-        if(out_old_fact == null){
-          vertex.getValue().setFact(new CacheState());
+        
+        // StringBuilder stringBuilder = new StringBuilder();
+        // stringBuilder.append("\npreds:\t");
+        // for (Msg item : messages){
+        //   stringBuilder.append(item.getVertexID()).append("\t");
+        // }
+        // CommonWrite.method2(stringBuilder.toString());
+        // CommonWrite.method2("Id:\t"+vertex.getId().toString()+", State:\t"+fact.toString());
+
+        /// Fact out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
+        Fact out_old_fact = null;
+        if(vertex.getValue().getFact() != null){
+          out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
         }
         Fact out_new_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+
         boolean canPropagate = tool.propagate(out_old_fact, out_new_fact);
         if (canPropagate) {
           vertex.getValue().setFact(fact);

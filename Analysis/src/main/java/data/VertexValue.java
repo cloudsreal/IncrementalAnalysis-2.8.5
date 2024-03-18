@@ -22,6 +22,10 @@ public class VertexValue implements Writable {
         this.fact = fact;
     }
 
+    public void setNewFact() {
+        // wait for implementation
+    }
+
     public StmtList getStmtList() {
         return stmts;
     }

@@ -42,9 +42,12 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
         setAnalysisConf();
         if (getSuperstep() == 0) {
             ReachState reachState = new ReachState();
-            vertex.getValue().setFact(reachState);
             int vertexId = vertex.getId().get();
             IntWritable vertexType = vertex.getValue().getVertexType();
+            if (vertexType.get() == 3) {
+                reachState.setFlag(true);
+            }
+            vertex.getValue().setFact(reachState);
             for (Edge<IntWritable, IntWritable> edge : vertex.getEdges()) {
                 IntWritable edgeType = edge.getValue();
                 if (vertexType.get() == 0 && edgeType.get() == 0) continue;

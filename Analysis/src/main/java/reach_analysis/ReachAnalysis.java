@@ -44,7 +44,7 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
             ReachState reachState = new ReachState();
             int vertexId = vertex.getId().get();
             IntWritable vertexType = vertex.getValue().getVertexType();
-            if (vertexType.get() == 2 || vertexType.get() == 3) {
+            if (vertexType.get() != 0) {
                 reachState.setFlag(true);
             }
             vertex.getValue().setFact(reachState);

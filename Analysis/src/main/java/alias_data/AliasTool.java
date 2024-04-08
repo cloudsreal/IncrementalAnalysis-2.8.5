@@ -1,14 +1,17 @@
 package alias_data;
 
-import java.util.*;
+import alias_analysis.MyWorkerContext;
+import alias_stmt.*;
+import data.Fact;
+import data.StmtList;
+import data.Tool;
+import data.VertexValue;
+import incre_alias_analysis.IncreMyWorkerContext;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
-import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Writable;
-import data.*;
-import alias_stmt.*;
-import alias_data.*;
-import alias_analysis.MyWorkerContext;
+
+import java.util.*;
 
 public class AliasTool implements Tool<AliasMsg>{
   public static Grammar grammar;
@@ -18,6 +21,12 @@ public class AliasTool implements Tool<AliasMsg>{
     grammar = context.grammar;
     singletons = context.singletons;
   }
+
+  public AliasTool(IncreMyWorkerContext context){
+    grammar = context.grammar;
+    singletons = context.singletons;
+  }
+
 
   public static AStmt newStmt(Scanner sc) {
     AStmt stmt = null;

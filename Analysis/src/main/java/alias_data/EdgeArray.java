@@ -1,12 +1,10 @@
 package alias_data;
 
+import org.apache.hadoop.io.Writable;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.apache.hadoop.io.Writable;
 
 public class EdgeArray implements Writable
 {
@@ -19,6 +17,44 @@ public class EdgeArray implements Writable
         edges = new int[0];
         labels = new byte[0];
         size = capacity = 0;
+    }
+
+    public EdgeArray(String[] tokens, int idx) {
+        // edges = new int[0];
+        // labels = new byte[0];
+        // size = capacity = 0;
+
+        // size = in.readInt();
+        // capacity = in.readInt();
+        // int[] tmpEdges = new int[size];
+        // byte[] tmpLabels = new byte[size];
+        // for(int i = 0; i < size; i++)
+        // {
+        //     tmpEdges[i] = in.readInt();
+        // }
+        // for(int i = 0; i < size; i++)
+        // {
+        //     tmpLabels[i] = in.readByte();
+        // }
+        // edges = tmpEdges;
+        // labels = tmpLabels;
+
+        size = Integer.parseInt(tokens[idx]);
+        capacity = Integer.parseInt(tokens[idx+1]);
+        int[] tmpEdges = new int[size];
+        byte[] tmpLabels = new byte[size];
+        idx = idx + 2;
+        for(int i = 0; i < size; i++)
+        {
+            tmpEdges[i] = Integer.parseInt(tokens[idx+i]);
+        }
+        idx = idx + size;
+        for(int i = 0; i < size; i++)
+        {
+            tmpLabels[i] = Byte.parseByte(tokens[idx+i]);
+        }
+        edges = tmpEdges;
+        labels = tmpLabels;
     }
 
     public int[] getEdges()
@@ -145,4 +181,5 @@ public class EdgeArray implements Writable
         }
         return size;
     }
+
 }

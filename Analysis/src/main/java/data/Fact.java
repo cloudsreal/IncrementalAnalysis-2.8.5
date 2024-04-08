@@ -1,8 +1,10 @@
 package data;
 
-import java.lang.*;
-import java.io.*;
 import org.apache.hadoop.io.Writable;
+
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 
 public abstract class Fact implements Writable{
   public abstract void merge(Fact fact);

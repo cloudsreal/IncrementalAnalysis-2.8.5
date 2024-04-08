@@ -1,20 +1,20 @@
-package alias_analysis;
+package incre_alias_analysis;
 
 import alias_data.*;
 import alias_stmt.AStmt;
 import alias_stmt.ReturnAStmt;
 import alias_stmt.TYPE;
-import analysis.Analysis;
 import data.VertexValue;
+import incre_analysis.IncreAnalysis;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.NullWritable;
 
-public class AliasAnalysis extends Analysis<AliasVertexValue, NullWritable, AliasMsg> {
+public class IncreAliasAnalysis extends IncreAnalysis<AliasVertexValue, NullWritable, AliasMsg> {
 
     @Override
     public void setAnalysisConf(){
-      MyWorkerContext context = getWorkerContext();
+      IncreMyWorkerContext context = getWorkerContext();
       tool = new AliasTool(context); 
       fact = new Pegraph(); 
       msg = new AliasMsg();

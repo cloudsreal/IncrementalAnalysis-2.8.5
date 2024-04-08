@@ -39,6 +39,16 @@ public class CalleefptrAStmt extends AStmt {
     }
 
     @Override
+	public int getSize(){
+    return 1;
+  }
+
+	@Override
+    public void readString(String[] token, int idx) {
+		dst = Integer.parseInt(token[idx]);
+    }
+
+    @Override
     public void write(DataOutput dataOutput) throws IOException {
         dataOutput.writeInt(dst);
     }

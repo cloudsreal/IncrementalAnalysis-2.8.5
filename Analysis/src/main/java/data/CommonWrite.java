@@ -1,10 +1,12 @@
 package data;
 
-import java.io.*;
-import java.lang.*;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class CommonWrite{
-  public  static String file = "/Users/zhangyujin/Desktop/jar/log.txt";
+  public  static String file = "/Users/zhangyujin/Desktop/jar/test_alias.txt";
   
   public static void method2(String conent) {
     BufferedWriter out = null;

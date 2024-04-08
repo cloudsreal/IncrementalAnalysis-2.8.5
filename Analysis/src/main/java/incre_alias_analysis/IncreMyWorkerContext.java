@@ -1,4 +1,4 @@
-package alias_analysis;
+package incre_alias_analysis;
 
 import alias_data.Grammar;
 import alias_data.Singletons;
@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-public class MyWorkerContext extends WorkerContext {
+public class IncreMyWorkerContext extends WorkerContext {
     public Singletons singletons;
     public Grammar grammar;
 

@@ -1,12 +1,13 @@
 package alias_data;
 
+import data.CommonWrite;
+import data.Fact;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import data.*;
 
 public class Pegraph extends Fact{
 
@@ -14,6 +15,39 @@ public class Pegraph extends Fact{
   
   public Pegraph(){
     this.graph = new HashMap<>();
+  }
+
+
+  // public String graphtoString(){
+  //   StringBuilder strBuilder = new StringBuilder();
+  //   strBuilder.append(graph.size()).append("\t");
+  //   for (Map.Entry<Integer, EdgeArray> entry : graph.entrySet()) {
+  //     // dataOutput.writeInt(entry.getKey());
+  //     // entry.getValue().write(dataOutput);
+  //     strBuilder.append(entry.getKey()).append("\t");
+  //     strBuilder.append(entry.getValue().toString());
+  //   }
+  //   return strBuilder.toString();
+  // }
+
+
+  public Pegraph(String[] tokens, int idx){
+    this.graph = new HashMap<>();
+
+    int k = idx;
+      k++;
+      int size = Integer.parseInt(tokens[k]);
+      CommonWrite.method2("PEG size:\t"+ String.valueOf(size));
+      k++;
+      while(size > 0){
+        Integer key = Integer.parseInt(tokens[k]);
+        k++;
+        EdgeArray edgeArray = new EdgeArray(tokens, k);
+        graph.put(key, edgeArray);
+        k = k + 2 + edgeArray.getSize() + edgeArray.getSize();
+        CommonWrite.method2("key:\t"+ String.valueOf(key) + "\t"+ edgeArray.getSize());
+        size--;
+      }
   }
 
   public Map<Integer, EdgeArray> getGraph() {
@@ -35,6 +69,11 @@ public class Pegraph extends Fact{
       }
       return size;
   }
+
+  public int getSize() {
+    return graph.size()*3 + getNumEdges()*2;
+  }
+
 
   public int[] getEdges(int src) {
       return graph.get(src).getEdges();

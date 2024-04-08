@@ -1,11 +1,11 @@
 package alias_stmt;
 
+import data.Stmt;
 import org.apache.hadoop.io.Writable;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-
-import data.Stmt;
 
 public class AStmt extends Stmt<TYPE> implements Writable{
 
@@ -16,6 +16,14 @@ public class AStmt extends Stmt<TYPE> implements Writable{
       toString_sub(out);
       out.append(")");
       return out.toString();
+  }
+
+  public int getSize(){
+    return 0;
+  }
+
+  public void readString(String[] token, int idx) {
+    // Wait for instance implementation
   }
 
   public void toString_sub(StringBuilder str){}

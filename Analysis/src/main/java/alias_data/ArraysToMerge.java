@@ -1,7 +1,5 @@
 package alias_data;
 
-import java.util.*;
-
 public class ArraysToMerge {
   private int[] edges;    // edges = new vertexid_t[capacity];
   private byte[] labels;        // labels = new char[capacity];

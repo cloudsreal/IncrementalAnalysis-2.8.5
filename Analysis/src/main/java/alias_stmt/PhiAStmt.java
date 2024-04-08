@@ -73,6 +73,23 @@ public class PhiAStmt extends AStmt{
     }
 
     @Override
+	public int getSize(){
+        return 2+length;
+    }
+
+	@Override
+    public void readString(String[] token, int idx) {
+		dst = Integer.parseInt(token[idx]);
+        length = Integer.parseInt(token[idx+1]);
+        src = new int[length];
+        idx = idx + 2;
+        for (int i = 0; i < length; i++) {
+            src[i] = Integer.parseInt(token[idx + i]);
+        }
+    }
+
+
+    @Override
     public void write(DataOutput dataOutput) throws IOException {
         dataOutput.writeInt(dst);
         dataOutput.writeInt(length);

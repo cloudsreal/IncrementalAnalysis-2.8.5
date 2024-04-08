@@ -58,6 +58,19 @@ public class AllocAStmt extends AStmt
 	}
 
 	@Override
+	public int getSize(){
+    return 3;
+  }
+
+	@Override
+  public void readString(String[] token, int idx) {
+		src = Integer.parseInt(token[idx]);
+		dst = Integer.parseInt(token[idx + 1]);
+		auxiliary = Integer.parseInt(token[idx + 2]);
+  }
+
+
+	@Override
 	public void write(DataOutput dataOutput) throws IOException {
 		dataOutput.writeInt(src);
 		dataOutput.writeInt(dst);

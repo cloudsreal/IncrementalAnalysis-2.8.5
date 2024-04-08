@@ -1,13 +1,12 @@
 package alias_data;
 
+import alias_stmt.AStmt;
+import data.StmtList;
 import org.apache.hadoop.io.Writable;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-
-import data.StmtList;
-import alias_data.AliasStmts;
-import alias_stmt.AStmt;
 
 public class NodeTuple implements Writable{
   public AliasStmts stmtlist;

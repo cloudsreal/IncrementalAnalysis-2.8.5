@@ -119,6 +119,24 @@ public class CallfptrAStmt extends AStmt {
     }
 
     @Override
+	public int getSize(){
+    return 4+length;
+  }
+
+	@Override
+    public void readString(String[] token, int idx) {
+        dst = Integer.parseInt(token[idx]);
+        auxiliary = Integer.parseInt(token[idx + 1]);
+		length = Integer.parseInt(token[idx + 2]);
+		ret = Integer.parseInt(token[idx + 3]);
+		args = new int[length];
+		idx = idx+4;
+		for (int i = 0; i < length; i++) {
+			args[i] = Integer.parseInt(token[idx + i]);
+		}
+    }
+
+    @Override
     public void write(DataOutput dataOutput) throws IOException {
         dataOutput.writeInt(dst);
         dataOutput.writeInt(auxiliary);

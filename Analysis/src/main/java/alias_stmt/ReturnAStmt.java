@@ -82,6 +82,22 @@ public class ReturnAStmt extends AStmt
 	}
 
 	@Override
+	public int getSize(){
+    return length+2;
+  }
+
+	@Override
+  public void readString(String[] token, int idx) {
+		length = Integer.parseInt(token[idx]);
+		ret = Integer.parseInt(token[idx + 1]);
+		idx = idx + 2;
+		args = new int[length];
+		for (int i = 0; i < length; i++) {
+			args[i] = Integer.parseInt(token[idx + i]);
+		}
+  }
+
+	@Override
 	public void write(DataOutput dataOutput) throws IOException {
 		dataOutput.writeInt(length);
 		dataOutput.writeInt(ret);

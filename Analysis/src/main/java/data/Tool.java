@@ -1,6 +1,6 @@
 package data;
 
-import java.util.*;
+import java.util.Set;
 
 public interface Tool<M> {
   public Fact combine(Iterable<M> message, VertexValue vertexValue);

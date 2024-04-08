@@ -1,7 +1,5 @@
 package data;
 
-import java.lang.*;
-
 public abstract class Stmt<T>{
   protected T stmt_value;
   

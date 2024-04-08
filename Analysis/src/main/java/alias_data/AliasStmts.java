@@ -1,14 +1,12 @@
 package alias_data;
 
+import alias_stmt.*;
+import data.StmtList;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
-import data.StmtList;
-import alias_stmt.*;
 
 public class AliasStmts extends StmtList{
 
@@ -22,6 +20,59 @@ public class AliasStmts extends StmtList{
     size = 1;
     stmts = new AStmt[1];
     stmts[0] = AliasTool.newStmt(sc);
+  }
+
+  public AliasStmts(String[] tokens, int idx) {
+    size = 1;
+    stmts = new AStmt[1];
+    /// stmts[0] = AliasTool.newStmt(sc);
+    readStmt(tokens, idx);
+  }
+
+  public void readStmt(String[] tokens, int idx) {
+    AStmt astmt = new EmptyAStmt();
+    switch (Byte.parseByte(tokens[idx])) {
+      case 1:
+        astmt = new AssignAStmt();
+        break;
+      case 2:
+        astmt = new LoadAStmt();
+        break;
+      case 3:
+        astmt = new StoreAStmt();
+        break;
+      case 4:
+        astmt = new AllocAStmt();
+        break;
+      case 5:
+        astmt = new PhiAStmt();
+              break;
+      case 6:
+        astmt = new CallAStmt();
+        break;
+      case 7:
+        astmt = new ReturnAStmt();
+        break;
+      case 8:
+        astmt = new RetAStmt();
+        break;
+      case 9:
+        astmt = new SkipAStmt();
+        break;
+      case 10:
+        astmt = new CallfptrAStmt();
+        break;
+      case 11:
+        astmt = new CalleefptrAStmt();
+        break;
+      case 12:
+        astmt = new EmptyAStmt();
+        break;
+      default:
+        System.out.println("read wrong stmt type");
+      }
+      astmt.readString(tokens, idx+1);
+      stmts[0] = astmt;
   }
 
   public StmtList getNew() {

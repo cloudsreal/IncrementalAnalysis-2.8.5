@@ -1,5 +1,6 @@
 package alias_analysis;
 
+import alias_data.AliasVertexValue;
 import com.google.common.collect.ImmutableList;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.io.formats.TextVertexInputFormat;
@@ -11,8 +12,6 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
-
-import alias_data.AliasVertexValue;
 
 public class AliasVertexInputFormat extends TextVertexInputFormat<IntWritable, AliasVertexValue, NullWritable> {
 

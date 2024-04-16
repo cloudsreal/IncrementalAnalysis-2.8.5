@@ -62,6 +62,15 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
       if(beActive(messages, vertex.getValue())){
         fact = tool.combine(messages, vertex.getValue());
 
+//        // StringBuilder stringBuilder = new StringBuilder();
+//        // stringBuilder.append("\npreds:\t");
+//        // for (Msg item : messages){
+//        //   stringBuilder.append(item.getVertexID()).append("\t");
+//        // }
+//        // CommonWrite.method2(stringBuilder.toString());
+//        // CommonWrite.method2("Id:\t"+vertex.getId().toString()+", State:\t"+fact.toString());
+//
+//        /// Fact out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
         Fact out_old_fact = null;
         if(vertex.getValue().getFact() != null){
           out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());

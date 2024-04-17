@@ -22,22 +22,6 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
     }
 
     @Override
-    public boolean beActive(Iterable<ReachMsg> messages, VertexValue vertexValue){
-        ReachState fact = (ReachState) vertexValue.getFact();
-        if(!fact.isFlag()) return true;
-        boolean beActive = false;
-        for(ReachMsg message : messages){
-            boolean messageType = message.getMsgType();
-            IntWritable predId = message.getPredID();
-            if(messageType && !fact.PC.contains(predId)){
-                beActive = true;
-                break;
-            }
-        }
-        return beActive;
-    }
-
-    @Override
     public void compute(Vertex<IntWritable, ReachVertexValue, IntWritable> vertex, Iterable<ReachMsg> messages) {
         setAnalysisConf();
         if (getSuperstep() == 0) {

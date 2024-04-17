@@ -13,6 +13,7 @@ import reach_data.ReachState;
 import reach_data.ReachVertexValue;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable, ReachVertexValue, IntWritable> {
 
@@ -43,7 +44,8 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             }
 //            PC
             if (!fact.isPCEmpty()){
-                for(IntWritable pc : fact.getPC()){
+                HashSet<Integer> pcs = fact.getPC();
+                for(int pc : pcs){
                     stringBuilder.append(pc).append("\t");
                 }
             }

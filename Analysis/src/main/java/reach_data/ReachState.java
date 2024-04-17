@@ -11,7 +11,7 @@ import java.util.*;
 
 public class ReachState extends Fact {
     public boolean flag;
-    public HashSet<IntWritable> PC;
+    public HashSet<Integer> PC;
 
     public ReachState() {
         this.flag = false;
@@ -26,7 +26,7 @@ public class ReachState extends Fact {
         return flag;
     }
 
-    public HashSet<IntWritable> getPC(){
+    public HashSet<Integer> getPC(){
         return this.PC;
     }
     public void merge(Fact fact){
@@ -36,8 +36,8 @@ public class ReachState extends Fact {
         return PC.isEmpty();
     }
 
-    public void addPC(IntWritable vertex){
-        this.PC.add(new IntWritable(vertex.get()));
+    public void addPC(Integer vertex){
+        this.PC.add(vertex);
     }
 
     public Fact getNew(){
@@ -49,15 +49,7 @@ public class ReachState extends Fact {
 
     public boolean consistent(Fact oldfact){
         ReachState oldState = (ReachState)oldfact;
-        if(!oldState.flag && this.flag){
-            return false;
-        }
-        for(IntWritable vertex : this.PC){
-            if(!oldState.PC.contains(vertex)){
-                return false;
-            }
-        }
-        return true;
+        return oldState.flag == this.flag && oldState.getPC().size() == this.getPC().size();
     }
 
     @Override
@@ -65,8 +57,8 @@ public class ReachState extends Fact {
         out.writeBoolean(flag);
         if (flag) {
             out.writeInt(PC.size());
-            for (IntWritable vertex : PC) {
-                out.writeInt(vertex.get());
+            for (Integer vertex : PC) {
+                out.writeInt(vertex);
             }
         }
     }
@@ -78,7 +70,7 @@ public class ReachState extends Fact {
             int pcSize = in.readInt();
             PC.clear();
             for (int i = 0; i < pcSize; i++) {
-                PC.add(new IntWritable(in.readInt()));
+                PC.add(in.readInt());
             }
         }
     }

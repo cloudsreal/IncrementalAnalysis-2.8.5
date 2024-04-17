@@ -26,16 +26,9 @@ public class PreAnalysis extends Analysis<PreVertexValue, NullWritable, PreMsg> 
     }
 
     @Override
-    public boolean beActive(Iterable<PreMsg> messages, VertexValue vertexValue){
-        PreVertexValue preVertexValue = (PreVertexValue) vertexValue;
-        return preVertexValue.isFlag();
-    }
-
-    @Override
     public void compute(Vertex<IntWritable, PreVertexValue, NullWritable> vertex, Iterable<PreMsg> messages) {
         setAnalysisConf();
         if (getSuperstep() == 0) {
-//            vertex.getValue().setFact(preState);
             if(vertex.getValue().isExist() && vertex.getValue().isFlag()){
                 PreState preState = new PreState();
                 for (Edge<IntWritable, NullWritable> edge : vertex.getEdges()) {
@@ -51,10 +44,6 @@ public class PreAnalysis extends Analysis<PreVertexValue, NullWritable, PreMsg> 
             vertex.voteToHalt();
         }
         else {
-//            if(beActive(messages, vertex.getValue())){
-//                Fact newFact = ((PreTool)tool).combine(messages, vertex.getValue());
-//                vertex.getValue().setFact(newFact);
-//            }
             vertex.voteToHalt();
         }
     }

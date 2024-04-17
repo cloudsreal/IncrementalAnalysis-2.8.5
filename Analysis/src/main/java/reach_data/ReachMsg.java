@@ -10,19 +10,19 @@ import java.io.IOException;
 public class ReachMsg extends Msg {
 
     public IntWritable predID;
-    public IntWritable msgType;
+    public boolean msgType;
     public ReachMsg(){
         vertexID = new IntWritable();
         fact = null;
         predID = new IntWritable();
-        msgType = new IntWritable();
+        msgType = false;
     }
 
     public void setPredID(int predID) {
         this.predID = new IntWritable(predID);
     }
 
-    public void setMsgType(IntWritable msgType) {
+    public void setMsgType(boolean msgType) {
         this.msgType = msgType;
     }
 
@@ -30,7 +30,7 @@ public class ReachMsg extends Msg {
         return predID;
     }
 
-    public IntWritable getMsgType() {
+    public boolean getMsgType() {
         return msgType;
     }
 
@@ -38,22 +38,13 @@ public class ReachMsg extends Msg {
     public void write(DataOutput dataOutput) throws IOException {
         vertexID.write(dataOutput);
         predID.write(dataOutput);
-        if (msgType != null) {
-            dataOutput.writeByte(1);
-            msgType.write(dataOutput);
-        }
-        else {
-            dataOutput.writeByte(0);
-        }
+        dataOutput.writeBoolean(msgType);
     }
 
     @Override
     public void readFields(DataInput dataInput) throws IOException {
         vertexID.readFields(dataInput);
         predID.readFields(dataInput);
-        if (dataInput.readByte() == 1) {
-            msgType = new IntWritable();
-            msgType.readFields(dataInput);
-        }
+        msgType = dataInput.readBoolean();
     }
 }

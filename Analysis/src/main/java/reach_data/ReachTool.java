@@ -20,12 +20,10 @@ public class ReachTool implements Tool<ReachMsg> {
             new_state = (ReachState) old_state.getNew();
         }
         for (ReachMsg item : message) {
-            IntWritable messageType = item.getMsgType();
-            if(messageType.get() == 2) {
-                new_state.setFlag(true);
+            boolean messageType = item.getMsgType();
+            new_state.setFlag(true);
+            if(messageType) {
                 new_state.addPC(item.getPredID());
-            } else if(messageType.get() == 1) {
-                new_state.setFlag(true);
             }
         }
         return new_state;

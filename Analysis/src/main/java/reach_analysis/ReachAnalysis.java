@@ -27,9 +27,9 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
         if(!fact.isFlag()) return true;
         boolean beActive = false;
         for(ReachMsg message : messages){
-            IntWritable messageType = message.getMsgType();
+            boolean messageType = message.getMsgType();
             IntWritable predId = message.getPredID();
-            if(messageType.get() == 2 && !fact.PC.contains(predId)){
+            if(messageType && !fact.PC.contains(predId)){
                 beActive = true;
                 break;
             }
@@ -54,14 +54,14 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
                 msg.setVertexID(vertex.getId());
                 msg.setPredID(vertexId);
                 if (vertexType.get() == 1) {
-                    msg.setMsgType(new IntWritable(1));
+                    msg.setMsgType(false);
                 } else if (vertexType.get() == 2 || vertexType.get() == 3) {
-                    msg.setMsgType(new IntWritable(2));
+                    msg.setMsgType(true);
                 } else {
                     if (edgeType.get() == 1) {
-                        msg.setMsgType(new IntWritable(1));
+                        msg.setMsgType(false);
                     } else if (edgeType.get() == 2) {
-                        msg.setMsgType(new IntWritable(2));
+                        msg.setMsgType(true);
                     }
                 }
                 sendMessage(edge.getTargetVertexId(), msg);
@@ -79,9 +79,9 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
                     msg.setVertexID(vertex.getId());
                     msg.setPredID(vertexId);
                     if (((ReachState) newFact).isPCEmpty()) {
-                        msg.setMsgType(new IntWritable(1));
+                        msg.setMsgType(false);
                     } else {
-                        msg.setMsgType(new IntWritable(2));
+                        msg.setMsgType(true);
                     }
                     for (Edge<IntWritable, IntWritable> edge : vertex.getEdges()) {
                         sendMessage(edge.getTargetVertexId(), msg);

@@ -36,12 +36,14 @@ public class PreAnalysis extends Analysis<PreVertexValue, NullWritable, PreMsg> 
         setAnalysisConf();
         if (getSuperstep() == 0) {
 //            vertex.getValue().setFact(preState);
-            if(vertex.getValue().isExist()){
+            if(vertex.getValue().isExist() && vertex.getValue().isFlag()){
                 PreState preState = new PreState();
                 for (Edge<IntWritable, NullWritable> edge : vertex.getEdges()) {
                     int predID = edge.getTargetVertexId().get();
                     if(!vertex.getValue().hasPC(predID)){
                         preState.addPred(predID);
+                    } else{
+                        preState.addPC(predID);
                     }
                 }
                 vertex.getValue().setFact(preState);

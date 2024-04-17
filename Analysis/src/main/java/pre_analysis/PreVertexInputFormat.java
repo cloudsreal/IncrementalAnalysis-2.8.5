@@ -51,7 +51,7 @@ public class PreVertexInputFormat extends TextVertexInputFormat<IntWritable, Pre
                 if (Integer.parseInt(tokens[2]) == 1) {
                     preVertexValue.setFlag(true);
                 }
-                for(int i = 2; i < tokens.length; i++)
+                for(int i = 3; i < tokens.length; i++)
                 {
                     preVertexValue.addPC(Integer.parseInt(tokens[i]));
                 }

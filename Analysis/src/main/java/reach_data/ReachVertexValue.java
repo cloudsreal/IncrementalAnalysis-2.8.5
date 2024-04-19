@@ -12,39 +12,39 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class ReachVertexValue extends VertexValue {
-    private IntWritable vertexType;
+    private char vertexType;
 
     public ReachVertexValue() {
         stmts = null;
         fact = new ReachState();
-        vertexType = new IntWritable(0);
+        vertexType = ' ';
     }
 
     public ReachVertexValue(String type){
         stmts = null;
         fact = new ReachState();
         if ("a".equalsIgnoreCase(type)) {
-            vertexType = new IntWritable(1);
+            vertexType = 'a';
         } else if ("d".equalsIgnoreCase(type)) {
-            vertexType = new IntWritable(2);
+            vertexType = 'd';
         } else if ("c".equalsIgnoreCase(type)) {
-            vertexType = new IntWritable(3);
+            vertexType = 'c';
         } else {
-            vertexType = new IntWritable(0);
+            vertexType = 'u';
         }
     }
 
-    public void setVertexType(IntWritable vertexType) {
+    public void setVertexType(char vertexType) {
         this.vertexType = vertexType;
     }
 
-    public IntWritable getVertexType(){
+    public char getVertexType(){
         return vertexType;
     }
 
     @Override
     public void write(DataOutput out) throws IOException {
-        out.writeInt(vertexType.get());
+        out.writeChar(vertexType);
         if (fact != null) {
             out.writeByte(1);
             fact.write(out);
@@ -55,7 +55,7 @@ public class ReachVertexValue extends VertexValue {
 
     @Override
     public void readFields(DataInput in) throws IOException {
-        vertexType = new IntWritable(in.readInt());
+        vertexType = in.readChar();
         if (in.readByte() == 1) {
             if (fact == null) {
                 fact = new ReachState();

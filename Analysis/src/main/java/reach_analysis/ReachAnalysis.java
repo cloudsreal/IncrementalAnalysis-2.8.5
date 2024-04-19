@@ -27,24 +27,24 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
         if (getSuperstep() == 0) {
             ReachState reachState = new ReachState();
             int vertexId = vertex.getId().get();
-            IntWritable vertexType = vertex.getValue().getVertexType();
-            if (vertexType.get() != 0) {
+            char vertexType = vertex.getValue().getVertexType();
+            if (vertexType != 'u') {
                 reachState.setFlag(true);
             }
             vertex.getValue().setFact(reachState);
             for (Edge<IntWritable, IntWritable> edge : vertex.getEdges()) {
-                IntWritable edgeType = edge.getValue();
-                if (vertexType.get() == 0 && edgeType.get() == 0) continue;
+                char edgeType = (char)edge.getValue().get();
+                if (vertexType == 'u' && edgeType == 'u') continue;
                 msg.setVertexID(vertex.getId());
                 msg.setPredID(vertexId);
-                if (vertexType.get() == 1) {
+                if (vertexType == 'a') {
                     msg.setMsgType(false);
-                } else if (vertexType.get() == 2 || vertexType.get() == 3) {
+                } else if (vertexType == 'd' || vertexType == 'c') {
                     msg.setMsgType(true);
                 } else {
-                    if (edgeType.get() == 1) {
+                    if (edgeType == 'a') {
                         msg.setMsgType(false);
-                    } else if (edgeType.get() == 2) {
+                    } else if (edgeType == 'd') {
                         msg.setMsgType(true);
                     }
                 }
@@ -54,12 +54,12 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
         }
         else{
             if (beActive(messages, vertex.getValue())) {
+                int vertexId = vertex.getId().get();
                 Fact oldFact = vertex.getValue().getFact();
                 Fact newFact = tool.combine(messages, vertex.getValue());
                 boolean canPropagate = tool.propagate(oldFact, newFact);
-                int vertexId = vertex.getId().get();
+                vertex.getValue().setFact(newFact);
                 if (canPropagate) {
-                    vertex.getValue().setFact(newFact);
                     msg.setVertexID(vertex.getId());
                     msg.setPredID(vertexId);
                     if (((ReachState) newFact).isPCEmpty()) {

@@ -49,7 +49,7 @@ public class ReachState extends Fact {
 
     public boolean consistent(Fact oldfact){
         ReachState oldState = (ReachState)oldfact;
-        return oldState.flag == this.flag && oldState.getPC().size() == this.getPC().size();
+        return oldState.flag == this.flag && ((oldState.isPCEmpty() && this.isPCEmpty()) || (!oldState.isPCEmpty() && !this.isPCEmpty()));
     }
 
     @Override

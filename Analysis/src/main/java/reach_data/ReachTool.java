@@ -19,9 +19,9 @@ public class ReachTool implements Tool<ReachMsg> {
         } else {
             new_state = (ReachState) old_state.getNew();
         }
+        new_state.setFlag(true);
         for (ReachMsg item : message) {
             boolean messageType = item.getMsgType();
-            new_state.setFlag(true);
             if(messageType) {
                 new_state.addPC(item.getPredID());
             }
@@ -41,7 +41,8 @@ public class ReachTool implements Tool<ReachMsg> {
         if(oldFact == null) {
             return true;
         } else {
-            return !newState.consistent(oldState);
+//            return !newState.consistent(oldState);
+            return oldState.flag != newState.flag || (oldState.isPCEmpty() && !newState.isPCEmpty());
         }
     }
 }

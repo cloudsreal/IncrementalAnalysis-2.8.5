@@ -47,7 +47,7 @@ public class ReachEdgeInputFormat extends TextEdgeInputFormat<IntWritable, IntWr
 
         @Override
         protected IntWritable getValue(Triple endpoints) throws IOException {
-            return new IntWritable(endpoints.getEdgeType());
+            return new IntWritable((int)endpoints.getEdgeType());
         }
     }
 }

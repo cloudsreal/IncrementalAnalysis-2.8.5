@@ -29,9 +29,9 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             ReachState fact = (ReachState) vertex.getValue().getFact();
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(vertex.getId()).append("\t");
-            IntWritable vertexType = vertex.getValue().getVertexType();
+            char vertexType = vertex.getValue().getVertexType();
 //            if delete
-            if (vertexType.get() == 2) {
+            if (vertexType == 'd') {
                 stringBuilder.append("0").append("\t");
             } else {
                 stringBuilder.append("1").append("\t");

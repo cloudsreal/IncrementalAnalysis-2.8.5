@@ -13,9 +13,9 @@ public class Triple{
     public Triple(int sourceId, int targetId, String edgeType) {
         this.sourceId = sourceId;
         this.targetId = targetId;
-        if ("a".equalsIgnoreCase(edgeType)) {
+        if ("a".equalsIgnoreCase(edgeType)) {           // added edge
             this.edgeType = 'a';
-        } else if ("d".equalsIgnoreCase(edgeType)) {
+        } else if ("d".equalsIgnoreCase(edgeType)) {    // deleted edge
             this.edgeType = 'd';
         } else {
             this.edgeType = 'u';

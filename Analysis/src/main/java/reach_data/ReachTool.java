@@ -19,6 +19,7 @@ public class ReachTool implements Tool<ReachMsg> {
         } else {
             new_state = (ReachState) old_state.getNew();
         }
+//      each vertex is in UN if it receives msg.
         new_state.setFlag(true);
         for (ReachMsg item : message) {
             boolean messageType = item.getMsgType();
@@ -41,7 +42,7 @@ public class ReachTool implements Tool<ReachMsg> {
         if(oldFact == null) {
             return true;
         } else {
-//            return !newState.consistent(oldState);
+//            (oldState is PU && newState is PA/PC) || (oldState is PA && newState is PC)
             return oldState.flag != newState.flag || (oldState.isPCEmpty() && !newState.isPCEmpty());
         }
     }

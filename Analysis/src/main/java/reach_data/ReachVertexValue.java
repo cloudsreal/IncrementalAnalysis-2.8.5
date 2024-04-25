@@ -23,11 +23,11 @@ public class ReachVertexValue extends VertexValue {
     public ReachVertexValue(String type){
         stmts = null;
         fact = new ReachState();
-        if ("a".equalsIgnoreCase(type)) {
+        if ("a".equalsIgnoreCase(type)) {           // added node
             vertexType = 'a';
-        } else if ("d".equalsIgnoreCase(type)) {
+        } else if ("d".equalsIgnoreCase(type)) {    // deleted node
             vertexType = 'd';
-        } else if ("c".equalsIgnoreCase(type)) {
+        } else if ("c".equalsIgnoreCase(type)) {    // changed node
             vertexType = 'c';
         } else {
             vertexType = 'u';

@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class ReachState extends Fact {
-    public boolean flag;
-    public HashSet<Integer> PC;
+    public boolean flag; // UN nodes have true flag
+    public HashSet<Integer> PC; // set of PC nodes
 
     public ReachState() {
         this.flag = false;
@@ -48,8 +48,7 @@ public class ReachState extends Fact {
     }
 
     public boolean consistent(Fact oldfact){
-        ReachState oldState = (ReachState)oldfact;
-        return oldState.flag == this.flag && ((oldState.isPCEmpty() && this.isPCEmpty()) || (!oldState.isPCEmpty() && !this.isPCEmpty()));
+        return false;
     }
 
     @Override

@@ -37,14 +37,14 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
                 if (vertexType == 'u' && edgeType == 'u') continue;
                 msg.setVertexID(vertex.getId());
                 msg.setPredID(vertexId);
-                if (vertexType == 'a') {
+                if (vertexType == 'a') {    // PA: dataflow fact from added node
                     msg.setMsgType(false);
-                } else if (vertexType == 'd' || vertexType == 'c') {
+                } else if (vertexType == 'd' || vertexType == 'c') { // PC: dataflow fact from deleted edge or changed node
                     msg.setMsgType(true);
                 } else {
-                    if (edgeType == 'a') {
+                    if (edgeType == 'a') {  // PA: dataflow fact from added edge
                         msg.setMsgType(false);
-                    } else if (edgeType == 'd') {
+                    } else if (edgeType == 'd') {// PC: dataflow fact from deleted edge
                         msg.setMsgType(true);
                     }
                 }
@@ -56,16 +56,16 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
             if (beActive(messages, vertex.getValue())) {
                 int vertexId = vertex.getId().get();
                 Fact oldFact = vertex.getValue().getFact();
-                Fact newFact = tool.combine(messages, vertex.getValue());
+                Fact newFact = tool.combine(messages, vertex.getValue()); //collect the changed type of dataflow fact from the updated predecessors
                 boolean canPropagate = tool.propagate(oldFact, newFact);
                 vertex.getValue().setFact(newFact);
                 if (canPropagate) {
                     msg.setVertexID(vertex.getId());
                     msg.setPredID(vertexId);
-                    if (((ReachState) newFact).isPCEmpty()) {
+                    if (((ReachState) newFact).isPCEmpty()) {   // PA
                         msg.setMsgType(false);
                     } else {
-                        msg.setMsgType(true);
+                        msg.setMsgType(true);                   // PC
                     }
                     for (Edge<IntWritable, IntWritable> edge : vertex.getEdges()) {
                         sendMessage(edge.getTargetVertexId(), msg);

@@ -10,13 +10,15 @@ public class VertexValue implements Writable {
     protected StmtList stmts;
     protected Fact fact;
     protected Tool tool;
+    protected boolean propagate;
 
     public VertexValue() {
         stmts = null;
         fact = null;
         tool = null;
+        propagate = false;
     }
-    
+
     public Fact getFact() {
         return fact;
     }
@@ -25,6 +27,13 @@ public class VertexValue implements Writable {
         return tool;
     }
 
+    public boolean isPropagate() {
+        return propagate;
+    }
+
+    public void setPropagate(boolean propagate){
+        this.propagate = propagate;
+    }
 
     public void setFact(Fact fact) {
         this.fact = fact;

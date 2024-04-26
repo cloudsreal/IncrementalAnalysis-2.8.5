@@ -84,7 +84,7 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
       CommonWrite.method2("F:\t" + pegStr.toString());
       
       /// return new AliasVertexValue(stmt.toString());
-      return new AliasVertexValue(stmt.toString(), gsStr.toString(), pegStr.toString());
+      return new AliasVertexValue(stmt.toString(), gsStr.toString(), pegStr.toString(), false);
     }
 
     @Override

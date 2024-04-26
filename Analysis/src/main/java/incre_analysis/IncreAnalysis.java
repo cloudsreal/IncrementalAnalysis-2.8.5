@@ -47,6 +47,8 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
           /// vertex.getValue().setFact(new CacheState());
           vertex.getValue().setNewFact();
         }
+        vertex.getValue().setPropagate(true);
+//        if(node \in PU && node not in UA)
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
         /// CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+out_fact.toString());
         for(Edge<IntWritable, E> edge : vertex.getEdges()) {
@@ -72,13 +74,14 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
 //
 //        /// Fact out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
         Fact out_old_fact = null;
-        if(vertex.getValue().getFact() != null){
+        if(vertex.getValue().isPropagate() && vertex.getValue().getFact() != null){
           out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
         }
         Fact out_new_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
 
         boolean canPropagate = tool.propagate(out_old_fact, out_new_fact);
         if (canPropagate) {
+          vertex.getValue().setPropagate(true);
           vertex.getValue().setFact(fact);
           msg.setVertexID(vertex.getId());
           msg.setExtra(vertex.getValue());

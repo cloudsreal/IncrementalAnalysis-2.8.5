@@ -29,12 +29,12 @@ public class AliasVertexValue extends VertexValue{
   }
 
 
-  public AliasVertexValue(String text, String gsStr, String pegStr){
+  public AliasVertexValue(String text, String gsStr, String pegStr, boolean propagate){
     Scanner sc = new Scanner(text);
     stmts = new AliasStmts(sc);
     graphStore = null;
     fact = null;
-
+    this.propagate = propagate;
     setGraphStore(gsStr);
     setPegraph(pegStr);
   }

@@ -14,17 +14,19 @@ public class CacheVertexValue extends VertexValue {
     fact = null;
   }
 
-  public CacheVertexValue(String text, boolean flag) {
+  public CacheVertexValue(String text, boolean flag, boolean propagate) {
     Scanner sc = new Scanner(text);
     stmts = new CacheIRs(sc, flag);
     fact = null;
+    this.propagate = propagate;
   }
 
-  public CacheVertexValue(String text, boolean flag, String fact_text) {
+  public CacheVertexValue(String text, boolean flag, String fact_text, boolean propagate) {
     Scanner sc = new Scanner(text);
     stmts = new CacheIRs(sc, flag);
     // fact = null;
     fact = new CacheState(fact_text);
+    this.propagate = propagate;
   }
 
   public CacheIRs getCacheIRs(){
@@ -49,6 +51,7 @@ public class CacheVertexValue extends VertexValue {
     else {
       out.writeByte(0);
     }
+    out.writeBoolean(propagate);
   }
 
   public void readFields(DataInput in) throws IOException {
@@ -59,5 +62,6 @@ public class CacheVertexValue extends VertexValue {
       }
       fact.readFields(in);
     }
+    propagate = in.readBoolean();
   }
 }

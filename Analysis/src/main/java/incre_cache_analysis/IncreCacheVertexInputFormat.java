@@ -53,7 +53,7 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
             //     stmt.append(tokens[tokens.length - 1]);
             // }
             // return new CacheVertexValue(stmt.toString());
-
+//            boolean propagate = "1".equals(tokens[1]);
             StringBuilder stmt = new StringBuilder();
             int i = 1;
             for(; i < tokens.length; i++){
@@ -69,7 +69,7 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
 
             StringBuilder fact = new StringBuilder();
             if(tokens[i+1].equals("0")){
-                return new CacheVertexValue(stmt.toString(), false);
+                return new CacheVertexValue(stmt.toString(), false, false);
             }
             else{
                 i= i + 2;
@@ -78,7 +78,7 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
                     fact.append('\t');
                 }
                 /// CommonWrite.method2(fact.toString());
-                return new CacheVertexValue(stmt.toString(), false, fact.toString());
+                return new CacheVertexValue(stmt.toString(), false, fact.toString(), false);
             }
         }
 

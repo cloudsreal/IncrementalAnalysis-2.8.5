@@ -15,6 +15,7 @@ pre_data/PreTool.class
 alias_stmt/ReturnAStmt.class
 reach_data/Triple.class
 analysis/MasterBroadcast.class
+pre_analysis/PreEdgeOutputFormat$1.class
 reach_analysis/ReachVertexInputFormat$ReachVertexReader.class
 alias_analysis/AliasVertexOutputFormat.class
 reach_data/ReachVertexValue.class
@@ -42,12 +43,14 @@ alias_data/Singletons.class
 pre_analysis/PreVertexOutputFormat$1.class
 pre_analysis/PreAnalysis.class
 alias_analysis/AliasEdgeInputFormat$IntNullTextEdgeReader.class
+pre_analysis/PreEdgeOutputFormat$LabelPropagationTextEdgeLineWriter.class
 reach_data/ReachState.class
 analysis/Analysis.class
 alias_analysis/MyWorkerContext.class
 alias_stmt/CallfptrAStmt.class
 data/Tool.class
 pre_data/PreVertexValue.class
+pre_analysis/PreEdgeOutputFormat.class
 alias_stmt/CallAStmt.class
 data/StmtList.class
 reach_data/ReachTool.class

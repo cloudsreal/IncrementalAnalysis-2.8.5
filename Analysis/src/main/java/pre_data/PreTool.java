@@ -21,12 +21,12 @@ public class PreTool implements Tool<PreMsg> {
         } else {
             new_state = (PreState) old_state.getNew();
         }
-        for (PreMsg item : message) {
-            int predID = item.getPredID().get();
-            if(!preVertexValue.hasPC(predID)){
-                new_state.addPred(predID);
-            }
-        }
+//        for (PreMsg item : message) {
+//            int predID = item.getPredID().get();
+//            if(!preVertexValue.hasPC(predID)){
+//                new_state.addPred(predID);
+//            }
+//        }
         return new_state;
     }
 

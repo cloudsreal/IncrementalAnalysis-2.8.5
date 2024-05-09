@@ -29,13 +29,11 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             ReachState fact = (ReachState) vertex.getValue().getFact();
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(vertex.getId()).append("\t");
-            char vertexType = vertex.getValue().getVertexType();
-//            if delete
-            if (vertexType == 'd') {
-                stringBuilder.append("0").append("\t");
-            } else {
-                stringBuilder.append("1").append("\t");
+            String stmt = vertex.getValue().getStmtLine();
+            if(!stmt.isEmpty()){
+                stringBuilder.append(stmt).append("\t");
             }
+            stringBuilder.append(vertex.getValue().getVertexType()).append("\t");
 //            if update
             if(!fact.isFlag()){
                 stringBuilder.append("0").append("\t");

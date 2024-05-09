@@ -44,15 +44,24 @@ public class PreVertexInputFormat extends TextVertexInputFormat<IntWritable, Pre
 
             @Override
             protected PreVertexValue getValue(String[] tokens) {
-                PreVertexValue preVertexValue = new PreVertexValue();
-                if (Integer.parseInt(tokens[1]) == 1) {
-                    preVertexValue.setExist(true);
+                int i = 0;
+                StringBuilder stmt = new StringBuilder();
+                for(; i < tokens.length; i++){
+                    if (i > 0) stmt.append(tokens[i]);
+                    if ("a".equalsIgnoreCase(tokens[i + 1]) || "d".equalsIgnoreCase(tokens[i + 1]) || "c".equalsIgnoreCase(tokens[i + 1]) || "u".equalsIgnoreCase(tokens[i + 1])) {
+                        break;
+                    } else if(i > 0) {
+                        stmt.append("\t");
+                    }
                 }
-                if (Integer.parseInt(tokens[2]) == 1) {
-                    preVertexValue.setFlag(true);
+//                Use stmt, vertexType, updatedType to initialize
+                PreVertexValue preVertexValue = new PreVertexValue(stmt.toString(), tokens[++i]);
+                if (Integer.parseInt(tokens[++i]) == 1) {
+                    preVertexValue.setUpdated(true);
+                    i++;
                 }
-                for(int i = 3; i < tokens.length; i++)
-                {
+//                Initialize PC
+                for(; i < tokens.length; i++) {
                     preVertexValue.addPC(Integer.parseInt(tokens[i]));
                 }
                 return preVertexValue;

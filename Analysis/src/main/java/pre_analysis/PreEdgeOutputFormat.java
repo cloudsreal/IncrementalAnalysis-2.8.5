@@ -18,7 +18,7 @@ public class PreEdgeOutputFormat extends TextEdgeOutputFormat<IntWritable, PreVe
 
         @Override
         protected Text convertEdgeToLine(IntWritable sourceId, PreVertexValue sourceValue, Edge<IntWritable, NullWritable> edge){
-            if(!sourceValue.isExist() || !sourceValue.isFlag()) return null;
+            if(!sourceValue.isExist() || !sourceValue.isUpdated()) return null;
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(edge.getTargetVertexId().get()).append("\t");
             stringBuilder.append(sourceId.get());

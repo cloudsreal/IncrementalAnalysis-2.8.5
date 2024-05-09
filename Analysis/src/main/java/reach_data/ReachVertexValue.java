@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class ReachVertexValue extends VertexValue {
     private char vertexType;
+    private String stmtLine;
 
     public ReachVertexValue() {
         stmts = null;
@@ -21,6 +22,7 @@ public class ReachVertexValue extends VertexValue {
     }
 
     public ReachVertexValue(String type){
+        stmtLine = null;
         stmts = null;
         fact = new ReachState();
         if ("a".equalsIgnoreCase(type)) {           // added node
@@ -34,6 +36,14 @@ public class ReachVertexValue extends VertexValue {
         }
     }
 
+    public void setStmtLine(String stmtLine) {
+        this.stmtLine = stmtLine;
+    }
+
+    public String getStmtLine() {
+        return stmtLine;
+    }
+
     public void setVertexType(char vertexType) {
         this.vertexType = vertexType;
     }
@@ -44,6 +54,7 @@ public class ReachVertexValue extends VertexValue {
 
     @Override
     public void write(DataOutput out) throws IOException {
+        Text.writeString(out, stmtLine);
         out.writeChar(vertexType);
         if (fact != null) {
             out.writeByte(1);
@@ -55,6 +66,7 @@ public class ReachVertexValue extends VertexValue {
 
     @Override
     public void readFields(DataInput in) throws IOException {
+        stmtLine = Text.readString(in);
         vertexType = in.readChar();
         if (in.readByte() == 1) {
             if (fact == null) {

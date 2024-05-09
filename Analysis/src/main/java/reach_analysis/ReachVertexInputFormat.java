@@ -40,7 +40,22 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
 
             @Override
             protected ReachVertexValue getValue(String[] tokens) {
-                return new ReachVertexValue(tokens[tokens.length - 1]);
+                ReachVertexValue vertexValue = new ReachVertexValue(tokens[tokens.length - 1]);
+                int index = tokens.length - 1;
+                if (vertexValue.getVertexType() != 'u'){
+                    index -= 1;
+                }
+                StringBuilder stmt = new StringBuilder();
+                for(int i = 1; i < index; i++)
+                {
+                    stmt.append(tokens[i]);
+                    stmt.append('\t');
+                }
+                if(index >= 1){
+                    stmt.append(tokens[index]);
+                }
+                vertexValue.setStmtLine(stmt.toString());
+                return vertexValue;
             }
 
             @Override

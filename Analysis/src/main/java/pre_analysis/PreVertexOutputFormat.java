@@ -28,30 +28,41 @@ public class PreVertexOutputFormat extends TextVertexOutputFormat<IntWritable, P
         @Override
         protected Text convertVertexToLine(Vertex<IntWritable, PreVertexValue, NullWritable> vertex)
         {
-            StringBuilder stringBuilder = new StringBuilder();
             PreVertexValue preVertexValue = vertex.getValue();
-            if(!preVertexValue.isFlag() || !preVertexValue.isExist()) return null;
+            if(!preVertexValue.isExist()) return null;
+            if(!preVertexValue.isUpdated() && !preVertexValue.isUA()) return null;
+            StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(vertex.getId()).append("\t");
-            stringBuilder.append("PC:\t");
-            HashSet<IntWritable> pcs = ((PreState)vertex.getValue().getFact()).getPCs();
-            if(!pcs.isEmpty()){
-                stringBuilder.append("1\t");
-                for(IntWritable pc : pcs){
-                    stringBuilder.append(pc.get()).append("\t");
-                }
-            } else {
-                stringBuilder.append("0\t");
+            String stmt = vertex.getValue().getStmtLine();
+            if(!stmt.isEmpty()){
+                stringBuilder.append(stmt).append("\t");
             }
-            stringBuilder.append("UA:\t");
-            HashSet<IntWritable> preds = ((PreState)vertex.getValue().getFact()).getPreds();
-            if(!preds.isEmpty()) {
-                stringBuilder.append("1\t");
-                for (IntWritable pred : preds) {
-                    stringBuilder.append(pred.get()).append("\t");
-                }
+//            stringBuilder.append(vertex.getValue().getVertexType()).append('\t');
+            if(preVertexValue.isUA()) {
+                stringBuilder.append("UA");
             } else {
-                stringBuilder.append("0\t");
+                stringBuilder.append("PC");
             }
+//            stringBuilder.append("PC:\t");
+//            HashSet<IntWritable> pcs = ((PreState)vertex.getValue().getFact()).getPCs();
+//            if(!pcs.isEmpty()){
+//                stringBuilder.append("1\t");
+//                for(IntWritable pc : pcs){
+//                    stringBuilder.append(pc.get()).append("\t");
+//                }
+//            } else {
+//                stringBuilder.append("0\t");
+//            }
+//            stringBuilder.append("UA:\t");
+//            HashSet<IntWritable> preds = ((PreState)vertex.getValue().getFact()).getPreds();
+//            if(!preds.isEmpty()) {
+//                stringBuilder.append("1\t");
+//                for (IntWritable pred : preds) {
+//                    stringBuilder.append(pred.get()).append("\t");
+//                }
+//            } else {
+//                stringBuilder.append("0\t");
+//            }
             return new Text(stringBuilder.toString());
         }
     }

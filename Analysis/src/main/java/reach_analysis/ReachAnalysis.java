@@ -24,9 +24,33 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
     @Override
     public void compute(Vertex<IntWritable, ReachVertexValue, IntWritable> vertex, Iterable<ReachMsg> messages) {
         setAnalysisConf();
-        if (getSuperstep() == 0) {
-            ReachState reachState = new ReachState();
+        if (getSuperstep() == 0){
             int vertexId = vertex.getId().get();
+            char vertexType = vertex.getValue().getVertexType();
+            final SetWritable entry = getBroadcast("entry");
+            msg.setPredID(vertexId);
+            if (vertexType == 'd'){
+                sendMessage(vertex.getId(), msg);
+            } else {
+                for (Edge<IntWritable, IntWritable> edge : vertex.getEdges()) {
+                    char edgeType = (char)edge.getValue().get();
+                    if (edgeType != 'd'){
+                        sendMessage(edge.getTargetVertexId(), msg);
+                    }
+                }
+                if(entry.getValues().contains(vertexId)){
+                    sendMessage(vertex.getId(), msg);
+                }
+            }
+        } else if (getSuperstep() == 1) {
+            int vertexId = vertex.getId().get();
+            for (ReachMsg msg : messages) {
+                int predID = msg.getPredID();
+                if(predID != vertexId){
+                    vertex.getValue().addPred(msg.getPredID());
+                }
+            }
+            ReachState reachState = new ReachState();
             char vertexType = vertex.getValue().getVertexType();
             if (vertexType != 'u') {
                 reachState.setFlag(true);
@@ -51,8 +75,7 @@ public class ReachAnalysis extends Analysis<ReachVertexValue, IntWritable, Reach
                 sendMessage(edge.getTargetVertexId(), msg);
             }
             vertex.voteToHalt();
-        }
-        else{
+        } else {
             if (beActive(messages, vertex.getValue())) {
                 int vertexId = vertex.getId().get();
                 Fact oldFact = vertex.getValue().getFact();

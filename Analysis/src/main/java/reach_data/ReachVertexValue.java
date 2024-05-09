@@ -10,10 +10,12 @@ import org.python.antlr.op.In;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.HashSet;
 
 public class ReachVertexValue extends VertexValue {
     private char vertexType;
     private String stmtLine;
+    private HashSet<Integer> preds;
 
     public ReachVertexValue() {
         stmts = null;
@@ -25,6 +27,7 @@ public class ReachVertexValue extends VertexValue {
         stmtLine = null;
         stmts = null;
         fact = new ReachState();
+        preds = new HashSet<>();
         if ("a".equalsIgnoreCase(type)) {           // added node
             vertexType = 'a';
         } else if ("d".equalsIgnoreCase(type)) {    // deleted node
@@ -38,6 +41,14 @@ public class ReachVertexValue extends VertexValue {
 
     public void setStmtLine(String stmtLine) {
         this.stmtLine = stmtLine;
+    }
+
+    public void addPred(int pred) {
+        preds.add(pred);
+    }
+
+    public HashSet<Integer> getPreds() {
+        return preds;
     }
 
     public String getStmtLine() {
@@ -62,6 +73,10 @@ public class ReachVertexValue extends VertexValue {
         } else {
             out.writeByte(0);
         }
+        out.writeInt(preds.size());
+        for (Integer pred : preds) {
+            out.writeInt(pred);
+        }
     }
 
     @Override
@@ -73,6 +88,11 @@ public class ReachVertexValue extends VertexValue {
                 fact = new ReachState();
             }
             fact.readFields(in);
+        }
+        int size = in.readInt();
+        preds = new HashSet<>(size);
+        for (int i = 0; i < size; i++) {
+            preds.add(in.readInt());
         }
     }
 

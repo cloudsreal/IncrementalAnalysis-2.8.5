@@ -33,15 +33,24 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             if(!stmt.isEmpty()){
                 stringBuilder.append(stmt).append("\t");
             }
-            stringBuilder.append(vertex.getValue().getVertexType()).append("\t");
+
+//            stringBuilder.append(vertex.getValue().getVertexType()).append("\t");
 //            if update
-            if(!fact.isFlag()){
-                stringBuilder.append("0").append("\t");
-            } else {
-                stringBuilder.append("1").append("\t");
+//            if(!fact.isFlag()){
+//                stringBuilder.append("0").append("\t");
+//            } else {
+//                stringBuilder.append("1").append("\t");
+//            }
+            HashSet<Integer> preds = vertex.getValue().getPreds();
+            if (!preds.isEmpty()){
+                stringBuilder.append("P:\t");
+                for(int pred : preds){
+                    stringBuilder.append(pred).append("\t");
+                }
             }
 //            PC
             if (!fact.isPCEmpty()){
+                stringBuilder.append("PC:\t");
                 HashSet<Integer> pcs = fact.getPC();
                 for(int pc : pcs){
                     stringBuilder.append(pc).append("\t");

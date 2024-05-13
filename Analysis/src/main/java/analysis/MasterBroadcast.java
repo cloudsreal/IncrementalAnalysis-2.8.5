@@ -50,18 +50,18 @@ public class MasterBroadcast extends MasterCompute
         // MasterCompute body
         if (getSuperstep() == 0)
         {
-            SetWritable entrys = new SetWritable();
-            try {
-                // BufferedReader start = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
-                // BufferedReader start = new BufferedReader(readHDFS("hdfs://emr-header-1.cluster-289320:9000/analysis/start"));
-                BufferedReader start = new BufferedReader(readHDFS(conf_path));
-                String entryPath = start.readLine();
-                start.close();
-                readEntrys(entryPath, entrys);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            broadcast("entry", entrys);
+//            SetWritable entrys = new SetWritable();
+//            try {
+//                // BufferedReader start = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
+//                // BufferedReader start = new BufferedReader(readHDFS("hdfs://emr-header-1.cluster-289320:9000/analysis/start"));
+//                BufferedReader start = new BufferedReader(readHDFS(conf_path));
+//                String entryPath = start.readLine();
+//                start.close();
+//                readEntrys(entryPath, entrys);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            broadcast("entry", entrys);
         }
     }
 

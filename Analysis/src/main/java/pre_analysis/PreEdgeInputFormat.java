@@ -1,4 +1,4 @@
-package alias_analysis;
+package pre_analysis;
 
 import org.apache.giraph.io.EdgeReader;
 import org.apache.giraph.io.formats.TextEdgeInputFormat;
@@ -12,8 +12,7 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-
-public class AliasEdgeInputFormat extends TextEdgeInputFormat<IntWritable, NullWritable>
+public class PreEdgeInputFormat extends TextEdgeInputFormat<IntWritable, NullWritable>
 {
     /** Splitter for endpoints */
     private static final Pattern SEPARATOR = Pattern.compile("\t");
@@ -29,7 +28,7 @@ public class AliasEdgeInputFormat extends TextEdgeInputFormat<IntWritable, NullW
         @Override
         protected IntPair preprocessLine(Text line) {
             String[] tokens = SEPARATOR.split(line.toString());
-            return new IntPair(Integer.parseInt(tokens[0]),Integer.parseInt(tokens[1]));
+            return new IntPair(Integer.parseInt(tokens[1]),Integer.parseInt(tokens[0]));
         }
 
         @Override

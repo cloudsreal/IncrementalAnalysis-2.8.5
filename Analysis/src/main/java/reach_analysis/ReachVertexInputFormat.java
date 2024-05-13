@@ -3,23 +3,25 @@ package reach_analysis;
 import com.google.common.collect.ImmutableList;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.io.formats.TextVertexInputFormat;
+import org.apache.hadoop.io.BooleanWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.python.antlr.op.In;
+import reach_data.ReachEdgeValue;
 import reach_data.ReachVertexValue;
 
 import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, ReachVertexValue, IntWritable> {
+public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, ReachVertexValue, ReachEdgeValue> {
     private static final Pattern SEPARATOR = Pattern.compile("\t");
 
     @Override
-    public TextVertexInputFormat<IntWritable, ReachVertexValue, IntWritable>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
+    public TextVertexInputFormat<IntWritable, ReachVertexValue, ReachEdgeValue>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
     {
         return new ReachVertexReader();
     }
@@ -59,7 +61,7 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
             }
 
             @Override
-            protected Iterable<Edge<IntWritable, IntWritable>> getEdges(String[] tokens) throws IOException
+            protected Iterable<Edge<IntWritable, ReachEdgeValue>> getEdges(String[] tokens) throws IOException
             {
                 return ImmutableList.of();
             }

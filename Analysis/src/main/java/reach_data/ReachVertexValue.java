@@ -1,5 +1,6 @@
 package reach_data;
 
+import data.Fact;
 import data.VertexValue;
 import org.apache.giraph.graph.Vertex;
 import org.apache.hadoop.io.IntWritable;
@@ -12,31 +13,39 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.HashSet;
 
-public class ReachVertexValue extends VertexValue {
+public class ReachVertexValue implements Writable {
     private char vertexType;
     private String stmtLine;
     private HashSet<Integer> preds;
+    protected Fact fact;
 
     public ReachVertexValue() {
-        stmts = null;
-        fact = new ReachState();
         vertexType = ' ';
+        preds = null;
     }
 
-    public ReachVertexValue(String type){
+    public ReachVertexValue(String type) {
         stmtLine = null;
-        stmts = null;
-        fact = new ReachState();
+        // stmts = null;
+        // fact = new ReachState();
         preds = new HashSet<>();
-        if ("a".equalsIgnoreCase(type)) {           // added node
+        if ("a".equalsIgnoreCase(type)) { // added node
             vertexType = 'a';
-        } else if ("d".equalsIgnoreCase(type)) {    // deleted node
+        } else if ("d".equalsIgnoreCase(type)) { // deleted node
             vertexType = 'd';
-        } else if ("c".equalsIgnoreCase(type)) {    // changed node
+        } else if ("c".equalsIgnoreCase(type)) { // changed node
             vertexType = 'c';
         } else {
             vertexType = 'u';
         }
+    }
+
+    public Fact getFact() {
+        return fact;
+    }
+
+    public void setFact(Fact fact) {
+        this.fact = fact;
     }
 
     public void setStmtLine(String stmtLine) {
@@ -59,8 +68,16 @@ public class ReachVertexValue extends VertexValue {
         this.vertexType = vertexType;
     }
 
-    public char getVertexType(){
+    public char getVertexType() {
         return vertexType;
+    }
+
+    public void setPreds(HashSet<Integer> preds) {
+        this.preds = preds;
+    }
+
+    public void clearPreds(){
+        this.preds = null;
     }
 
     @Override

@@ -1,50 +1,61 @@
 package reach_data;
 
-import data.Msg;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Writable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class ReachMsg extends Msg {
+public class ReachMsg implements Writable {
 
-    public Integer predID;
+    public Integer vertexID;
+    public boolean predMsg;
     public boolean msgType;
-    public ReachMsg(){
-        vertexID = new IntWritable();
-        fact = null;
-        predID = null;
+
+    public ReachMsg() {
+        vertexID = null;
+        predMsg = false;
         msgType = false;
     }
 
-    public void setPredID(int predID) {
-        this.predID = predID;
+    public void setVertexID(int vertexID) {
+        this.vertexID = vertexID;
     }
 
     public void setMsgType(boolean msgType) {
         this.msgType = msgType;
     }
 
-    public int getPredID(){
-        return predID;
+    public void setPredMsg(boolean predMsg) {
+        this.predMsg = predMsg;
     }
 
-    public boolean getMsgType() {
+    public boolean isPredMsg(){
+        return predMsg;
+    }
+
+    public int getVertexID() {
+        return vertexID;
+    }
+
+    public Boolean getMsgType() {
         return msgType;
     }
 
     @Override
-    public void write(DataOutput dataOutput) throws IOException {
-        vertexID.write(dataOutput);
-        dataOutput.writeInt(predID);
-        dataOutput.writeBoolean(msgType);
+    public void write(DataOutput out) throws IOException {
+        /// vertexID.write(dataOutput);
+        out.writeInt(vertexID);
+        out.writeBoolean(predMsg);
+        out.writeBoolean(msgType);
     }
 
     @Override
-    public void readFields(DataInput dataInput) throws IOException {
-        vertexID.readFields(dataInput);
-        predID = dataInput.readInt();
-        msgType = dataInput.readBoolean();
+    public void readFields(DataInput in) throws IOException {
+        /// vertexID.readFields(dataInput);
+        vertexID = in.readInt();
+        predMsg = in.readBoolean();
+        msgType = in.readBoolean();
     }
 }

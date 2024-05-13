@@ -11,11 +11,15 @@ import java.util.*;
 
 public class ReachState extends Fact {
     public boolean flag; // UN nodes have true flag
-    public HashSet<Integer> PC; // set of PC nodes
+    public boolean pc_flag; // UN nodes have true flag
+    public boolean pu_flag;
+    // public HashSet<Integer> PC; // set of PC nodes
 
     public ReachState() {
         this.flag = false;
-        this.PC = new HashSet<>();
+        /// this.PC = new HashSet<>();
+        this.pc_flag = false;
+        this.pu_flag = false;
     }
 
     public void setFlag(boolean flag) {
@@ -26,52 +30,64 @@ public class ReachState extends Fact {
         return flag;
     }
 
-    public HashSet<Integer> getPC(){
-        return this.PC;
-    }
-    public void merge(Fact fact){
+    public boolean isPC(){
+        return pc_flag;
     }
 
-    public boolean isPCEmpty(){
-        return PC.isEmpty();
+    public boolean isPU(){
+        return pu_flag;
     }
 
-    public void addPC(Integer vertex){
-        this.PC.add(vertex);
+    public void setPU(boolean pu_flag) {
+        this.pu_flag = pu_flag;
     }
 
-    public Fact getNew(){
+    public void setPC(boolean pc_flag) {
+        this.pc_flag = pc_flag;
+    }
+
+    // public HashSet<Integer> getPC() {
+    // return this.PC;
+    // }
+
+    // public void merge(Fact fact) {
+    // }
+
+    public void merge(Fact fact) {
+    }
+
+    // public boolean isPCEmpty() {
+    // return PC.isEmpty();
+    // }
+
+    // public void addPC(Integer vertex) {
+    // this.PC.add(vertex);
+    // }
+
+    public Fact getNew() {
         ReachState state = new ReachState();
         state.setFlag(this.flag);
-        state.PC = new HashSet<>(this.PC);
+        state.setPU(pu_flag);
+        state.setPC(pc_flag);
         return state;
     }
 
-    public boolean consistent(Fact oldfact){
+    public boolean consistent(Fact oldfact) {
         return false;
     }
 
-    @Override
-    public void write(DataOutput out) throws IOException {
+     @Override
+     public void write(DataOutput out) throws IOException {
         out.writeBoolean(flag);
-        if (flag) {
-            out.writeInt(PC.size());
-            for (Integer vertex : PC) {
-                out.writeInt(vertex);
-            }
-        }
-    }
+        out.writeBoolean(pc_flag);
+        out.writeBoolean(pu_flag);
+     }
 
-    @Override
-    public void readFields(DataInput in) throws IOException {
+     @Override
+     public void readFields(DataInput in) throws IOException {
         flag = in.readBoolean();
-        if (flag) {
-            int pcSize = in.readInt();
-            PC.clear();
-            for (int i = 0; i < pcSize; i++) {
-                PC.add(in.readInt());
-            }
-        }
-    }
+        pc_flag = in.readBoolean();
+        pu_flag = in.readBoolean();
+     }
 
 }

@@ -1,49 +1,62 @@
 package reach_data;
 
-import cache_data.CacheState;
 import data.*;
+import org.apache.giraph.graph.Vertex;
+import org.apache.hadoop.io.BooleanWritable;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 
 import java.util.Set;
 
-public class ReachTool implements Tool<ReachMsg> {
+public class ReachTool {
 
-    public ReachTool(){}
+  public ReachTool() {
+  }
 
-    public Fact combine(Iterable<ReachMsg> message, VertexValue vertexValue){
-        ReachState old_state = (ReachState) vertexValue.getFact();
-        ReachState new_state;
-        if(old_state == null) {
-            new_state = new ReachState();
-        } else {
-            new_state = (ReachState) old_state.getNew();
-        }
-//      each vertex is in UN if it receives msg.
+  public Fact combine(Iterable<ReachMsg> message, Vertex<IntWritable, ReachVertexValue, ReachEdgeValue> vertex) {
+    ReachVertexValue vertexValue = vertex.getValue();
+    ReachState old_state = (ReachState) vertexValue.getFact();
+    ReachState new_state;
+    if (old_state == null) {
+      new_state = new ReachState();
+    } else {
+      new_state = (ReachState) old_state.getNew();
+    }
+    // each vertex is in UN if it receives msg.
+    for (ReachMsg item : message) {
+      if(!item.isPredMsg()){ // msg from pred
         new_state.setFlag(true);
-        for (ReachMsg item : message) {
-            boolean messageType = item.getMsgType();
-            if(messageType) {
-                new_state.addPC(item.getPredID());
-            }
+        if(item.getMsgType()){ // msg from PC
+          new_state.setPC(true);
+          break;
         }
-        return new_state;
+      } else { // msg from succ
+        vertex.setEdgeValue(new IntWritable(item.getVertexID()), new ReachEdgeValue(true, true));
+        new_state.setPU(true);
+      }
     }
+    if(new_state.isFlag()){
+      new_state.setPU(false);
+    }
+    return new_state;
+  }
 
-    public Fact combine(Set<Fact> predFacts){
-        return null;
+  public Fact combine(Set<Fact> predFacts) {
+    return null;
+  }
+
+  public Fact transfer(StmtList stmts, Fact incomingFact) {
+    return null;
+  }
+
+  public boolean propagate(Fact oldFact, Fact newFact) {
+    ReachState oldState = (ReachState) oldFact;
+    ReachState newState = (ReachState) newFact;
+    if (oldFact == null) {
+      return true;
+    } else {
+        return (!oldState.isFlag() && newState.isFlag()) || (!oldState.isPC() && newState.isPC());
     }
-    public Fact transfer(StmtList stmts, Fact incomingFact){
-        return null;
-    }
-    public boolean propagate(Fact oldFact, Fact newFact){
-        ReachState oldState = (ReachState) oldFact;
-        ReachState newState = (ReachState) newFact;
-        if(oldFact == null) {
-            return true;
-        } else {
-//            (oldState is PU && newState is PA/PC) || (oldState is PA && newState is PC)
-            return oldState.flag != newState.flag || (oldState.isPCEmpty() && !newState.isPCEmpty());
-        }
-    }
+  }
 }

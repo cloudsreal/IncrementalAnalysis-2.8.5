@@ -8,24 +8,24 @@ import org.python.antlr.op.In;
 public class Triple{
     private final int sourceId;
     private final int targetId;
-    private final char edgeType;
+    private Boolean edgeType;
 
     public Triple(int sourceId, int targetId, String edgeType) {
         this.sourceId = sourceId;
         this.targetId = targetId;
         if ("a".equalsIgnoreCase(edgeType)) {           // added edge
-            this.edgeType = 'a';
+            this.edgeType = true;
         } else if ("d".equalsIgnoreCase(edgeType)) {    // deleted edge
-            this.edgeType = 'd';
+            this.edgeType = false;
         } else {
-            this.edgeType = 'u';
+            this.edgeType = null;
         }
     }
 
     public Triple(int sourceId, int targetId) {
         this.sourceId = sourceId;
         this.targetId = targetId;
-        this.edgeType = 'u';
+        this.edgeType = null;
     }
 
     public int getSourceId() {
@@ -36,7 +36,7 @@ public class Triple{
         return targetId;
     }
 
-    public char getEdgeType() {
+    public Boolean getEdgeType() {
         return edgeType;
     }
 }

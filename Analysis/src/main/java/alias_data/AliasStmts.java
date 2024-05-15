@@ -41,40 +41,40 @@ public class AliasStmts extends StmtList{
     AStmt astmt = (AStmt)stmts[0];
     switch (astmt.getStmt()) {
       case Assign:
-        strBuilder.append("1\t");
+        strBuilder.append("assign\t");
         break;
       case Load:
-        strBuilder.append("2\t");
+        strBuilder.append("load\t");
         break;
       case Store:
-        strBuilder.append("3\t");
+        strBuilder.append("store\t");
         break;
       case Alloca:
-        strBuilder.append("4\t");
+        strBuilder.append("alloca\t");
         break;
       case Phi:
-        strBuilder.append("5\t");
+        strBuilder.append("phi\t");
         break;
       case Call:
-        strBuilder.append("6\t");
+        strBuilder.append("call\t");
         break;
       case Return:
-        strBuilder.append("7\t");
+        strBuilder.append("return\t");
         break;
       case Ret:
-        strBuilder.append("8\t");
+        strBuilder.append("ret\t");
         break;
       case Skip:
-        strBuilder.append("9\t");
+        strBuilder.append("block\t");
         break;
       case Callfptr:
-        strBuilder.append("10\t");
+        strBuilder.append("Callfptr\t");
         break;
       case Calleefptr:
-        strBuilder.append("11\t");
+        strBuilder.append("calleefptr\t");
         break;
       case Empty:
-        strBuilder.append("12\t");
+        /// strBuilder.append("12\t");
         break;
       default:
         System.out.println("write wrong stmt type");

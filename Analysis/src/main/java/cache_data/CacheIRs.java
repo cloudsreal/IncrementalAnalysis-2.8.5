@@ -74,7 +74,7 @@ public class CacheIRs extends StmtList{
     StringBuilder stmtsStr = new StringBuilder();
     for (int k = 0; k < size; k++){
       IRStmt irstmt = (IRStmt)stmts[k];
-      stmtsStr.append(irstmt.getStmt() + "\t");
+      stmtsStr.append("0x" + Integer.toHexString(irstmt.getStmt()) + "\t");
     }
 
     return stmtsStr.toString();

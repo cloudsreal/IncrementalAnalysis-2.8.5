@@ -32,7 +32,7 @@ public class ReachEdgeInputFormat extends TextEdgeInputFormat<IntWritable, Reach
             int sourceId = Integer.parseInt(tokens[0]);
             int targetId = Integer.parseInt(tokens[1]);
             if (tokens.length > 2) {
-                return new Triple(sourceId, targetId, tokens[tokens.length-1]);
+                return new Triple(sourceId, targetId, tokens[tokens.length-1].charAt(0));
             }
             return new Triple(sourceId, targetId);
         }
@@ -49,10 +49,9 @@ public class ReachEdgeInputFormat extends TextEdgeInputFormat<IntWritable, Reach
 
         @Override
         protected ReachEdgeValue getValue(Triple endpoints) throws IOException {
-            Boolean type = endpoints.getEdgeType();
-            if(type == null) { // old edge
+            if(!endpoints.isNew()) { // old edge
                 return new ReachEdgeValue(false, false);
-            } else if(type){ // added edge
+            } else if(endpoints.isAdded()){ // added edge
                 return new ReachEdgeValue(true, true);
             } else { // deleted edge
                 return new ReachEdgeValue(true, false);

@@ -2,14 +2,12 @@ package reach_analysis;
 
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.io.formats.TextEdgeOutputFormat;
-import org.apache.hadoop.io.BooleanWritable;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.NullWritable;
-import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
-import reach_data.ReachEdgeValue;
-import reach_data.ReachState;
 import reach_data.ReachVertexValue;
+import reach_data.ReachEdgeValue;
+
+import java.io.IOException;
 
 public class ReachEdgeOutputFormat extends TextEdgeOutputFormat<IntWritable, ReachVertexValue, ReachEdgeValue> {
     @Override
@@ -21,12 +19,20 @@ public class ReachEdgeOutputFormat extends TextEdgeOutputFormat<IntWritable, Rea
 
         @Override
         protected Text convertEdgeToLine(IntWritable sourceId, ReachVertexValue sourceValue, Edge<IntWritable, ReachEdgeValue> edge){
-            ReachState fact = (ReachState) sourceValue.getFact();
-            StringBuilder stringBuilder = new StringBuilder();
-            if((fact.isPU() && edge.getValue().isFlag()) || (fact.isFlag() && sourceValue.getVertexType() != 'd')) {
-                stringBuilder.append(sourceId.get()).append("\t").append(edge.getTargetVertexId().get()).append("\t");
+            // if(!sourceValue.isSub()) return null;
+            // StringBuilder stringBuilder = new StringBuilder();
+            // stringBuilder.append(edge.getTargetVertexId().get()).append("\t");
+            // stringBuilder.append(sourceId.get());
+            // return new Text(stringBuilder.toString());
+
+            /// if(!sourceValue.isSub()) return null;
+            if((sourceValue.isPC() || sourceValue.isPA()) && edge.getValue().isIn()){
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(edge.getTargetVertexId().get()).append("\t");
+                stringBuilder.append(sourceId.get());
+                return new Text(stringBuilder.toString());
             }
-            return new Text(stringBuilder.toString());
+            return null;
         }
     }
 }

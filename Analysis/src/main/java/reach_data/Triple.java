@@ -8,24 +8,38 @@ import org.python.antlr.op.In;
 public class Triple{
     private final int sourceId;
     private final int targetId;
-    private Boolean edgeType;
+    private boolean isNew;
+    private boolean isAdded;
 
-    public Triple(int sourceId, int targetId, String edgeType) {
+    public Triple(int sourceId, int targetId, char edgeType) {
         this.sourceId = sourceId;
         this.targetId = targetId;
-        if ("a".equalsIgnoreCase(edgeType)) {           // added edge
-            this.edgeType = true;
-        } else if ("d".equalsIgnoreCase(edgeType)) {    // deleted edge
-            this.edgeType = false;
+//        if ("a".equalsIgnoreCase(edgeType)) {           // added edge
+//            this.isNew = true;
+//            this.isAdded = true;
+//        } else if ("d".equalsIgnoreCase(edgeType)) {    // deleted edge
+//            this.isNew = true;
+//            this.isAdded = false;
+//        } else {
+//            this.isNew = false;
+//            this.isAdded = false;
+//        }
+        if(edgeType == 'A'){
+            this.isNew = true;
+            this.isAdded = true;
+        } else if(edgeType == 'D'){
+            this.isNew = true;
+            this.isAdded = false;
         } else {
-            this.edgeType = null;
+            this.isNew = false;
+            this.isAdded = false;
         }
     }
 
     public Triple(int sourceId, int targetId) {
         this.sourceId = sourceId;
         this.targetId = targetId;
-        this.edgeType = null;
+        this.isNew = false;
     }
 
     public int getSourceId() {
@@ -36,7 +50,14 @@ public class Triple{
         return targetId;
     }
 
-    public Boolean getEdgeType() {
-        return edgeType;
+//    public Boolean getEdgeType() {
+//        return edgeType;
+//    }
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public boolean isAdded() {
+        return isAdded;
     }
 }

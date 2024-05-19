@@ -7,9 +7,13 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class ReachEdgeValue implements Writable {
+    // flag=true, type=true: A
+    // flag=true, type=false: D
+    // flag=false, type=false: U
+    // flag=false, type=true: I (incoming)
 
-    boolean flag;
-    boolean type;
+    boolean flag = false; // false for unchange, true for changed
+    boolean type = false; // true for added, false for deleted
 
     public ReachEdgeValue(){
         flag = false;
@@ -21,12 +25,26 @@ public class ReachEdgeValue implements Writable {
         this.type = type;
     }
 
+    public boolean isOld(){
+        return !flag && !type;
+    }
+
     public boolean isFlag(){
-        return flag;
+        return flag; // added or deleted edge
+    }
+
+    public boolean isIn(){ // incoming edge
+        return !flag && type;
     }
 
     public boolean isAdded(){
-        return type;
+        // return type;
+        return flag && type;
+    }
+
+    public boolean isDeleted(){
+        // return type;
+        return flag && !type;
     }
 
     @Override

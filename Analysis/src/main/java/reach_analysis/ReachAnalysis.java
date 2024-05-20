@@ -1,6 +1,6 @@
 package reach_analysis;
 
-import data.CommonWrite;
+/// import data.CommonWrite;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.edge.EdgeFactory;
 import org.apache.giraph.edge.EdgeStoreFactory;

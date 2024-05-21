@@ -45,13 +45,13 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
         protected ReachVertexValue getValue(String[] tokens) {
             ReachVertexValue vertexValue = new ReachVertexValue(tokens[tokens.length - 1].charAt(0));
 
-            if(vertexValue.isPA() && !vertexValue.isPC()){
-                CommonWrite.method2(tokens[0] + " A");
-            } else if(vertexValue.isPA() && vertexValue.isPC()){
-                CommonWrite.method2(tokens[0] + " C");
-            } else if(!vertexValue.isPA() && vertexValue.isPC()){
-                CommonWrite.method2(tokens[0] + " D");
-            }
+//            if(vertexValue.isPA() && !vertexValue.isPC()){
+//                CommonWrite.method2(tokens[0] + " A");
+//            } else if(vertexValue.isPA() && vertexValue.isPC()){
+//                CommonWrite.method2(tokens[0] + " C");
+//            } else if(!vertexValue.isPA() && vertexValue.isPC()){
+//                CommonWrite.method2(tokens[0] + " D");
+//            }
 
             int index = tokens.length - 1;
             if (vertexValue.isPA() || vertexValue.isPC()){

@@ -142,11 +142,13 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
 
                 // notify its PU for just once
                 if(vertex.getValue().isPU()){
+                    vertex.getValue().setEntry(true);  // fact from deleted edge to PU, PU can be entry
                     msg.setPredMsg(true);
                     for (Edge<IntWritable, ReachEdgeValue> edge : vertex.getEdges()) {
                         ReachEdgeValue edgeType = edge.getValue();
                         if(edgeType.isIn()){
 //                            CommonWrite.method2(getSuperstep() + ": " + vertex.getId().get() + " " + edge.getTargetVertexId().toString() + " I");
+                            vertex.getValue().setEntry(false);
                             sendMessage(edge.getTargetVertexId(), msg);
                         }
                     }
@@ -154,7 +156,6 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
 
                 vertex.getValue().setPA(pa_flag);
                 vertex.getValue().setPC(pc_flag);
-                vertex.getValue().setEntry(false);
 
                 msg.setPredMsg(false);
                 msg.setMsgType(pc_flag);

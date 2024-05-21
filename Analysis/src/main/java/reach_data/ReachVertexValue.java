@@ -17,7 +17,7 @@ public class ReachVertexValue implements Writable {
     private boolean entry_flag = false;
     private boolean pa_flag = false;
     private boolean pc_flag = false;
-    private String stmtLine = null;
+    /// private String stmtLine = null;
 
     public ReachVertexValue() {
 
@@ -57,13 +57,13 @@ public class ReachVertexValue implements Writable {
         this.pc_flag = pc_flag;
     }
 
-    public void setStmtLine(String stmtLine) {
-        this.stmtLine = stmtLine;
-    }
+    // public void setStmtLine(String stmtLine) {
+    //     this.stmtLine = stmtLine;
+    // }
 
-    public String getStmtLine() {
-        return stmtLine;
-    }
+    // public String getStmtLine() {
+    //     return stmtLine;
+    // }
 
     public boolean isPA(){
         return pa_flag;
@@ -71,6 +71,10 @@ public class ReachVertexValue implements Writable {
 
     public boolean isPC(){
         return pc_flag;
+    }
+
+    public boolean isDel(){
+        return !pa_flag && pc_flag;
     }
 
     public boolean isPU(){
@@ -86,13 +90,13 @@ public class ReachVertexValue implements Writable {
         out.writeBoolean(pa_flag);
         out.writeBoolean(pc_flag);
         out.writeBoolean(entry_flag);
-        if(stmtLine != null){
-            out.writeBoolean(true);
-            Text.writeString(out, stmtLine);
-        }
-        else{
-            out.writeBoolean(false);
-        }
+        // if(stmtLine != null){
+        //     out.writeBoolean(true);
+        //     Text.writeString(out, stmtLine);
+        // }
+        // else{
+        //     out.writeBoolean(false);
+        // }
     }
 
     @Override
@@ -100,12 +104,12 @@ public class ReachVertexValue implements Writable {
         pa_flag = in.readBoolean();
         pc_flag = in.readBoolean();
         entry_flag = in.readBoolean();
-        if(in.readBoolean()){
-            stmtLine = Text.readString(in);
-        }
-        else{
-            stmtLine = null;
-        }
+        // if(in.readBoolean()){
+        //     stmtLine = Text.readString(in);
+        // }
+        // else{
+        //     stmtLine = null;
+        // }
     }
 
 }

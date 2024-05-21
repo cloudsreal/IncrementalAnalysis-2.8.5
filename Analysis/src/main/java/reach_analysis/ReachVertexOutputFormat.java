@@ -25,10 +25,14 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             if(!value.isEntry() && value.isPU()) return null; // not in sub-CFG
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(vertex.getId()).append("\t");
-            String stmt = vertex.getValue().getStmtLine();
-            if(!stmt.isEmpty()){
-                stringBuilder.append(stmt).append("\t");
-            }
+            /// String stmt = vertex.getValue().getStmtLine();
+            /// if(stmt != null){
+            ///     stringBuilder.append("1\t").append(stmt).append("\t");
+            /// }
+            /// else{
+            ///     stringBuilder.append("0\t");
+            /// }
+
 //            if(value.isPA() || value.isPC()){                   // UN
 //                stringBuilder.append("1").append("\t");
 //            } else {

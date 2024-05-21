@@ -1,6 +1,6 @@
 package reach_analysis;
 
-import data.CommonWrite;
+/// import data.CommonWrite;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.edge.EdgeFactory;
 import org.apache.giraph.edge.EdgeStoreFactory;
@@ -95,13 +95,13 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
             }
         } else if (getSuperstep() == 1) {
             ReachVertexValue vertexValue = vertex.getValue();
-            if(vertexValue.isPA() || vertexValue.isPC()) vertexValue.setEntry(true); // every PA/PC can be entry
+            boolean entry_flag = false;
+            if(vertexValue.isPA() || vertexValue.isPC()) entry_flag = true; // every PA/PC can be entry
             for (Edge<IntWritable, ReachEdgeValue> edge : vertex.getEdges()) {
                 ReachEdgeValue edgeType = edge.getValue();
                 if (edgeType.isIn()){
                     if(vertexValue.isPA() || vertexValue.isPC()){
-//                        CommonWrite.method2("1: " + vertex.getId().get() + " " + edge.getTargetVertexId().toString() + " I");
-                        vertexValue.setEntry(false); // if PA/PC has incoming edge, it cannot be entry
+                        entry_flag = false; // if PA/PC has incoming edge, it cannot be entry
                         msg.setPredMsg(true);
                         sendMessage(edge.getTargetVertexId(), msg); // PA/PC will send PredMsg to its pred
                     }
@@ -111,15 +111,11 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
                     msg.setPredMsg(false);
                     if(vertexValue.isPA() && !vertexValue.isPC()){
                         // dataflow fact from added node
-//                        CommonWrite.method2("1: " + vertex.getId().get() + " " + edge.getTargetVertexId().toString() + " A");
                         msg.setMsgType(false);
                     } else if (vertexValue.isPC()) {
                         // dataflow fact from deleted edge or changed node
-//                        CommonWrite.method2("1: " + vertex.getId().get() + " " + edge.getTargetVertexId().toString() + " C");
                         msg.setMsgType(true);
                     } else {
-                        // msg.setMsgType(!edgeType.isAdded());
-//                        CommonWrite.method2("1: " + vertex.getId().get() + " " + edge.getTargetVertexId().toString() + " U");
                         msg.setMsgType(!edgeType.isAdded());
                     }
                     sendMessage(edge.getTargetVertexId(), msg);
@@ -130,6 +126,7 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
                     }
                 }
             }
+            vertex.getValue().setEntry(entry_flag);
             vertex.voteToHalt();
         } else {
             /// ReachVertexValue vertexValue = vertex.getValue();
@@ -140,23 +137,24 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
             boolean canPropagate = tool.propagate(vertex.getValue(), pa_flag, pc_flag);
             if (canPropagate) {
 
+                boolean entry_flag = false;
+
                 // notify its PU for just once
                 if(vertex.getValue().isPU()){
-                    vertex.getValue().setEntry(true);  // fact from deleted edge to PU, PU can be entry
+                    entry_flag = true;
                     msg.setPredMsg(true);
                     for (Edge<IntWritable, ReachEdgeValue> edge : vertex.getEdges()) {
                         ReachEdgeValue edgeType = edge.getValue();
                         if(edgeType.isIn()){
-//                            CommonWrite.method2(getSuperstep() + ": " + vertex.getId().get() + " " + edge.getTargetVertexId().toString() + " I");
-                            vertex.getValue().setEntry(false);
                             sendMessage(edge.getTargetVertexId(), msg);
+                            entry_flag = false;
                         }
                     }
                 }
 
                 vertex.getValue().setPA(pa_flag);
                 vertex.getValue().setPC(pc_flag);
-
+                vertex.getValue().setEntry(entry_flag);
                 msg.setPredMsg(false);
                 msg.setMsgType(pc_flag);
 

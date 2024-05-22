@@ -13,7 +13,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class AliasVertexValue extends VertexValue{
-  private MapWritable graphStore; // graphStore: MapWritable<IntWritable, NodeTuple>
+  private MapWritable graphStore = null; // graphStore: MapWritable<IntWritable, NodeTuple>
 
   public AliasVertexValue(){
     stmts = new AliasStmts();
@@ -29,14 +29,25 @@ public class AliasVertexValue extends VertexValue{
   }
 
 
-  public AliasVertexValue(String text, String gsStr, String pegStr, boolean propagate){
+  public AliasVertexValue(String text, String gsStr, String pegStr, boolean entry){
     Scanner sc = new Scanner(text);
     stmts = new AliasStmts(sc);
     graphStore = null;
     fact = null;
-    this.propagate = propagate;
+    /// this.propagate = propagate;
     setGraphStore(gsStr);
     setPegraph(pegStr);
+    this.entry = entry;
+  }
+
+  public AliasVertexValue(String text, String gsStr, boolean entry){
+    Scanner sc = new Scanner(text);
+    stmts = new AliasStmts(sc);
+    graphStore = null;
+    fact = null;
+    /// this.propagate = propagate;
+    setGraphStore(gsStr);
+    this.entry = entry;
   }
 
   public AStmt getStmt() {
@@ -82,7 +93,7 @@ public class AliasVertexValue extends VertexValue{
           i = i + 2 + nodeTuple.getPegraph().getSize();
         }
         else{
-          i = i+1;
+          i = i + 1;
         }
         /// CommonWrite.method2("pre-id:" + String.valueOf(pre_id) + "\tPEG-size:" +  String.valueOf(nodeTuple.getPegraph().getGraph().size()));
         this.graphStore.put(new IntWritable(pre_id), nodeTuple);
@@ -172,6 +183,9 @@ public class AliasVertexValue extends VertexValue{
     else {
       dataOutput.writeByte(0);
     }
+
+    dataOutput.writeBoolean(propagate);
+    dataOutput.writeBoolean(entry);
   }
 
   @Override
@@ -189,6 +203,9 @@ public class AliasVertexValue extends VertexValue{
       }
       fact.readFields(dataInput);
     }
+
+    propagate = dataInput.readBoolean();
+    entry = dataInput.readBoolean();
   }
 
 }

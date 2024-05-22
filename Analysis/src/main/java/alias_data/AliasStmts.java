@@ -46,7 +46,7 @@ public class AliasStmts extends StmtList{
         break;
       case 5:
         astmt = new PhiAStmt();
-              break;
+        break;
       case 6:
         astmt = new CallAStmt();
         break;

@@ -9,18 +9,31 @@ import java.io.IOException;
 public class VertexValue implements Writable {
     protected StmtList stmts;
     protected Fact fact;
-    protected Tool tool;
     protected boolean propagate;
+    protected boolean entry;
+    protected Tool tool; /// @szw : just for testing
 
     public VertexValue() {
         stmts = null;
         fact = null;
-        tool = null;
         propagate = false;
+        entry = false;
+        tool = null;
+    }
+    
+    public void setFact(Fact fact) {
+        this.fact = fact;
+    }
+    public void setNewFact() {
+        // wait for implementation
     }
 
     public Fact getFact() {
         return fact;
+    }
+
+    public void setTool(Tool tool) {
+        this.tool = tool;
     }
 
     public Tool getTool() {
@@ -35,16 +48,8 @@ public class VertexValue implements Writable {
         this.propagate = propagate;
     }
 
-    public void setFact(Fact fact) {
-        this.fact = fact;
-    }
-
-    public void setTool(Tool tool) {
-        this.tool = tool;
-    }
-
-    public void setNewFact() {
-        // wait for implementation
+    public boolean isEntry() {
+        return entry;
     }
 
     public StmtList getStmtList() {

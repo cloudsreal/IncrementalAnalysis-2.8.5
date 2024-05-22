@@ -1,6 +1,6 @@
 package alias_data;
 
-import alias_analysis.MyWorkerContext;
+//import alias_analysis.MyWorkerContext;
 import alias_stmt.*;
 import data.Fact;
 import data.StmtList;
@@ -17,10 +17,10 @@ public class AliasTool implements Tool<AliasMsg>{
   public static Grammar grammar;
   public static Singletons singletons;
 
-  public AliasTool(MyWorkerContext context){
-    grammar = context.grammar;
-    singletons = context.singletons;
-  }
+//   public AliasTool(MyWorkerContext context){
+//     grammar = context.grammar;
+//     singletons = context.singletons;
+//   }
 
   public AliasTool(IncreMyWorkerContext context){
     grammar = context.grammar;

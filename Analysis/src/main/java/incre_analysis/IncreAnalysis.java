@@ -40,8 +40,11 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     setAnalysisConf();
 
     if (getSuperstep() == 0) {
-      entry = getBroadcast("entry");
-      if(entry.getValues().contains(vertex.getId().get())) {
+      ///entry = getBroadcast("entry");
+      /// if(entry.getValues().contains(vertex.getId().get())) {
+      CommonWrite.method2("\nstep0, Id:\t"+vertex.getId().toString());
+      if(vertex.getValue().isEntry()) {
+        CommonWrite.method2("\nId:\t"+vertex.getId().toString() + " is entry");
         Fact in_fact = vertex.getValue().getFact();
         if(in_fact == null){
           /// vertex.getValue().setFact(new CacheState());
@@ -50,7 +53,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
         vertex.getValue().setPropagate(true);
 //        if(node \in PU && node not in UA)
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
-        /// CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+out_fact.toString());
+        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+out_fact.toString());
         for(Edge<IntWritable, E> edge : vertex.getEdges()) {
           msg.setVertexID(vertex.getId());
           msg.setExtra(vertex.getValue());

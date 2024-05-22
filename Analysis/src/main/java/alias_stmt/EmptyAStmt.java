@@ -25,6 +25,11 @@ public class EmptyAStmt extends AStmt{
 		return "";
 	}
 
+    @Override
+	public String to_string(){
+		return "";
+	}
+
 
     @Override
     public void write(DataOutput dataOutput) throws IOException {

@@ -121,14 +121,36 @@ public class CallfptrAStmt extends AStmt {
     @Override
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
+        // strBuilder.append(dst).append("\t");
+		// strBuilder.append(auxiliary).append("\t");
+        // strBuilder.append(length).append("\t");
+        // strBuilder.append(ret).append("\t");
+		// for (int i = 0; i < length; i++) {
+		// 	strBuilder.append(args[i]).append("\t");
+		// }
+
+        /// this.dst = sc.nextInt();
         strBuilder.append(dst).append("\t");
-		strBuilder.append(auxiliary).append("\t");
+        strBuilder.append(auxiliary).append("\t");
+        strBuilder.append("r_" + ret).append("\t");
+        for (int i = 0; i < length; i++) {
+			strBuilder.append("a_" + args[i]).append("\t");
+		}
+		return strBuilder.toString();
+	}
+
+
+    @Override
+	public String to_string(){
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(dst).append("\t");
+        strBuilder.append(auxiliary).append("\t");
         strBuilder.append(length).append("\t");
         strBuilder.append(ret).append("\t");
 		for (int i = 0; i < length; i++) {
 			strBuilder.append(args[i]).append("\t");
 		}
-		return strBuilder.toString();
+		return strBuilder.toString();	
 	}
 
     @Override

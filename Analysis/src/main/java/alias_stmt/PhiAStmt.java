@@ -76,8 +76,19 @@ public class PhiAStmt extends AStmt{
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
         strBuilder.append(dst).append("\t");
-        strBuilder.append(length).append("\t");
+        /// strBuilder.append(length).append("\t");
 		for (int i = 0; i < length; i++) {
+			strBuilder.append(src[i]).append("\t");
+		}
+		return strBuilder.toString();
+	}
+
+    @Override
+	public String to_string(){
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append(dst).append("\t");
+        strBuilder.append(length).append("\t");
+        for (int i = 0; i < length; i++) {
 			strBuilder.append(src[i]).append("\t");
 		}
 		return strBuilder.toString();

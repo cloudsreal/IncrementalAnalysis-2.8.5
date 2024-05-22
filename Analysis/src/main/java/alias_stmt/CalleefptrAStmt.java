@@ -41,6 +41,14 @@ public class CalleefptrAStmt extends AStmt {
     @Override
 	public String toString() {
 		StringBuilder strBuilder = new StringBuilder();
+        // this.dst = sc.nextInt();
+		strBuilder.append(dst).append("\t");
+		return strBuilder.toString();
+	}
+
+    @Override
+	public String to_string(){
+        StringBuilder strBuilder = new StringBuilder();
 		strBuilder.append(dst).append("\t");
 		return strBuilder.toString();
 	}

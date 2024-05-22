@@ -51,14 +51,15 @@ public class AliasVertexValue extends VertexValue{
   public String gstoretoString() {
     StringBuilder strBuilder = new StringBuilder();
     if(graphStore != null){
-      strBuilder.append("GS1\t").append(graphStore.size()).append("\t");
+      strBuilder.append("GS:1\t").append(graphStore.size()).append("\t");
       for (Map.Entry<Writable, Writable> item: graphStore.entrySet()){
-        strBuilder.append("k").append(item.getKey()).append("-");
+        // strBuilder.append("k").append(item.getKey()).append("-");
+        strBuilder.append(item.getKey()).append("\t");
         strBuilder.append(((NodeTuple)item.getValue()).nodetupleToString());
       }
     }
     else{
-      strBuilder.append("GS0\t");
+      strBuilder.append("GS:0\t");
     }
     /// Wait for implementation
     return strBuilder.toString();
@@ -69,11 +70,11 @@ public class AliasVertexValue extends VertexValue{
     StringBuilder strBuilder = new StringBuilder();
     /// Wait for implementation
     if(fact != null){
-      strBuilder.append("1\t");
+      strBuilder.append("F:1\t");
       strBuilder.append(((Pegraph)fact).toString()).append("\t");
     }
     else{
-      strBuilder.append("0");
+      strBuilder.append("F:0");
     }
     return strBuilder.toString();
   }

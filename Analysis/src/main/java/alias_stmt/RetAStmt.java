@@ -25,6 +25,11 @@ public class RetAStmt extends AStmt
 	public String toString() {
 		return "";
 	}
+	
+	@Override
+	public String to_string(){
+		return "";
+	}
 
 	@Override
 	public void write(DataOutput dataOutput) throws IOException {

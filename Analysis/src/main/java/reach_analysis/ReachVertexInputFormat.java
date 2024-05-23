@@ -2,6 +2,7 @@ package reach_analysis;
 
 import com.google.common.collect.ImmutableList;
 /// import data.CommonWrite;
+import data.CommonWrite;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.io.formats.TextVertexInputFormat;
 import org.apache.hadoop.io.BooleanWritable;

@@ -5,10 +5,9 @@ mkdir ./new_jar
 chmod +x ./new_jar
 
 cp -r incre_analysis data incre_cache_analysis cache_data ./new_jar
-cp ../../../emr-giraph-examples-1.4.0-SNAPSHOT-shaded.jar ./new_jar
+cp ../../../giraph-examples-1.4.0-SNAPSHOT-shaded.jar ./new_jar
 
 cd new_jar
-mv emr-giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHOT-shaded.jar
 
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../incre_analysis/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../data/*.class ; \

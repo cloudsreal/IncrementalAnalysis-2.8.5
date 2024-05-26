@@ -29,7 +29,7 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
     @Override
     public TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
     {
-        config.setMaxTotal(100);
+        config.setMaxTotal(1000);
         config.setMaxIdle(10); //最大空闲连接数
         config.setMaxWaitMillis(50 * 1000); //获取Jedis连接的最大等待时间（50秒）
         config.setTestOnBorrow(true); //在获取Jedis连接时，自动检验连接是否可用
@@ -60,12 +60,48 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
             boolean eFlag = false;
             if(tokens[1].charAt(0) == '1') nFlag = true;
             if(tokens[2].charAt(0) == '1') eFlag = true;
-            
-            String value_str = null;
+//            String value_str = null;
+//            Jedis jedis = null;
+//            try {
+//                jedis = pool.getResource();
+//                value_str = jedis.get(tokens[0]);
+//            } catch (Exception e) {
+//                /// LOGGER.error("jedis set error:", e);
+//                System.out.println("jedis set error: STEP preprocessing output");
+//            } finally {
+//                if (null != jedis)
+//                    jedis.close(); // release resouce to the pool
+//                else{
+//                    CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
+//                }
+//
+//            }
+
+//            if(value_str == null){
+//                CommonWrite.method2("\nId:" + tokens[0] + " value is null, entry : " + String.valueOf(eFlag));
+//                return null;
+//            }
+//            else{
+//                /// CommonWrite.method2("\nId:" + tokens[0] + ", nFlag: " + String.valueOf(nFlag)
+//                ///                                         + ", eFlag: " + String.valueOf(eFlag));
+//                CommonWrite.method2("\nId:" + tokens[0] + " value: " + value_str);
+//            }
+
+//            int index = value_str.indexOf('S');
+//            String stmt_str = null;
+//            if(index == -1) // id --> stmt → get only stmt
+//            {
+//                stmt_str = value_str;
+//            }
+//            else{ // id --> stmt+fact → get only stmt
+//                stmt_str = value_str.substring(0, index-1);
+//            }
+
+            String stmt_str = null;
             Jedis jedis = null;
             try {
                 jedis = pool.getResource();
-                value_str = jedis.get(tokens[0]);
+                stmt_str = jedis.get(tokens[0]+"f");
             } catch (Exception e) {
                 /// LOGGER.error("jedis set error:", e);
                 System.out.println("jedis set error: STEP preprocessing output");
@@ -75,46 +111,31 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
                 else{
                     CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
                 }
-                    
             }
 
-            if(value_str == null){
-                CommonWrite.method2("\nId:" + tokens[0] + " value is null, entry : " + String.valueOf(eFlag));
-                return null;
-            }
-            else{
-                /// CommonWrite.method2("\nId:" + tokens[0] + ", nFlag: " + String.valueOf(nFlag)
-                ///                                         + ", eFlag: " + String.valueOf(eFlag));
-                CommonWrite.method2("\nId:" + tokens[0] + " value: " + value_str);
-            }
-
-            int index = value_str.indexOf('S');
-            String stmt_str = null;
-            if(index == -1) // id --> stmt → get only stmt
-            {
-                stmt_str = value_str;
-            }
-            else{ // id --> stmt+fact → get only stmt
-                stmt_str = value_str.substring(0, index-1);
-            }
-
-            if(nFlag){ // UA1
-                if(index == -1){ // case : new added node, only stmt in redis
-                    return new CacheVertexValue(stmt_str, false, eFlag);
-                }
-                else{ // case : PU or node influenced by new added node/edge, get fact in redis
-                    if(value_str.charAt(index+3) == '1'){
-                        String fact_str = value_str.substring(index+5);
-                        return new CacheVertexValue(stmt_str, false, fact_str, eFlag);
-                    }
-                    else{
-                        return new CacheVertexValue(stmt_str, false, eFlag);
-                    }
-                }
-            }
-            else{ // PC0
+            if (stmt_str == null){
+                return new CacheVertexValue("", false, eFlag);
+            } else {
                 return new CacheVertexValue(stmt_str, false, eFlag);
             }
+
+//            if(nFlag){ // UA1
+//                if(index == -1){ // case : new added node, only stmt in redis
+//                    return new CacheVertexValue(stmt_str, false, eFlag);
+//                }
+//                else{ // case : PU or node influenced by new added node/edge, get fact in redis
+//                    if(value_str.charAt(index+3) == '1'){
+//                        String fact_str = value_str.substring(index+5);
+//                        return new CacheVertexValue(stmt_str, false, fact_str, eFlag);
+//                    }
+//                    else{
+//                        return new CacheVertexValue(stmt_str, false, eFlag);
+//                    }
+//                }
+//            }
+//            else{ // PC0
+//                return new CacheVertexValue(stmt_str, false, eFlag);
+//            }
             
 
             // StringBuilder stmt = new StringBuilder();

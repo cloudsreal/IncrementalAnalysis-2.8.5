@@ -14,6 +14,10 @@ import java.lang.Iterable;
 import data.*;
 import org.apache.hadoop.io.Writable;
 
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
 public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends Msg> extends BasicComputation<IntWritable, V , E, M> {
   public Tool tool = null;
   public Fact fact = null;
@@ -26,7 +30,6 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     // tool = new CacheTool();
     // fact = new CacheState();
     // msg = new CacheMsg();
-
   }
 
   public boolean beActive(Iterable<M> messages, VertexValue vertexValue){

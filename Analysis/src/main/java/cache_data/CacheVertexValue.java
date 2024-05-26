@@ -44,6 +44,10 @@ public class CacheVertexValue extends VertexValue {
     fact = new CacheState(); 
   }
 
+  public void setFact(String fact_text) {
+    fact = new CacheState(fact_text);
+  }
+
   public void write(DataOutput out) throws IOException {
     stmts.write(out);
     if (fact != null) {

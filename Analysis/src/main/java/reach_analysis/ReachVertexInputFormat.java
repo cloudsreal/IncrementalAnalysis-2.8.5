@@ -82,10 +82,12 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
                 try {
                     jedis = pool.getResource();
                     if(vertexValue.isDel()){
-                        jedis.del(tokens[0]);
+                        jedis.del(tokens[0]+"s");
+                        jedis.del(tokens[1]+"f");
                     }
                     else{
-                        jedis.set(tokens[0], stmt.toString());
+                        jedis.set(tokens[0]+"s", stmt.toString());
+                        jedis.del(tokens[0]+"f");
                     }
                 } catch (Exception e) {
                     /// LOGGER.error("jedis set error:", e);

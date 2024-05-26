@@ -22,9 +22,24 @@ public class CacheVertexValue extends VertexValue {
     this.entry = entry;
   }
 
+
+  public CacheVertexValue(boolean entry){
+    stmts = null;
+    fact = null;
+    this.entry = entry;
+  }
+
   public CacheVertexValue(String text, boolean flag, String fact_text, boolean entry) {
     Scanner sc = new Scanner(text);
     stmts = new CacheIRs(sc, flag);
+    // fact = null;
+    fact = new CacheState(fact_text);
+    /// this.propagate = propagate;
+    this.entry = entry;
+  }
+
+  public CacheVertexValue(String fact_text, boolean entry) {
+    stmts = null;
     // fact = null;
     fact = new CacheState(fact_text);
     /// this.propagate = propagate;
@@ -39,14 +54,17 @@ public class CacheVertexValue extends VertexValue {
     return (CacheState)fact;
   }
 
+
   @Override
   public void setNewFact() {
     fact = new CacheState(); 
   }
 
-  public void setFact(String fact_text) {
-    fact = new CacheState(fact_text);
+  public void setStmts(String text, boolean flag){
+    Scanner sc = new Scanner(text);
+    this.stmts = new CacheIRs(sc, flag);
   }
+
 
   public void write(DataOutput out) throws IOException {
     stmts.write(out);

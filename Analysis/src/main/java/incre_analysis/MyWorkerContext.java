@@ -1,22 +1,10 @@
-package incre_cache_analysis;
+package incre_analysis;
 
-import alias_data.Grammar;
-import alias_data.Singletons;
 import org.apache.giraph.worker.WorkerContext;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-
-public class IncreMyWorkerContext extends WorkerContext {
+public class MyWorkerContext extends WorkerContext {
 
     JedisPoolConfig config = new JedisPoolConfig();
     public static JedisPool pool = null;

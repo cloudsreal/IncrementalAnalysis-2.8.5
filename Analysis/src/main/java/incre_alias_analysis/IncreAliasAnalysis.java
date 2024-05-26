@@ -14,7 +14,7 @@ public class IncreAliasAnalysis extends IncreAnalysis<AliasVertexValue, NullWrit
 
     @Override
     public void setAnalysisConf(){
-      IncreMyWorkerContext context = getWorkerContext();
+      IncreAliasWorkerContext context = getWorkerContext();
       tool = new AliasTool(context); 
       fact = new Pegraph(); 
       msg = new AliasMsg();

@@ -2,11 +2,13 @@ package incre_alias_analysis;
 
 import alias_data.Grammar;
 import alias_data.Singletons;
+import incre_analysis.MyWorkerContext;
 import org.apache.giraph.worker.WorkerContext;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import redis.clients.jedis.JedisPool;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +16,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-public class IncreMyWorkerContext extends WorkerContext {
+public class IncreAliasWorkerContext extends MyWorkerContext {
     public Singletons singletons;
     public Grammar grammar;
 
@@ -73,6 +75,7 @@ public class IncreMyWorkerContext extends WorkerContext {
         grammar = new Grammar();
         readSingletons(singletonPath, singletons);
         readGrammar(grammarPath, grammar);
+        super.preApplication();
     }
 
     public void readSingletons(String singletonPath, Singletons singletons)
@@ -101,20 +104,5 @@ public class IncreMyWorkerContext extends WorkerContext {
         catch(Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void postApplication() {
-
-    }
-
-    @Override
-    public void preSuperstep() {
-
-    }
-
-    @Override
-    public void postSuperstep() {
-
     }
 }

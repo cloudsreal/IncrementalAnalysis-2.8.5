@@ -96,12 +96,12 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
 //            else{ // id --> stmt+fact → get only stmt
 //                stmt_str = value_str.substring(0, index-1);
 //            }
-
-            String stmt_str = null;
+            String fact_str = "";
             Jedis jedis = null;
+
             try {
                 jedis = pool.getResource();
-                stmt_str = jedis.get(tokens[0]+"f");
+                fact_str = jedis.get(tokens[0]+"f");
             } catch (Exception e) {
                 /// LOGGER.error("jedis set error:", e);
                 System.out.println("jedis set error: STEP preprocessing output");
@@ -113,57 +113,41 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
                 }
             }
 
-            if (stmt_str == null){
-                return new CacheVertexValue("", false, eFlag);
-            } else {
-                return new CacheVertexValue(stmt_str, false, eFlag);
+            String stmt_str = null;
+
+            if(eFlag) {
+                try {
+                    jedis = pool.getResource();
+                    stmt_str = jedis.get(tokens[0] + "s");
+                } catch (Exception e) {
+                    /// LOGGER.error("jedis set error:", e);
+                    System.out.println("jedis set error: STEP preprocessing output");
+                } finally {
+                    if (null != jedis)
+                        jedis.close(); // release resouce to the pool
+                    else {
+                        CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
+                    }
+                }
             }
 
-//            if(nFlag){ // UA1
-//                if(index == -1){ // case : new added node, only stmt in redis
-//                    return new CacheVertexValue(stmt_str, false, eFlag);
-//                }
-//                else{ // case : PU or node influenced by new added node/edge, get fact in redis
-//                    if(value_str.charAt(index+3) == '1'){
-//                        String fact_str = value_str.substring(index+5);
-//                        return new CacheVertexValue(stmt_str, false, fact_str, eFlag);
-//                    }
-//                    else{
-//                        return new CacheVertexValue(stmt_str, false, eFlag);
-//                    }
-//                }
-//            }
-//            else{ // PC0
-//                return new CacheVertexValue(stmt_str, false, eFlag);
-//            }
-            
+            CacheVertexValue cacheVertexValue;
 
-            // StringBuilder stmt = new StringBuilder();
-            // int i = 1;
-            // for(; i < tokens.length; i++){
-            //     /// CommonWrite.method2("token-idx: "+ String.valueOf(i) + ": " + tokens[i]);
-            //     if(tokens[i].equals("S:")){
-            //         break;
-            //     }
-            //     else{
-            //         stmt.append(tokens[i]);
-            //         stmt.append('\t');
-            //     }
-            // }
+            if(nFlag){ // UN
+                if(fact_str.isEmpty() || fact_str.charAt(0) == '0' ){ // case : 1) new added node, only stmt in redis 2) Fact: 0
+                    cacheVertexValue = new CacheVertexValue(eFlag);
+                }
+                else{ // case : PU or node influenced by new added node/edge, get fact in redis
+                    cacheVertexValue = new CacheVertexValue(fact_str.substring(2), eFlag);
+                }
+            } else {
+                cacheVertexValue = new CacheVertexValue(eFlag);
+            }
+            if(eFlag){
+                cacheVertexValue.setStmts(stmt_str, false);
+            }
 
-            // StringBuilder fact = new StringBuilder();
-            // if(tokens[i+1].equals("0")){
-            //     return new CacheVertexValue(stmt.toString(), false, false);
-            // }
-            // else{
-            //     i= i + 2;
-            //     for(; i < tokens.length; i++){
-            //         fact.append(tokens[i]);
-            //         fact.append('\t');
-            //     }
-            //     /// CommonWrite.method2(fact.toString());
-            //     return new CacheVertexValue(stmt.toString(), false, fact.toString(), false);
-            // }
+            return cacheVertexValue;
         }
 
         @Override

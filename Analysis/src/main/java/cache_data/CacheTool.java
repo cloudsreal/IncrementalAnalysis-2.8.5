@@ -1,6 +1,7 @@
 package cache_data;
 
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 import data.*;
@@ -81,4 +82,11 @@ public class CacheTool implements Tool<CacheMsg> {
       return !newState.consistent(oldState);
     }
   }
+
+  @Override
+  public StmtList convert(String text, boolean flag) {
+    Scanner sc = new Scanner(text);
+    return new CacheIRs(sc, flag);
+  }
+
 }

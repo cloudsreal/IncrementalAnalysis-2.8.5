@@ -24,6 +24,7 @@ public class VertexValue implements Writable {
     public void setFact(Fact fact) {
         this.fact = fact;
     }
+
     public void setNewFact() {
         // wait for implementation
     }
@@ -54,6 +55,10 @@ public class VertexValue implements Writable {
 
     public StmtList getStmtList() {
         return stmts;
+    }
+
+    public void setStmts(StmtList stmts) {
+        this.stmts = stmts;
     }
 
     @Override

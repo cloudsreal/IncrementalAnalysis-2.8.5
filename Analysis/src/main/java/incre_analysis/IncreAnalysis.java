@@ -1,13 +1,10 @@
 package incre_analysis;
 
-import cache_data.CacheState;
-import org.apache.commons.beanutils.PropertyUtils;
+import incre_alias_analysis.IncreAliasWorkerContext;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.graph.BasicComputation;
 import org.apache.giraph.graph.Vertex;
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.NullWritable;
-import java.util.*;
 
 import java.lang.Iterable;
 
@@ -16,7 +13,6 @@ import org.apache.hadoop.io.Writable;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 
 public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends Msg> extends BasicComputation<IntWritable, V , E, M> {
   public Tool tool = null;
@@ -79,6 +75,27 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
 //        // CommonWrite.method2("Id:\t"+vertex.getId().toString()+", State:\t"+fact.toString());
 //
 //        /// Fact out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
+
+        if(vertex.getValue().getStmtList() == null){
+          MyWorkerContext context = getWorkerContext();
+          String stmt_str = null;
+          Jedis jedis = null;
+          try {
+            jedis = context.pool.getResource();
+            stmt_str = jedis.get(vertex.getId().get()+"s");
+          } catch (Exception e) {
+            System.out.println("jedis set error: STEP preprocessing output");
+          } finally {
+            if (null != jedis)
+              jedis.close(); // release resouce to the pool
+            else{
+              CommonWrite.method2("\nId:" + vertex.getId().get() + ", jedis is null");
+            }
+          }
+          vertex.getValue().setStmts(tool.convert(stmt_str, false));
+          CommonWrite.method2(vertex.getId().get() + stmt_str);
+        }
+
         Fact out_old_fact = null;
         if(vertex.getValue().isPropagate() && vertex.getValue().getFact() != null){
           out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());

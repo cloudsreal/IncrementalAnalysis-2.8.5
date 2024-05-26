@@ -6,7 +6,7 @@ import data.Fact;
 import data.StmtList;
 import data.Tool;
 import data.VertexValue;
-import incre_alias_analysis.IncreMyWorkerContext;
+import incre_alias_analysis.IncreAliasWorkerContext;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Writable;
@@ -22,7 +22,7 @@ public class AliasTool implements Tool<AliasMsg>{
 //     singletons = context.singletons;
 //   }
 
-  public AliasTool(IncreMyWorkerContext context){
+  public AliasTool(IncreAliasWorkerContext context){
     grammar = context.grammar;
     singletons = context.singletons;
   }
@@ -1241,7 +1241,13 @@ public class AliasTool implements Tool<AliasMsg>{
     return !newPEG.consistent(oldPEG);
   }
 
-  public static long myCompare(int v1, byte l1, int v2, byte l2) {
+    @Override
+    public StmtList convert(String text, boolean flag) {
+        Scanner sc = new Scanner(text);
+        return new AliasStmts(sc);
+    }
+
+    public static long myCompare(int v1, byte l1, int v2, byte l2) {
     return (v1 == v2) ? (l1 - l2) : (v1 - v2);
   }
 

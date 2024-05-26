@@ -37,18 +37,21 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
         {
             @Override
             protected String[] preprocessLine(Text line) {
-								String str = line.toString();
+                String str = line.toString();
                 String[] tokens = SEPARATOR.split(str);
-								Matcher m = SEPARATOR.matcher(str);
-								if(m.find()){
-									int index = m.start();
+                int sIndex = str.indexOf("S");
 
-									try (Jedis jedis = pool.getResource()) {
-										jedis.set(tokens[0], str.substring(index+1));
-									} catch (Exception e) {
-									/// LOGGER.error("jedis set error:", e);
-									}
-								}
+                Matcher m = SEPARATOR.matcher(str);
+                if(m.find()){
+                    int index = m.start();
+                    String stmtPart = str.substring(index+1, sIndex).trim();
+                    String factPart = str.substring(sIndex + 3).trim();
+                    try (Jedis jedis = pool.getResource()) {
+                        jedis.mset(tokens[0] + "s", stmtPart, tokens[0] + "f", factPart);
+                    } catch (Exception e) {
+                        /// LOGGER.error("jedis set error:", e);
+                    }
+                }
                 return tokens;
             }
 

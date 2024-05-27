@@ -132,7 +132,9 @@ public class CallfptrAStmt extends AStmt {
         /// this.dst = sc.nextInt();
         strBuilder.append(dst).append("\t");
         strBuilder.append(auxiliary).append("\t");
-        strBuilder.append("r_" + ret).append("\t");
+        if(ret != -1) {
+            strBuilder.append("r_" + ret).append("\t");
+        }
         for (int i = 0; i < length; i++) {
 			strBuilder.append("a_" + args[i]).append("\t");
 		}

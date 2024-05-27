@@ -72,11 +72,17 @@ public class EdgeArray implements Writable
         
         strBuilder.append(size).append("\t");
         strBuilder.append(capacity).append("\t");
-        for (int tmp : edges) {
-            strBuilder.append(tmp).append("\t");
+//        for (int tmp : edges) {
+//            strBuilder.append(tmp).append("\t");
+//        }
+//        for (byte tmp : labels) {
+//            strBuilder.append(tmp).append("\t");
+//        }
+        for(int i = 0; i < size; i++){
+            strBuilder.append(edges[i]).append("\t");
         }
-        for (byte tmp : labels) {
-            strBuilder.append(tmp).append("\t");
+        for(int i = 0; i < size; i++){
+            strBuilder.append(labels[i]).append("\t");
         }
         
         return strBuilder.toString();

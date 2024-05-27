@@ -10,7 +10,7 @@ import data.*;
 public class CacheVertexValue extends VertexValue {
 
   public CacheVertexValue(){
-    stmts = new CacheIRs();
+    stmts = null;
     fact = null;
   }
 
@@ -18,7 +18,6 @@ public class CacheVertexValue extends VertexValue {
     Scanner sc = new Scanner(text);
     stmts = new CacheIRs(sc, flag);
     fact = null;
-    /// this.propagate = propagate;
     this.entry = entry;
   }
 
@@ -67,7 +66,13 @@ public class CacheVertexValue extends VertexValue {
 
 
   public void write(DataOutput out) throws IOException {
-    stmts.write(out);
+    if(stmts != null) {
+      out.writeByte(1);
+      stmts.write(out);
+    } else {
+      out.writeByte(0);
+    }
+//    stmts.write(out);
     if (fact != null) {
       out.writeByte(1);
       fact.write(out);
@@ -80,7 +85,13 @@ public class CacheVertexValue extends VertexValue {
   }
 
   public void readFields(DataInput in) throws IOException {
-    stmts.readFields(in);
+    if (in.readByte() == 1) {
+      if(stmts == null){
+        stmts = new CacheIRs();
+      }
+      stmts.readFields(in);
+    }
+//    stmts.readFields(in);
     if (in.readByte() == 1) {
       if (fact == null) {
         fact = new CacheState();

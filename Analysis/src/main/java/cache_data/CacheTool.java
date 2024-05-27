@@ -88,5 +88,4 @@ public class CacheTool implements Tool<CacheMsg> {
     Scanner sc = new Scanner(text);
     return new CacheIRs(sc, flag);
   }
-
 }

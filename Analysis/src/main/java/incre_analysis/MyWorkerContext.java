@@ -1,5 +1,6 @@
 package incre_analysis;
 
+import data.CommonWrite;
 import org.apache.giraph.worker.WorkerContext;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -11,7 +12,7 @@ public class MyWorkerContext extends WorkerContext {
 
     @Override
     public void preApplication() {
-        config.setMaxTotal(1000);
+        config.setMaxTotal(100);
         config.setMaxIdle(10); //最大空闲连接数
         config.setMaxWaitMillis(50 * 1000); //获取Jedis连接的最大等待时间（50秒）
         config.setTestOnBorrow(true); //在获取Jedis连接时，自动检验连接是否可用

@@ -1,4 +1,3 @@
-incre_alias_analysis/IncreMyWorkerContext.class
 alias_stmt/PhiAStmt.class
 cache_data/CacheMsg.class
 alias_data/AliasTool$1.class
@@ -40,6 +39,7 @@ alias_stmt/CallAStmt.class
 data/StmtList.class
 alias_stmt/CalleefptrAStmt.class
 cache_data/CacheState.class
+incre_alias_analysis/IncreAliasWorkerContext.class
 alias_data/AliasTool.class
 alias_stmt/TYPE.class
 data/Fact.class
@@ -58,7 +58,9 @@ cache_data/CacheVertexValue.class
 cache_data/IRStmt.class
 alias_stmt/AStmt.class
 alias_stmt/SkipAStmt.class
+incre_analysis/MyWorkerContext.class
 alias_data/Grammar.class
+incre_cache_analysis/IncreCacheWorkerContext.class
 data/SetWritable.class
 alias_stmt/AssignAStmt.class
 incre_cache_analysis/IncreCacheVertexOutputFormat$1.class

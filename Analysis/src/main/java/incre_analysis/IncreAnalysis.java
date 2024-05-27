@@ -41,7 +41,8 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     if (getSuperstep() == 0) {
       ///entry = getBroadcast("entry");
       /// if(entry.getValues().contains(vertex.getId().get())) {
-      CommonWrite.method2("\nstep0, Id:\t"+vertex.getId().toString());
+      CommonWrite.method2("\nstep" + getSuperstep() + " Id:" + vertex.getId().get() + ", S: " + vertex.getValue().getStmtList());
+
       if(vertex.getValue().isEntry()) {
         CommonWrite.method2("\nId:\t"+vertex.getId().toString() + " is entry");
         Fact in_fact = vertex.getValue().getFact();
@@ -76,6 +77,9 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
 //
 //        /// Fact out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
 
+
+        CommonWrite.method2("\nstep" + getSuperstep() + " Id:" + vertex.getId().get() + ", S: " + vertex.getValue().getStmtList());
+
         if(vertex.getValue().getStmtList() == null){
           MyWorkerContext context = getWorkerContext();
           String stmt_str = null;
@@ -93,7 +97,8 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
             }
           }
           vertex.getValue().setStmts(tool.convert(stmt_str, false));
-          CommonWrite.method2(vertex.getId().get() + stmt_str);
+//          vertex.getValue().setStmt_flag(true);
+          CommonWrite.method2(vertex.getId().get() + stmt_str + "\n");
         }
 
         Fact out_old_fact = null;
@@ -103,6 +108,11 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
         Fact out_new_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
 
         boolean canPropagate = tool.propagate(out_old_fact, out_new_fact);
+
+//        CommonWrite.method2("\nstep" + getSuperstep() + ", Id:\t"+vertex.getId().toString());
+
+        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+ out_new_fact.toString());
+
         if (canPropagate) {
           vertex.getValue().setPropagate(true);
           vertex.getValue().setFact(fact);

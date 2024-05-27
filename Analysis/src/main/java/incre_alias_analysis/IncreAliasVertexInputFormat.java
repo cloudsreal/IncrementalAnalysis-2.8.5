@@ -55,115 +55,112 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
 
     @Override
     protected AliasVertexValue getValue(String[] tokens) {
-        // StringBuilder stmt = new StringBuilder();
-        // for (int i = 1; i < tokens.length - 1; i++) {
-        //   stmt.append(tokens[i]);
-        //   stmt.append('\t');
-        // }
-        // stmt.append(tokens[tokens.length - 1]);
-        // return new AliasVertexValue(stmt.toString());
         boolean nFlag = false;
         boolean eFlag = false;
         if(tokens[1].charAt(0) == '1') nFlag = true;
         if(tokens[2].charAt(0) == '1') eFlag = true;
 
         String value_str = null;
-        Jedis jedis = null;
+        Jedis value_jedis = null;
+
         try {
-            jedis = pool.getResource();
-            value_str = jedis.get(tokens[0]);
+            value_jedis = pool.getResource();
+            value_str = value_jedis.get(tokens[0]+"f");
         } catch (Exception e) {
             /// LOGGER.error("jedis set error:", e);
             System.out.println("jedis set error: STEP preprocessing output");
         } finally {
-            if (null != jedis)
-                jedis.close(); // release resouce to the pool
+            if (null != value_jedis)
+                value_jedis.close(); // release resouce to the pool
             else{
                 CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
             }
         }
 
-        if(value_str == null){
-            CommonWrite.method2("\nId:" + tokens[0] + " value is null, entry : " + String.valueOf(eFlag));
-            return null;
-        }
-        else{
-            /// CommonWrite.method2("\nId:" + tokens[0] + ", nFlag: " + String.valueOf(nFlag)
-            ///                                         + ", eFlag: " + String.valueOf(eFlag));
-            CommonWrite.method2("\nId:" + tokens[0] + " value: " + value_str);
-        }
-
-    
-        int gs_index = value_str.indexOf('G');
-        
-
-        // get stmt
         String stmt_str = null;
-        String gs_str = null;
-        if(gs_index == -1){ // new added node/changed node, only stmt in redis
-            stmt_str = value_str;
-            gs_str = "0";
-        }
-        else{
-            stmt_str = value_str.substring(0, gs_index - 1);
-        } 
+        Jedis stmt_jedis = null;
 
-        // get GS + Fact for UA1
-        if(nFlag){ // UA1 : can use GS and Fact
-            // get GS
-            if(gs_index == -1){  // new added node, only stmt in redis
-                gs_str = "0"; 
-                return new AliasVertexValue(stmt_str, gs_str /*gs is "0"*/,eFlag);
-            }
-            else{ // id --> stmt+gs+fact 
-                int f_index = value_str.indexOf('F');
-                gs_str = value_str.substring(gs_index + 3, f_index - 1);
-                String fact_str = value_str.substring(f_index + 2);
-                return new AliasVertexValue(stmt_str, gs_str, fact_str, eFlag);
+        if(eFlag) {
+            try {
+                stmt_jedis = pool.getResource();
+                stmt_str = stmt_jedis.get(tokens[0]+"s");
+            } catch (Exception e) {
+                /// LOGGER.error("jedis set error:", e);
+                System.out.println("jedis set error: STEP preprocessing output");
+            } finally {
+                if (null != stmt_jedis)
+                    stmt_jedis.close(); // release resouce to the pool
+                else {
+                    CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
+                }
             }
         }
-        else{ // PC0
-            gs_str = "0";
-            return new AliasVertexValue(stmt_str, gs_str, eFlag);
-        }
 
-    //   StringBuilder stmt = new StringBuilder();
-    //   int i = 1;
-    //   for(; i < tokens.length; i++){
-    //     /// CommonWrite.method2("token-idx: "+ String.valueOf(i) + ": " + tokens[i]);
-    //     if(tokens[i].equals("GS:")){
-    //         break;
-    //     }
-    //     else{
-    //       stmt.append(tokens[i]);
-    //       stmt.append('\t');
-    //     }
-    //   }
-    //   CommonWrite.method2("stmts:\t" + stmt.toString());
+        int gs_index = value_str.indexOf('G');
 
-    //   StringBuilder gsStr = new StringBuilder();
-    //   i++;
-    //   for(; i < tokens.length; i++){
-    //     if(tokens[i].equals("F:")){
-    //         break;
-    //     }
-    //     else{
-    //       gsStr.append(tokens[i]);
-    //       gsStr.append('\t');
-    //     }
-    //   }
-    //   CommonWrite.method2("GS:\t" + gsStr.toString());
 
-    //   StringBuilder pegStr = new StringBuilder();
-    //   i++;
-    //   for(; i < tokens.length; i++){
-    //     pegStr.append(tokens[i]);
-    //     pegStr.append('\t');
-    //   }
-    //   CommonWrite.method2("F:\t" + pegStr.toString());
-      
-    //   /// return new AliasVertexValue(stmt.toString());
-    //   return new AliasVertexValue(stmt.toString(), gsStr.toString(), pegStr.toString(), false);
+
+
+//        String value_str = null;
+//        Jedis jedis = null;
+//        try {
+//            jedis = pool.getResource();
+//            value_str = jedis.get(tokens[0]);
+//        } catch (Exception e) {
+//            /// LOGGER.error("jedis set error:", e);
+//            System.out.println("jedis set error: STEP preprocessing output");
+//        } finally {
+//            if (null != jedis)
+//                jedis.close(); // release resouce to the pool
+//            else{
+//                CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
+//            }
+//        }
+//
+//        if(value_str == null){
+//            CommonWrite.method2("\nId:" + tokens[0] + " value is null, entry : " + String.valueOf(eFlag));
+//            return null;
+//        }
+//        else{
+//            /// CommonWrite.method2("\nId:" + tokens[0] + ", nFlag: " + String.valueOf(nFlag)
+//            ///                                         + ", eFlag: " + String.valueOf(eFlag));
+//            CommonWrite.method2("\nId:" + tokens[0] + " value: " + value_str);
+//        }
+//
+//
+//        int gs_index = value_str.indexOf('G');
+//
+//
+//        // get stmt
+//        String stmt_str = null;
+//        String gs_str = null;
+//        if(gs_index == -1){ // new added node/changed node, only stmt in redis
+//            stmt_str = value_str;
+//            gs_str = "0";
+//        }
+//        else{
+//            stmt_str = value_str.substring(0, gs_index - 1);
+//        }
+//
+//        // get GS + Fact for UA1
+//        if(nFlag){ // UA1 : can use GS and Fact
+//            // get GS
+//            if(gs_index == -1){  // new added node, only stmt in redis
+//                gs_str = "0";
+//                return new AliasVertexValue(stmt_str, gs_str /*gs is "0"*/,eFlag);
+//            }
+//            else{ // id --> stmt+gs+fact
+//                int f_index = value_str.indexOf('F');
+//                gs_str = value_str.substring(gs_index + 3, f_index - 1);
+//                String fact_str = value_str.substring(f_index + 2);
+//                return new AliasVertexValue(stmt_str, gs_str, fact_str, eFlag);
+//            }
+//        }
+//        else{ // PC0
+//            gs_str = "0";
+//            return new AliasVertexValue(stmt_str, gs_str, eFlag);
+//        }
+
     }
 
     @Override

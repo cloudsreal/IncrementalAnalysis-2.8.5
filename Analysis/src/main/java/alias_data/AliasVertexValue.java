@@ -167,7 +167,14 @@ public class AliasVertexValue extends VertexValue{
 
   @Override
   public void write(DataOutput dataOutput) throws IOException {
-    stmts.write(dataOutput);
+    if (stmts != null) {
+      dataOutput.writeByte(1);
+      stmts.write(dataOutput);
+    }
+    else {
+      dataOutput.writeByte(0);
+    }
+
     if(graphStore != null){
         dataOutput.writeByte(1);
         graphStore.write(dataOutput);
@@ -190,7 +197,12 @@ public class AliasVertexValue extends VertexValue{
 
   @Override
   public void readFields(DataInput dataInput) throws IOException {
-    stmts.readFields(dataInput);
+    if(dataInput.readByte() == 1){
+      if(stmts == null)
+        stmts = new AliasStmts();
+      stmts.readFields(dataInput);;
+    }
+
     if(dataInput.readByte() == 1){
       if(graphStore == null)
         graphStore = new MapWritable();

@@ -81,6 +81,19 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
             String stmt_str = null;
             Jedis stmt_jedis = null;
 
+            CacheVertexValue cacheVertexValue;
+
+            if(nFlag){ // UN
+                if(fact_str == null || fact_str.isEmpty() || fact_str.charAt(0) == '0' ){ // case : 1) new added node, only stmt in redis 2) Fact: 0
+                    cacheVertexValue = new CacheVertexValue(eFlag);
+                }
+                else{ // case : PU or node influenced by new added node/edge, get fact in redis
+                    cacheVertexValue = new CacheVertexValue(fact_str.substring(2), eFlag);
+                }
+            } else {
+                cacheVertexValue = new CacheVertexValue(eFlag);
+            }
+
             if(eFlag) {
                 try {
                     stmt_jedis = pool.getResource();
@@ -95,22 +108,6 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
                         CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
                     }
                 }
-            }
-
-            CacheVertexValue cacheVertexValue;
-
-            if(nFlag){ // UN
-                if(fact_str == null || fact_str.isEmpty() || fact_str.charAt(0) == '0' ){ // case : 1) new added node, only stmt in redis 2) Fact: 0
-                    cacheVertexValue = new CacheVertexValue(eFlag);
-                }
-                else{ // case : PU or node influenced by new added node/edge, get fact in redis
-                    cacheVertexValue = new CacheVertexValue(fact_str.substring(2), eFlag);
-                }
-            } else {
-                cacheVertexValue = new CacheVertexValue(eFlag);
-            }
-
-            if(eFlag){
                 cacheVertexValue.setStmts(stmt_str, false);
             }
 

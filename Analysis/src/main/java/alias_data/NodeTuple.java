@@ -81,4 +81,5 @@ public class NodeTuple implements Writable{
       nodeTuple.stmtlist.setDeep(this.stmtlist);
       return nodeTuple;
   }
+
 }

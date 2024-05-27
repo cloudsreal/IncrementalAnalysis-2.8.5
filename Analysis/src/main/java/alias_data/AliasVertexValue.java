@@ -1,14 +1,17 @@
 package alias_data;
 
 import alias_stmt.AStmt;
+import cache_data.CacheIRs;
 import data.CommonWrite;
 import data.VertexValue;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
+import org.apache.hadoop.io.Writable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -16,7 +19,7 @@ public class AliasVertexValue extends VertexValue{
   private MapWritable graphStore = null; // graphStore: MapWritable<IntWritable, NodeTuple>
 
   public AliasVertexValue(){
-    stmts = new AliasStmts();
+    stmts = null;
     fact = null;
     graphStore = null;
   }
@@ -29,25 +32,32 @@ public class AliasVertexValue extends VertexValue{
   }
 
 
-  public AliasVertexValue(String text, String gsStr, String pegStr, boolean entry){
-    Scanner sc = new Scanner(text);
-    stmts = new AliasStmts(sc);
+  public AliasVertexValue(String gsStr, String pegStr, boolean entry){
+    stmts = null;
     graphStore = null;
     fact = null;
     /// this.propagate = propagate;
+    CommonWrite.method2("GS:\t" + gsStr);
     setGraphStore(gsStr);
     setPegraph(pegStr);
+    CommonWrite.method2("F:\t" + pegtoString());
     this.entry = entry;
   }
 
-  public AliasVertexValue(String text, String gsStr, boolean entry){
-    Scanner sc = new Scanner(text);
-    stmts = new AliasStmts(sc);
+  public AliasVertexValue(String gsStr, boolean entry){
+    stmts = null;
     graphStore = null;
     fact = null;
+    CommonWrite.method2("GS:\t" + gsStr);
     /// this.propagate = propagate;
     setGraphStore(gsStr);
     this.entry = entry;
+  }
+
+  public void setStmts(String text){
+    Scanner sc = new Scanner(text);
+    stmts = new AliasStmts(sc);
+    CommonWrite.method2( stmtstoString());
   }
 
   public AStmt getStmt() {
@@ -115,36 +125,44 @@ public class AliasVertexValue extends VertexValue{
     }
   }
 
-  // public String stmtstoString() {
-  //   /// return String.valueOf(this.size());
+   public String stmtstoString() {
+     /// return String.valueOf(this.size());
 
-  //   StringBuilder strBuilder = new StringBuilder();
-  //   strBuilder.append(((AliasStmts)stmts).toString());
-  //   return strBuilder.toString();
-  // }
+     StringBuilder strBuilder = new StringBuilder();
+     strBuilder.append(((AliasStmts)stmts).toString());
+     return strBuilder.toString();
+   }
 
-  // public String gstoretoString() {
-  //   StringBuilder strBuilder = new StringBuilder();
-  //   if(graphStore != null){
-  //     /// strBuilder.append("GS1\t").append(graphStore.size()).append("\t");
-  //     /// for (Map.Entry<Writable, Writable> item: graphStore.entrySet()){
-  //     ///   strBuilder.append("k").append(item.getKey()).append("-");
-  //     ///   strBuilder.append(((NodeTuple)item.getValue()).nodetupleToString());
-  //     /// }
+//   public String gstoretoString() {
+//     StringBuilder strBuilder = new StringBuilder();
+//     if(graphStore != null){
+//
+//       strBuilder.append("GS:\t1\t").append(graphStore.size()).append("\t");
+//       for (Map.Entry<Writable, Writable> item: graphStore.entrySet()){
+//          strBuilder.append(item.getKey()).append("\t");
+//          strBuilder.append(((NodeTuple)item.getValue()).nodetupleToString());
+//       }
+//     }
+//     else{
+//       /// strBuilder.append("GS0\t");
+//       strBuilder.append("GS:\t0\t");
+//     }
+//     /// Wait for implementation
+//     return strBuilder.toString();
+//   }
 
-  //     strBuilder.append("GS:\t1\t").append(graphStore.size()).append("\t");
-  //     for (Map.Entry<Writable, Writable> item: graphStore.entrySet()){
-  //        strBuilder.append(item.getKey()).append("\t");
-  //        strBuilder.append(((NodeTuple)item.getValue()).nodetupleToString());
-  //     }
-  //   }
-  //   else{
-  //     /// strBuilder.append("GS0\t");
-  //     strBuilder.append("GS:\t0\t");
-  //   }
-  //   /// Wait for implementation
-  //   return strBuilder.toString();
-  // }
+  public String pegtoString() {
+    StringBuilder strBuilder = new StringBuilder();
+    /// Wait for implementation
+    if(fact != null){
+      strBuilder.append("F:1\t");
+      strBuilder.append(((Pegraph)fact).toString()).append("\t");
+    }
+    else{
+      strBuilder.append("F:0");
+    }
+    return strBuilder.toString();
+  }
 
 
   // public void stringToPeg(String[] token) {

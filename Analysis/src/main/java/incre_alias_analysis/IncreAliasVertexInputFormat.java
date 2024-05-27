@@ -77,10 +77,38 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
             }
         }
 
-        String stmt_str = null;
-        Jedis stmt_jedis = null;
+        AliasVertexValue aliasVertexValue;
+
+        int gs_index = -1;
+
+        if(value_str != null){
+            gs_index = value_str.indexOf('G');
+        }
+
+        String gs_str = null;
+
+//         get GS + Fact for UA1
+        if(nFlag){ // UA1 : can use GS and Fact
+            // get GS
+            if(gs_index == -1){  // new added node, only stmt in redis
+                gs_str = "0";
+                aliasVertexValue = new AliasVertexValue(gs_str /*gs is "0"*/,eFlag);
+            }
+            else{ // id --> stmt+gs+fact
+                int f_index = value_str.indexOf('F');
+                gs_str = value_str.substring(gs_index + 3, f_index - 1);
+                String fact_str = value_str.substring(f_index + 2);
+                aliasVertexValue =  new AliasVertexValue(gs_str, fact_str, eFlag);
+            }
+        }
+        else{ // PC0
+            gs_str = "0";
+            aliasVertexValue =  new AliasVertexValue(gs_str, eFlag);
+        }
 
         if(eFlag) {
+            String stmt_str = null;
+            Jedis stmt_jedis = null;
             try {
                 stmt_jedis = pool.getResource();
                 stmt_str = stmt_jedis.get(tokens[0]+"s");
@@ -94,11 +122,10 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
                     CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
                 }
             }
+            aliasVertexValue.setStmts(stmt_str);
         }
 
-        int gs_index = value_str.indexOf('G');
-
-
+        return aliasVertexValue;
 
 
 //        String value_str = null;

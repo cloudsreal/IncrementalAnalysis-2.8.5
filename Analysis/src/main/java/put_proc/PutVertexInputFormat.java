@@ -40,12 +40,23 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
                 String str = line.toString();
                 String[] tokens = SEPARATOR.split(str);
                 int sIndex = str.indexOf("S");
+                int gsIndex = str.indexOf("GS");
 
                 Matcher m = SEPARATOR.matcher(str);
                 if(m.find()){
                     int index = m.start();
-                    String stmtPart = str.substring(index+1, sIndex).trim();
-                    String factPart = str.substring(sIndex + 3).trim();
+
+                    String stmtPart;
+                    String factPart;
+
+                    if(gsIndex == -1){ //cachedata
+                        stmtPart = str.substring(index+1, sIndex).trim();
+                        factPart = str.substring(sIndex).trim();
+                    } else {
+                        stmtPart = str.substring(index+1, gsIndex).trim();
+                        factPart = str.substring(gsIndex).trim();
+                    }
+
                     try (Jedis jedis = pool.getResource()) {
                         jedis.mset(tokens[0] + "s", stmtPart, tokens[0] + "f", factPart);
                     } catch (Exception e) {

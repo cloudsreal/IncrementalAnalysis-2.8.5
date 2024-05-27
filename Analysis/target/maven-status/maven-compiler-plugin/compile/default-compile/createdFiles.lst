@@ -1,8 +1,0 @@
-put_proc/PutEdgeInputFormat.class
-put_proc/PutVertexInputFormat$PreVertexReader.class
-put_proc/PutEdgeInputFormat$IntNullTextEdgeReader.class
-put_proc/PutVertexOutputFormat$1.class
-put_proc/PutVertexOutputFormat$LabelPropagationTextVertexLineWriter.class
-put_proc/PutVertexInputFormat.class
-put_proc/PutAnalysis.class
-put_proc/PutVertexOutputFormat.class

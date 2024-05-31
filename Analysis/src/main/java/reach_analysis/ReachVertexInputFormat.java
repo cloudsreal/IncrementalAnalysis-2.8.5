@@ -97,6 +97,7 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
                         jedis.close(); // release resouce to the pool
                 }
             }
+//            CommonWrite.method2(tokens[0] + stmt.toString());
             return vertexValue;
         }
 

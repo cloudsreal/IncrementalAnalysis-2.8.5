@@ -64,6 +64,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
       vertex.voteToHalt();
     }
     else {
+      
       if(vertex.getValue().getStmtList() == null){
         MyWorkerContext context = getWorkerContext();
         String stmt_str = null;
@@ -81,23 +82,13 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
           }
         }
         vertex.getValue().setStmts(tool.convert(stmt_str, false));
-        CommonWrite.method2(vertex.getId().get() + stmt_str + "\n");
+//        CommonWrite.method2(vertex.getId().get() + stmt_str + "\n");
       }
+
       if(beActive(messages, vertex.getValue())){
         fact = tool.combine(messages, vertex.getValue());
 
-//        // StringBuilder stringBuilder = new StringBuilder();
-//        // stringBuilder.append("\npreds:\t");
-//        // for (Msg item : messages){
-//        //   stringBuilder.append(item.getVertexID()).append("\t");
-//        // }
-//        // CommonWrite.method2(stringBuilder.toString());
-//        // CommonWrite.method2("Id:\t"+vertex.getId().toString()+", State:\t"+fact.toString());
-//
-//        /// Fact out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
-
-
-        CommonWrite.method2("\nstep" + getSuperstep() + " Id:" + vertex.getId().get() + ", S: " + vertex.getValue().getStmtList());
+//        CommonWrite.method2("\nstep" + getSuperstep() + " Id:" + vertex.getId().get() + ", S: " + vertex.getValue().getStmtList());
 
         Fact out_old_fact = null;
         if(vertex.getValue().isPropagate() && vertex.getValue().getFact() != null){

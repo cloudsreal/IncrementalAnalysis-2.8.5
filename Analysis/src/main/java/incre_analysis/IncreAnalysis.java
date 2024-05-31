@@ -64,6 +64,25 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
       vertex.voteToHalt();
     }
     else {
+      if(vertex.getValue().getStmtList() == null){
+        MyWorkerContext context = getWorkerContext();
+        String stmt_str = null;
+        Jedis jedis = null;
+        try {
+          jedis = context.pool.getResource();
+          stmt_str = jedis.get(vertex.getId().get()+"s");
+        } catch (Exception e) {
+          System.out.println("jedis set error: STEP preprocessing output");
+        } finally {
+          if (null != jedis)
+            jedis.close(); // release resouce to the pool
+          else{
+            CommonWrite.method2("\nId:" + vertex.getId().get() + ", jedis is null");
+          }
+        }
+        vertex.getValue().setStmts(tool.convert(stmt_str, false));
+        CommonWrite.method2(vertex.getId().get() + stmt_str + "\n");
+      }
       if(beActive(messages, vertex.getValue())){
         fact = tool.combine(messages, vertex.getValue());
 
@@ -79,27 +98,6 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
 
 
         CommonWrite.method2("\nstep" + getSuperstep() + " Id:" + vertex.getId().get() + ", S: " + vertex.getValue().getStmtList());
-
-        if(vertex.getValue().getStmtList() == null){
-          MyWorkerContext context = getWorkerContext();
-          String stmt_str = null;
-          Jedis jedis = null;
-          try {
-            jedis = context.pool.getResource();
-            stmt_str = jedis.get(vertex.getId().get()+"s");
-          } catch (Exception e) {
-            System.out.println("jedis set error: STEP preprocessing output");
-          } finally {
-            if (null != jedis)
-              jedis.close(); // release resouce to the pool
-            else{
-              CommonWrite.method2("\nId:" + vertex.getId().get() + ", jedis is null");
-            }
-          }
-          vertex.getValue().setStmts(tool.convert(stmt_str, false));
-//          vertex.getValue().setStmt_flag(true);
-          CommonWrite.method2(vertex.getId().get() + stmt_str + "\n");
-        }
 
         Fact out_old_fact = null;
         if(vertex.getValue().isPropagate() && vertex.getValue().getFact() != null){

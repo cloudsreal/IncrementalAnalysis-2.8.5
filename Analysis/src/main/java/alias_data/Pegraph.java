@@ -129,7 +129,8 @@ public class Pegraph extends Fact{
       // dataOutput.writeInt(entry.getKey());
       // entry.getValue().write(dataOutput);
       strBuilder.append(entry.getKey()).append("\t");
-      strBuilder.append(entry.getValue().toString()).append("\t");
+//      strBuilder.append(entry.getValue().toString()).append("\t");
+      strBuilder.append(entry.getValue().toString());
     }
     return strBuilder.toString();
   }

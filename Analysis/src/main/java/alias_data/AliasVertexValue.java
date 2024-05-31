@@ -71,7 +71,7 @@ public class AliasVertexValue extends VertexValue{
     /// Wait for implementation
     if(fact != null){
       strBuilder.append("F:1\t");
-      strBuilder.append(((Pegraph)fact).toString()).append("\t");
+      strBuilder.append(((Pegraph)fact).graphtoString()).append("\t");
     }
     else{
       strBuilder.append("F:0");

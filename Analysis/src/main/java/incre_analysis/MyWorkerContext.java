@@ -19,6 +19,10 @@ public class MyWorkerContext extends WorkerContext {
         config.setTestOnReturn(true);  //在将连接放回池中前，自动检验连接是否有效
         config.setTestWhileIdle(true);  //自动测试池中的空闲连接是否都是可用连接
         pool = new JedisPool(config, "localhost", 6379);
+        /// @szw, configuration according to Ali EMR
+        ///  String host = "r-bp1rkfthkdyc2z2ghq.redis.rds.aliyuncs.com";
+        ///  int port = 6379;
+        ///  pool = new JedisPool(config, host, port);
     }
 
     @Override

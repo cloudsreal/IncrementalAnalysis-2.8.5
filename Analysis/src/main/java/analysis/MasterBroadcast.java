@@ -16,6 +16,7 @@ public class MasterBroadcast extends MasterCompute
 {
     // public static String entry = "hdfs://localhost:8000/cache_entrys/entry";
     public static String conf_path = "hdfs://localhost:8000/client/analysis_conf";
+    /// public static String conf_path = "hdfs://master-1-1.c-11cc17c11851bf17.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf";
 
     public InputStreamReader readHDFS(String path) throws IOException
     {

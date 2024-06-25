@@ -28,6 +28,10 @@ import redis.clients.jedis.JedisPoolConfig;
 public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, ReachVertexValue, ReachEdgeValue> {
     private static final Pattern SEPARATOR = Pattern.compile("\t");
     public static JedisPool pool = new JedisPool("localhost", 6379);
+    
+    /// String host = "r-bp1rkfthkdyc2z2ghq.redis.rds.aliyuncs.com";
+    /// int port = 6379;
+    /// JedisPool pool = new JedisPool(config, host, port);
 
     @Override
     public TextVertexInputFormat<IntWritable, ReachVertexValue, ReachEdgeValue>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException

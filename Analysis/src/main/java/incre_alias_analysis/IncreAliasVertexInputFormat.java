@@ -29,14 +29,17 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
   @Override
   public TextVertexInputFormat<IntWritable, AliasVertexValue, NullWritable>.TextVertexReader createVertexReader(
       InputSplit split, TaskAttemptContext context) throws IOException {
-    config.setMaxTotal(100);
-    config.setMaxIdle(10); 
-    config.setMaxWaitMillis(50 * 1000);
-    config.setTestOnBorrow(true);
-    config.setTestOnReturn(true);
-    config.setTestWhileIdle(true);
-    pool = new JedisPool(config, "localhost", 6379);
-    return new AliasVertexReader();
+      config.setMaxTotal(300);
+      config.setMaxIdle(200); //最大空闲连接数
+      config.setMaxWaitMillis(50 * 1000); //获取Jedis连接的最大等待时间（50秒）
+      config.setTestOnBorrow(true); //在获取Jedis连接时，自动检验连接是否可用
+      config.setTestOnReturn(true);  //在将连接放回池中前，自动检验连接是否有效
+      config.setTestWhileIdle(true);  //自动测试池中的空闲连接是否都是可用连接
+        pool = new JedisPool(config, "localhost", 6379);
+//      String host = "r-bp1zmxl3k5ypxoho2d.redis.rds.aliyuncs.com";
+//      int port = 6379;
+//      pool = new JedisPool(config, host, port);
+      return new AliasVertexReader();
   }
 
   public class AliasVertexReader extends TextVertexReaderFromEachLineProcessed<String[]> {

@@ -24,18 +24,20 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
 
     private static final Pattern SEPARATOR = Pattern.compile("\t");
     JedisPoolConfig config = new JedisPoolConfig();
-    public static JedisPool pool; 
+    public static JedisPool pool = null;
 
     @Override
     public TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
     {
-        config.setMaxTotal(1000);
-        config.setMaxIdle(10); //最大空闲连接数
+        config.setMaxTotal(300);
+        config.setMaxIdle(200); //最大空闲连接数
         config.setMaxWaitMillis(50 * 1000); //获取Jedis连接的最大等待时间（50秒）
-        config.setTestOnBorrow(true); //在获取Jedis连接时，自动检验连接是否可用
-        config.setTestOnReturn(true);  //在将连接放回池中前，自动检验连接是否有效
-        config.setTestWhileIdle(true);  //自动测试池中的空闲连接是否都是可用连接
+        config.setTestOnBorrow(false);
+        config.setTestOnReturn(false);
         pool = new JedisPool(config, "localhost", 6379);
+//        String host = "r-bp1zmxl3k5ypxoho2d.redis.rds.aliyuncs.com";
+//        int port = 6379;
+//        pool = new JedisPool(config, host, port);
         return new IncreCacheVertexReader();
     }
 
@@ -67,6 +69,11 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
             try {
                 fact_jedis = pool.getResource();
                 fact_str = fact_jedis.get(tokens[0]+"f");
+                if(fact_str != null){
+                    CommonWrite.method2("\nId:" + tokens[0] + " " + fact_str);
+                } else {
+                    CommonWrite.method2("\nId:" + tokens[0] + " : null");
+                }
             } catch (Exception e) {
                 /// LOGGER.error("jedis set error:", e);
                 System.out.println("jedis set error: STEP preprocessing output");

@@ -52,7 +52,7 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
     @Override
     protected IntWritable getId(String[] tokens) {
       int id = Integer.parseInt(tokens[0]);
-      CommonWrite.method2("\nId:" + tokens[0]);
+//      CommonWrite.method2("\nId:" + tokens[0]);
       return new IntWritable(id);
     }
 
@@ -76,7 +76,7 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
             if (null != value_jedis)
                 value_jedis.close(); // release resouce to the pool
             else{
-                CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
+//                CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
             }
         }
 
@@ -122,7 +122,7 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
                 if (null != stmt_jedis)
                     stmt_jedis.close(); // release resouce to the pool
                 else {
-                    CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
+//                    CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
                 }
             }
             aliasVertexValue.setStmts(stmt_str);

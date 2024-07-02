@@ -41,10 +41,10 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     if (getSuperstep() == 0) {
       ///entry = getBroadcast("entry");
       /// if(entry.getValues().contains(vertex.getId().get())) {
-      CommonWrite.method2("\nstep" + getSuperstep() + " Id:" + vertex.getId().get() + ", S: " + vertex.getValue().getStmtList());
+//      CommonWrite.method2("\nstep" + getSuperstep() + " Id:" + vertex.getId().get() + ", S: " + vertex.getValue().getStmtList());
 
       if(vertex.getValue().isEntry()) {
-        CommonWrite.method2("\nId:\t"+vertex.getId().toString() + " is entry");
+//        CommonWrite.method2("\nId:\t"+vertex.getId().toString() + " is entry");
         Fact in_fact = vertex.getValue().getFact();
         if(in_fact == null){
           /// vertex.getValue().setFact(new CacheState());
@@ -53,7 +53,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
         vertex.getValue().setPropagate(true);
 //        if(node \in PU && node not in UA)
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
-        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+out_fact.toString());
+//        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+out_fact.toString());
         for(Edge<IntWritable, E> edge : vertex.getEdges()) {
           msg.setVertexID(vertex.getId());
           msg.setExtra(vertex.getValue());
@@ -78,7 +78,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
           if (null != jedis)
             jedis.close(); // release resouce to the pool
           else{
-            CommonWrite.method2("\nId:" + vertex.getId().get() + ", jedis is null");
+//            CommonWrite.method2("\nId:" + vertex.getId().get() + ", jedis is null");
           }
         }
         vertex.getValue().setStmts(tool.convert(stmt_str, false));
@@ -100,7 +100,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
 
 //        CommonWrite.method2("\nstep" + getSuperstep() + ", Id:\t"+vertex.getId().toString());
 
-        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+ out_new_fact.toString());
+//        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+ out_new_fact.toString());
 
         if (canPropagate) {
           vertex.getValue().setPropagate(true);

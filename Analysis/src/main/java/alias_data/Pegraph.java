@@ -37,7 +37,7 @@ public class Pegraph extends Fact{
     int k = idx;
       k++;
       int size = Integer.parseInt(tokens[k]);
-      CommonWrite.method2("PEG size:\t"+ String.valueOf(size));
+//      CommonWrite.method2("PEG size:\t"+ String.valueOf(size));
       k++;
       while(size > 0){
         Integer key = Integer.parseInt(tokens[k]);
@@ -45,7 +45,7 @@ public class Pegraph extends Fact{
         EdgeArray edgeArray = new EdgeArray(tokens, k);
         graph.put(key, edgeArray);
         k = k + 2 + edgeArray.getSize() + edgeArray.getSize();
-        CommonWrite.method2("key:\t"+ String.valueOf(key) + "\t"+ edgeArray.getSize());
+//        CommonWrite.method2("key:\t"+ String.valueOf(key) + "\t"+ edgeArray.getSize());
         size--;
       }
   }

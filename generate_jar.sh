@@ -19,4 +19,4 @@ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../incre_alias_analysis/*.cla
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../alias_data/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../alias_stmt/*.class
 
-cp giraph-examples-1.4.0-SNAPSHOT-shaded.jar /Users/zhangyujin/Desktop/jar
+cp giraph-examples-1.4.0-SNAPSHOT-shaded.jar /Users/zhangyujin/Desktop/local-jar

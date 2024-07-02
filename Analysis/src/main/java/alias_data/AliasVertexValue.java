@@ -37,10 +37,10 @@ public class AliasVertexValue extends VertexValue{
     graphStore = null;
     fact = null;
     /// this.propagate = propagate;
-    CommonWrite.method2("GS:\t" + gsStr);
+//    CommonWrite.method2("GS:\t" + gsStr);
     setGraphStore(gsStr);
     setPegraph(pegStr);
-    CommonWrite.method2("F:\t" + pegtoString());
+//    CommonWrite.method2("F:\t" + pegtoString());
     this.entry = entry;
   }
 
@@ -48,7 +48,7 @@ public class AliasVertexValue extends VertexValue{
     stmts = null;
     graphStore = null;
     fact = null;
-    CommonWrite.method2("GS:\t" + gsStr);
+//    CommonWrite.method2("GS:\t" + gsStr);
     /// this.propagate = propagate;
     setGraphStore(gsStr);
     this.entry = entry;
@@ -57,7 +57,7 @@ public class AliasVertexValue extends VertexValue{
   public void setStmts(String text){
     Scanner sc = new Scanner(text);
     stmts = new AliasStmts(sc);
-    CommonWrite.method2( stmtstoString());
+//    CommonWrite.method2( stmtstoString());
   }
 
   public AStmt getStmt() {
@@ -74,7 +74,7 @@ public class AliasVertexValue extends VertexValue{
 
   public void setGraphStore(String text) {
     /// this.graphStore = graphStore;
-    CommonWrite.method2("<--->setGraphStore");
+//    CommonWrite.method2("<--->setGraphStore");
     Pattern SEPARATOR = Pattern.compile("\t");
     String[] tokens = SEPARATOR.split(text);
 
@@ -115,7 +115,7 @@ public class AliasVertexValue extends VertexValue{
 
 
   public void setPegraph(String text) {
-    CommonWrite.method2("<--->setPegraph");
+//    CommonWrite.method2("<--->setPegraph");
     Pattern SEPARATOR = Pattern.compile("\t");
     String[] tokens = SEPARATOR.split(text);
 

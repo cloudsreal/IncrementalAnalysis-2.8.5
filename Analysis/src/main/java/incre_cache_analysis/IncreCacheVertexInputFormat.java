@@ -66,17 +66,11 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
             CacheVertexValue cacheVertexValue;
 
             if(nFlag){ // UN
-
                 String fact_str = null;
                 Jedis fact_jedis = null;
                 try {
                     fact_jedis = pool.getResource();
                     fact_str = fact_jedis.get(tokens[0]+"f");
-//                    if(fact_str != null){
-////                        CommonWrite.method2("\nId:" + tokens[0] + " " + fact_str);
-//                    } else {
-////                        CommonWrite.method2("\nId:" + tokens[0] + " : null");
-//                    }
                 } catch (Exception e) {
                     /// LOGGER.error("jedis set error:", e);
                     System.out.println("jedis set error: STEP preprocessing output");
@@ -87,11 +81,10 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
 //                        CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
                     }
                 }
-
-                if(fact_str == null || fact_str.isEmpty() || fact_str.charAt(0) == '0' ){ // case : 1) new added node, only stmt in redis 2) Fact: 0
+                if(fact_str == null || fact_str.isEmpty() || fact_str.charAt(3) == '0' ){ // case : 1) new added node, only stmt in redis 2) Fact: 0
                     cacheVertexValue = new CacheVertexValue(eFlag);
                 } else { // case : PU or node influenced by new added node/edge, get fact in redis
-                    cacheVertexValue = new CacheVertexValue(fact_str.substring(2), eFlag);
+                    cacheVertexValue = new CacheVertexValue(fact_str.substring(5), eFlag); //S:\t1\t...
                 }
             } else {
                 cacheVertexValue = new CacheVertexValue(eFlag);

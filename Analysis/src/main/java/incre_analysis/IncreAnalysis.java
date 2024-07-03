@@ -18,7 +18,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
   public Tool tool = null;
   public Fact fact = null;
   public M msg  = null;
-  public static SetWritable entry = null;
+//  public static SetWritable entry = null;
 
   public void setAnalysisConf(){
     // TODO for initialize tool. fact/msg type according to specific dataflow analysis

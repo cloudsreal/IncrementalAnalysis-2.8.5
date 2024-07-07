@@ -1,9 +1,7 @@
 package alias_data;
 
 import alias_stmt.AStmt;
-import cache_data.CacheIRs;
-import data.CommonWrite;
-import data.VertexValue;
+import data_incre.VertexValue;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Writable;
@@ -133,37 +131,35 @@ public class AliasVertexValue extends VertexValue{
      return strBuilder.toString();
    }
 
-//   public String gstoretoString() {
-//     StringBuilder strBuilder = new StringBuilder();
-//     if(graphStore != null){
-//
-//       strBuilder.append("GS:\t1\t").append(graphStore.size()).append("\t");
-//       for (Map.Entry<Writable, Writable> item: graphStore.entrySet()){
-//          strBuilder.append(item.getKey()).append("\t");
-//          strBuilder.append(((NodeTuple)item.getValue()).nodetupleToString());
-//       }
-//     }
-//     else{
-//       /// strBuilder.append("GS0\t");
-//       strBuilder.append("GS:\t0\t");
-//     }
-//     /// Wait for implementation
-//     return strBuilder.toString();
-//   }
+  public String gstoretoString() {
+    StringBuilder strBuilder = new StringBuilder();
+    if(graphStore != null){
+      strBuilder.append("GS:1\t").append(graphStore.size()).append("\t");
+      for (Map.Entry<Writable, Writable> item: graphStore.entrySet()){
+        // strBuilder.append("k").append(item.getKey()).append("-");
+        strBuilder.append(item.getKey()).append("\t");
+        strBuilder.append(((NodeTuple)item.getValue()).nodetupleToString());
+      }
+    }
+    else{
+      strBuilder.append("GS:0\t");
+    }
+    /// Wait for implementation
+    return strBuilder.toString();
+  }
 
   public String pegtoString() {
     StringBuilder strBuilder = new StringBuilder();
     /// Wait for implementation
     if(fact != null){
       strBuilder.append("F:1\t");
-      strBuilder.append(((Pegraph)fact).toString()).append("\t");
+      strBuilder.append(((Pegraph)fact).graphtoString()).append("\t");
     }
     else{
       strBuilder.append("F:0");
     }
     return strBuilder.toString();
   }
-
 
   // public void stringToPeg(String[] token) {
   //   StringBuilder strBuilder = new StringBuilder();

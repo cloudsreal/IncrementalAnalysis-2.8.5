@@ -1,7 +1,6 @@
 package alias_data;
 
-import data.CommonWrite;
-import data.Fact;
+import data_incre.Fact;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -17,19 +16,15 @@ public class Pegraph extends Fact{
     this.graph = new HashMap<>();
   }
 
-
-  // public String graphtoString(){
-  //   StringBuilder strBuilder = new StringBuilder();
-  //   strBuilder.append(graph.size()).append("\t");
-  //   for (Map.Entry<Integer, EdgeArray> entry : graph.entrySet()) {
-  //     // dataOutput.writeInt(entry.getKey());
-  //     // entry.getValue().write(dataOutput);
-  //     strBuilder.append(entry.getKey()).append("\t");
-  //     strBuilder.append(entry.getValue().toString());
-  //   }
-  //   return strBuilder.toString();
-  // }
-
+  public String graphtoString(){
+      StringBuilder strBuilder = new StringBuilder();
+      strBuilder.append(graph.size()).append("\t");
+      for (Map.Entry<Integer, EdgeArray> entry : graph.entrySet()) {
+          strBuilder.append(entry.getKey()).append("\t");
+          strBuilder.append(entry.getValue().toString());
+      }
+      return strBuilder.toString();
+  }
 
   public Pegraph(String[] tokens, int idx){
     this.graph = new HashMap<>();

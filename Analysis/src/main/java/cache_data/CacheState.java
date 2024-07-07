@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
-import data.Fact;
-import data.CommonWrite;
+import data_incre.Fact;
+
 import java.util.regex.Pattern;
 
 public class CacheState extends Fact {
@@ -205,5 +205,22 @@ public class CacheState extends Fact {
 
   public String toString() {
     return String.valueOf(this.size());
+  }
+
+  public String statetoString() {
+
+    StringBuilder stateStr = new StringBuilder();
+
+    if(IRs_Icache != null){
+      stateStr.append("1\t");
+      for (int i = 0; i < 128; i++) {
+        HashMap<Integer, Integer> hashMap = (HashMap<Integer, Integer>) IRs_Icache[i];
+        stateStr.append(hashMap.size()).append("\t");
+        for (Map.Entry<Integer, Integer> tmp : hashMap.entrySet()) {
+          stateStr.append(tmp.getKey()).append("\t").append(tmp.getValue()).append("\t");
+        }
+      }
+    }
+    return stateStr.toString();
   }
 }

@@ -4,8 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import cache_data.CacheState;
-import data.Msg;
+import data_incre.Msg;
 
 public class CacheMsg extends Msg{
 

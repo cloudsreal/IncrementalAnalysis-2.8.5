@@ -1,11 +1,9 @@
 package cache_data;
 
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import data.*;
-import cache_data.*;
+import data_incre.*;
 
 public class CacheTool implements Tool<CacheMsg> {
 

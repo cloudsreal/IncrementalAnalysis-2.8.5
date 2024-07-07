@@ -43,6 +43,14 @@ public class CalleefptrAStmt extends AStmt {
     return 1;
   }
 
+  
+  @Override
+  public String to_string(){
+      StringBuilder strBuilder = new StringBuilder();
+      strBuilder.append(dst).append("\t");
+      return strBuilder.toString();
+  }
+
 	@Override
     public void readString(String[] token, int idx) {
 		dst = Integer.parseInt(token[idx]);

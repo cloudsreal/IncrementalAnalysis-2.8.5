@@ -1,6 +1,5 @@
 package incre_analysis;
 
-import incre_alias_analysis.IncreAliasWorkerContext;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.graph.BasicComputation;
 import org.apache.giraph.graph.Vertex;
@@ -8,11 +7,10 @@ import org.apache.hadoop.io.IntWritable;
 
 import java.lang.Iterable;
 
-import data.*;
+import data_incre.*;
 import org.apache.hadoop.io.Writable;
 
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends Msg> extends BasicComputation<IntWritable, V , E, M> {
   public Tool tool = null;

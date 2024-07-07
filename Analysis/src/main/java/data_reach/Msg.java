@@ -1,4 +1,4 @@
-package data;
+package data_reach;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Writable;

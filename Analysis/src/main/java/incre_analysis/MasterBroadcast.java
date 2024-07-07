@@ -10,14 +10,14 @@ import org.apache.hadoop.fs.Path;
 import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import data.SetWritable;
+import data_incre.SetWritable;
 
 public class MasterBroadcast extends MasterCompute
 {
     // public static String entry = "hdfs://localhost:8000/cache_entrys/entry";
     public static String conf_path = "hdfs://localhost:8000/client/analysis_conf";
     /// @szw, configuration according to Ali EMR
-//    public static String conf_path = "hdfs://master-1-1.c-db548736175e8161.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf";
+//    public static String conf_path = "hdfs://master-1-1.c-7bf53ed244100449.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf";
 
 
     public InputStreamReader readHDFS(String path) throws IOException

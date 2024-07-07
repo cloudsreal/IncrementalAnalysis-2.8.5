@@ -1,7 +1,7 @@
 package alias_data;
 
 import alias_stmt.*;
-import data.StmtList;
+import data_incre.StmtList;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -27,6 +27,54 @@ public class AliasStmts extends StmtList{
     stmts = new AStmt[1];
     /// stmts[0] = AliasTool.newStmt(sc);
     readStmt(tokens, idx);
+  }
+
+  public String to_string() {
+    StringBuilder strBuilder = new StringBuilder();
+    AStmt astmt = (AStmt)stmts[0];
+    switch (astmt.getStmt()) {
+      case Assign:
+        strBuilder.append("1\t");
+        break;
+      case Load:
+        strBuilder.append("2\t");
+        break;
+      case Store:
+        strBuilder.append("3\t");
+        break;
+      case Alloca:
+        strBuilder.append("4\t");
+        break;
+      case Phi:
+        strBuilder.append("5\t");
+        break;
+      case Call:
+        strBuilder.append("6\t");
+        break;
+      case Return:
+        strBuilder.append("7\t");
+        break;
+      case Ret:
+        strBuilder.append("8\t");
+        break;
+      case Skip:
+        strBuilder.append("9\t");
+        break;
+      case Callfptr:
+        strBuilder.append("10\t");
+        break;
+      case Calleefptr:
+        strBuilder.append("11\t");
+        break;
+      case Empty:
+        strBuilder.append("12\t");
+        break;
+      default:
+        System.out.println("write wrong stmt type");
+    }
+    // strBuilder.append(astmt.toString());
+    strBuilder.append(astmt.to_string());
+    return strBuilder.toString();
   }
 
   public void readStmt(String[] tokens, int idx) {

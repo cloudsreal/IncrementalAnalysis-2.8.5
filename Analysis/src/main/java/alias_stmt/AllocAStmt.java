@@ -63,6 +63,15 @@ public class AllocAStmt extends AStmt
   }
 
 	@Override
+	public String to_string(){
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append(src).append("\t");
+		strBuilder.append(dst).append("\t");
+		strBuilder.append(auxiliary).append("\t");
+		return strBuilder.toString();
+	}
+
+	@Override
   public void readString(String[] token, int idx) {
 		src = Integer.parseInt(token[idx]);
 		dst = Integer.parseInt(token[idx + 1]);

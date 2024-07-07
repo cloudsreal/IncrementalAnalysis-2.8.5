@@ -11,10 +11,8 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 import cache_data.CacheVertexValue;
-import data.CommonWrite;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -25,16 +23,16 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
     private static final Pattern SEPARATOR = Pattern.compile("\t");
     JedisPoolConfig config = new JedisPoolConfig();
     public static JedisPool pool = new JedisPool("localhost", 6379);
+//    public static JedisPool pool;
 
     @Override
     public TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
     {
         config.setMaxTotal(300);
         config.setMaxIdle(200); //最大空闲连接数
-//        config.setMaxWaitMillis(50 * 1000); //获取Jedis连接的最大等待时间（50秒）
+        config.setMaxWaitMillis(50 * 1000); //获取Jedis连接的最大等待时间（50秒）
         config.setTestOnBorrow(false);
         config.setTestOnReturn(false);
-//        pool = new JedisPool(config, "localhost", 6379);
 //        String host = "r-bp1zmxl3k5ypxoho2d.redis.rds.aliyuncs.com";
 //        int port = 6379;
 //        pool = new JedisPool(config, host, port);
@@ -51,9 +49,9 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
 
         @Override
         protected IntWritable getId(String[] tokens) {
-          int id = Integer.parseInt(tokens[0]);
-          /// CommonWrite.method2("\nId:" + tokens[0]);
-          return new IntWritable(id);
+            int id = Integer.parseInt(tokens[0]);
+            /// CommonWrite.method2("\nId:" + tokens[0]);
+            return new IntWritable(id);
         }
 
         @Override
@@ -77,9 +75,9 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
                 } finally {
                     if (null != fact_jedis)
                         fact_jedis.close(); // release resouce to the pool
-                    else{
+//                    else{
 //                        CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
-                    }
+//                    }
                 }
                 if(fact_str == null || fact_str.isEmpty() || fact_str.charAt(3) == '0' ){ // case : 1) new added node, only stmt in redis 2) Fact: 0
                     cacheVertexValue = new CacheVertexValue(eFlag);
@@ -101,9 +99,9 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
                 } finally {
                     if (null != stmt_jedis)
                         stmt_jedis.close(); // release resouce to the pool
-                    else {
+//                    else {
 //                        CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
-                    }
+//                    }
                 }
                 cacheVertexValue.setStmts(stmt_str, false);
             }

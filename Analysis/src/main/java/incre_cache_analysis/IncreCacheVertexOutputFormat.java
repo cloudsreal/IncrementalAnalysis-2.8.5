@@ -1,7 +1,6 @@
 package incre_cache_analysis;
 
 import cache_data.CacheTool;
-import org.apache.giraph.edge.Edge;
 import org.apache.giraph.graph.Vertex;
 import org.apache.giraph.io.formats.TextVertexOutputFormat;
 import org.apache.hadoop.io.IntWritable;
@@ -10,14 +9,8 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
-import java.io.*;
-import org.apache.hadoop.conf.Configuration;
-
-import data.Fact;
-import data.Tool;
+import data_incre.Fact;
+import data_incre.Tool;
 import cache_data.CacheState;
 import cache_data.CacheVertexValue;
 
@@ -33,17 +26,16 @@ public class IncreCacheVertexOutputFormat extends TextVertexOutputFormat<IntWrit
         {
             StringBuilder stringBuilder = new StringBuilder();
             Fact fact = vertex.getValue().getFact();
-            stringBuilder.append("id: ").append(vertex.getId()).append(" State: ");
+            stringBuilder.append(vertex.getId()).append("\t");
             if (fact != null) {
                 Tool tool = new CacheTool();
-                fact = tool.transfer(vertex.getValue().getStmtList(), fact);
-                stringBuilder.append((CacheState)fact);
+                Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+                stringBuilder.append((CacheState)out_fact).append("\t"); // item
+                stringBuilder.append("S:\t").append(((CacheState)fact).statetoString()); // in_fact
             }
             else{
-                stringBuilder.append("0");
+                stringBuilder.append("0\tS:\t0");
             }
-            // String s = stringBuilder.toString()+"\n";
-            // appendTerms(s);
             return new Text(stringBuilder.toString());
         }
     }

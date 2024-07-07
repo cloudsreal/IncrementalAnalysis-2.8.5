@@ -5,7 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Scanner;
 
-import data.*;
+import data_incre.*;
 
 public class CacheVertexValue extends VertexValue {
 

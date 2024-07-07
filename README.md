@@ -46,21 +46,22 @@ $ cd hadoop-2.7.2
 4, vi `etc/hadoop/hdfs-site.xml`
 
 ```xml
+
 <configuration>
-  <property>
-    <name>dfs.namenode.name.dir</name>
-    <value>/path/to/your/hadoop-2.7.2/tmp/dfs/namenode</value>
-  </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>/path/to/your/hadoop-2.7.2/tmp/dfs/namenode</value>
+    </property>
 
-  <property>
-    <name>dfs.datanode.data.dir</name>
-    <value>/path/to/your/hadoop-2.7.2/tmp/dfs/datanode</value>
-  </property>
+    <property>
+        <name>dfs.datanode.data_incre.dir</name>
+        <value>/path/to/your/hadoop-2.7.2/tmp/dfs/datanode</value>
+    </property>
 
-  <property>
-    <name>dfs.replication</name>
-    <value>3</value>
-  </property>
+    <property>
+        <name>dfs.replication</name>
+        <value>3</value>
+    </property>
 </configuration>
 ```
 
@@ -147,7 +148,7 @@ $ cd ../sbin/start-all.sh
 $ git clone git@github.com:BigDataflow-system/BigDataflow.git
 ```
 
-2, Interfaces under the `BigDataflow/analysis/src/main/java/data`
+2, Interfaces under the `BigDataflow/analysis/src/main/java/data_incre`
 
 `Fact`: Fact of dataflow analysis. 
 
@@ -182,10 +183,10 @@ $ mv emr-giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHO
 
 # add your analysis class files into the jar
 $ cd target/classes/
-$ cp -r analysis/ data/ your_analysis/ your_data/ jar_directoty/
+$ cp -r analysis/ data_incre/ your_analysis/ your_data/ jar_directoty/
 $ cd jar_directoty/
 $ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./analysis/*.class ; \
-$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./data/*.class ; \
+$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./data_incre/*.class ; \
 $ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./your_analysis/*.class ; \
 $ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./your_data/*.class
 ```
@@ -263,7 +264,7 @@ And there are also some parameters used to fit your own analysis and running env
 
 `-eip`:  the edge input path of specific dataflow analysis
 
-`-wc`  : WorkerContext class, used by the workers to access the global data
+`-wc`  : WorkerContext class, used by the workers to access the global data_incre
 
 `-mc`  : MasterBroadcast Class, used by the master to broadcast the entries of the  CFG
 

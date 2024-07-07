@@ -87,6 +87,17 @@ public class ReturnAStmt extends AStmt
   }
 
 	@Override
+	public String to_string(){
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append(length).append("\t");
+		strBuilder.append(ret).append("\t");
+		for (int i = 0; i < length; i++) {
+			strBuilder.append(args[i]).append("\t");
+		}
+		return strBuilder.toString();
+	}
+
+	@Override
   public void readString(String[] token, int idx) {
 		length = Integer.parseInt(token[idx]);
 		ret = Integer.parseInt(token[idx + 1]);

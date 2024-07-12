@@ -61,6 +61,10 @@ public class VertexValue implements Writable {
         this.stmts = stmts;
     }
 
+    public void setStmts(String text, boolean flag){
+        // wait for implementation
+    }
+
     @Override
     public void write(DataOutput dataOutput) throws IOException {
         // wait for implementation to serialize vertexvalue under specific dataflow analysis

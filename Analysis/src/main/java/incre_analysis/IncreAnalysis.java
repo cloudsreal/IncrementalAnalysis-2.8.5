@@ -79,7 +79,8 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
 //            CommonWrite.method2("\nId:" + vertex.getId().get() + ", jedis is null");
           }
         }
-        vertex.getValue().setStmts(tool.convert(stmt_str, false));
+//        vertex.getValue().setStmts(tool.convert(stmt_str, false));
+        vertex.getValue().setStmts(stmt_str, false);
 //        CommonWrite.method2(vertex.getId().get() + stmt_str + "\n");
       }
 

@@ -180,6 +180,12 @@ public class AliasVertexValue extends VertexValue{
   }
 
   @Override
+  public void setStmts(String text, boolean flag){
+    Scanner sc = new Scanner(text);
+    stmts = new AliasStmts(sc);
+  }
+
+  @Override
   public void write(DataOutput dataOutput) throws IOException {
     if (stmts != null) {
       dataOutput.writeByte(1);

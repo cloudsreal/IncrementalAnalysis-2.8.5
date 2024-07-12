@@ -59,11 +59,11 @@ public class CacheVertexValue extends VertexValue {
     fact = new CacheState(); 
   }
 
+  @Override
   public void setStmts(String text, boolean flag){
     Scanner sc = new Scanner(text);
-    this.stmts = new CacheIRs(sc, flag);
+    stmts = new CacheIRs(sc, flag);
   }
-
 
   public void write(DataOutput out) throws IOException {
     if(stmts != null) {

@@ -55,10 +55,8 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
                 Matcher m = SEPARATOR.matcher(str);
                 if(m.find()){
                     int index = m.start();
-
                     String stmtPart;
                     String factPart;
-
                     if(gsIndex == -1){ //cachedata
                         stmtPart = str.substring(index+1, sIndex).trim();
                         factPart = str.substring(sIndex).trim();
@@ -66,11 +64,16 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
                         stmtPart = str.substring(index+1, gsIndex).trim();
                         factPart = str.substring(gsIndex).trim();
                     }
-
-                    try (Jedis jedis = pool.getResource()) {
+                    Jedis jedis = null;
+                    try {
+                        jedis = pool.getResource();
                         jedis.mset(tokens[0] + "s", stmtPart, tokens[0] + "f", factPart);
                     } catch (Exception e) {
                         /// LOGGER.error("jedis set error:", e);
+                    } finally {
+                        if (null != jedis) {
+                            jedis.close(); // release resource to the pool
+                        }
                     }
                 }
                 return tokens;

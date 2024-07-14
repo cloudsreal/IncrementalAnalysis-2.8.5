@@ -11,14 +11,12 @@ public class VertexValue implements Writable {
     protected Fact fact;
     protected boolean propagate;
     protected boolean entry;
-    protected Tool tool; /// @szw : just for testing
 
     public VertexValue() {
         stmts = null;
         fact = null;
         propagate = false;
         entry = false;
-        tool = null;
     }
     
     public void setFact(Fact fact) {
@@ -26,19 +24,11 @@ public class VertexValue implements Writable {
     }
 
     public void setNewFact() {
-        // wait for implementation
+        // wait for implementation to set Fact in CacheVertexValue/AliasVertexValue
     }
 
     public Fact getFact() {
         return fact;
-    }
-
-    public void setTool(Tool tool) {
-        this.tool = tool;
-    }
-
-    public Tool getTool() {
-        return tool;
     }
 
     public boolean isPropagate() {
@@ -62,7 +52,7 @@ public class VertexValue implements Writable {
     }
 
     public void setStmts(String text, boolean flag){
-        // wait for implementation
+        // wait for implementation to initialize stmts in CacheVertexValue/AliasVertexValue
     }
 
     @Override

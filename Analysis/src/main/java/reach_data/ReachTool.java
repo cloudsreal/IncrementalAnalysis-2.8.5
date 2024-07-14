@@ -4,26 +4,6 @@ public class ReachTool {
 
     public ReachTool(){}
 
-    // public boolean hasPCMsg(Iterable<ReachMsg> messages) {
-    //     for (ReachMsg item : messages) {
-    //         boolean messageType = item.getMsgType();
-    //         if(messageType) {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
-    
-    // public boolean hasPCMsg(Iterable<BooleanWritable> messages) {
-    //     for (BooleanWritable item : messages) {
-    //         boolean messageType = item.get();
-    //         if(messageType) {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
-
     public boolean hasPCMsg(Iterable<ReachMsg> messages, ReachInfo reach_info) {
         for (ReachMsg item : messages) {
             if(!item.isPredMsg()){

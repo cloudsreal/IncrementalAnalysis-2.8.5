@@ -26,23 +26,23 @@ public class IncreAliasVertexOutputFormat extends TextVertexOutputFormat<IntWrit
 //            stringBuilder.append("id: ").append(vertex.getId()).append(" edge sum: ");
             stringBuilder.append(vertex.getId()).append("\t");
             AliasVertexValue value = (AliasVertexValue)vertex.getValue();
-            Fact fact = vertex.getValue().getFact();
-            int sum = 0;
-            if (fact != null) {
-                if(vertex.getValue().getTool() != null){
-                    AliasTool tool = (AliasTool)(vertex.getValue().getTool());
-                    Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
-                    sum = ((Pegraph)out_fact).getNumEdges();
-                    stringBuilder.append(sum).append("\t"); //edge sum
-                 }
-                else{
-                    sum = ((Pegraph)fact).getNumEdges();
-                    stringBuilder.append(sum).append("\t");
-                }
-            }
-            else{
-                stringBuilder.append("0\t");
-            }
+//            Fact fact = vertex.getValue().getFact();
+//            int sum = 0;
+//            if (fact != null) {
+//                if(vertex.getValue().getTool() != null){
+//                    AliasTool tool = (AliasTool)(vertex.getValue().getTool());
+//                    Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+//                    sum = ((Pegraph)out_fact).getNumEdges();
+//                    stringBuilder.append(sum).append("\t"); //edge sum
+//                 }
+//                else{
+//                    sum = ((Pegraph)fact).getNumEdges();
+//                    stringBuilder.append(sum).append("\t");
+//                }
+//            }
+//            else{
+//                stringBuilder.append("0\t");
+//            }
             stringBuilder.append(value.gstoretoString()); // GS
             stringBuilder.append(value.pegtoString()); // S
             return new Text(stringBuilder.toString());

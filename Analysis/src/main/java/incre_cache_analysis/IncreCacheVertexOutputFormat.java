@@ -28,13 +28,14 @@ public class IncreCacheVertexOutputFormat extends TextVertexOutputFormat<IntWrit
             Fact fact = vertex.getValue().getFact();
             stringBuilder.append(vertex.getId()).append("\t");
             if (fact != null) {
-                Tool tool = new CacheTool();
-                Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
-                stringBuilder.append((CacheState)out_fact).append("\t"); // item
+//                Tool tool = new CacheTool();
+//                Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+//                stringBuilder.append((CacheState)out_fact).append("\t"); // item
                 stringBuilder.append("S:\t").append(((CacheState)fact).statetoString()); // in_fact
             }
             else{
-                stringBuilder.append("0\tS:\t0");
+//                stringBuilder.append("0\t");
+                stringBuilder.append("S:\t0");
             }
             return new Text(stringBuilder.toString());
         }

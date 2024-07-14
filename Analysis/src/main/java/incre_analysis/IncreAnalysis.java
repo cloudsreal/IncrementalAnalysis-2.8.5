@@ -37,19 +37,14 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     setAnalysisConf();
 
     if (getSuperstep() == 0) {
-      ///entry = getBroadcast("entry");
-      /// if(entry.getValues().contains(vertex.getId().get())) {
 //      CommonWrite.method2("\nstep" + getSuperstep() + " Id:" + vertex.getId().get() + ", S: " + vertex.getValue().getStmtList());
-
       if(vertex.getValue().isEntry()) {
 //        CommonWrite.method2("\nId:\t"+vertex.getId().toString() + " is entry");
         Fact in_fact = vertex.getValue().getFact();
         if(in_fact == null){
-          /// vertex.getValue().setFact(new CacheState());
           vertex.getValue().setNewFact();
         }
         vertex.getValue().setPropagate(true);
-//        if(node \in PU && node not in UA)
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
 //        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+out_fact.toString());
         for(Edge<IntWritable, E> edge : vertex.getEdges()) {
@@ -62,7 +57,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
       vertex.voteToHalt();
     }
     else {
-      
+      // get stmts from redis
       if(vertex.getValue().getStmtList() == null){
         MyWorkerContext context = getWorkerContext();
         String stmt_str = null;
@@ -79,9 +74,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
 //            CommonWrite.method2("\nId:" + vertex.getId().get() + ", jedis is null");
           }
         }
-//        vertex.getValue().setStmts(tool.convert(stmt_str, false));
         vertex.getValue().setStmts(stmt_str, false);
-//        CommonWrite.method2(vertex.getId().get() + stmt_str + "\n");
       }
 
       if(beActive(messages, vertex.getValue())){

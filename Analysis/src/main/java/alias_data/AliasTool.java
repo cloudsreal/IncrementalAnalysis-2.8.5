@@ -17,11 +17,6 @@ public class AliasTool implements Tool<AliasMsg>{
   public static Grammar grammar;
   public static Singletons singletons;
 
-//   public AliasTool(MyWorkerContext context){
-//     grammar = context.grammar;
-//     singletons = context.singletons;
-//   }
-
   public AliasTool(IncreAliasWorkerContext context){
     grammar = context.grammar;
     singletons = context.singletons;
@@ -1241,11 +1236,11 @@ public class AliasTool implements Tool<AliasMsg>{
     return !newPEG.consistent(oldPEG);
   }
 
-    @Override
-    public StmtList convert(String text, boolean flag) {
-        Scanner sc = new Scanner(text);
-        return new AliasStmts(sc);
-    }
+//    @Override
+//    public StmtList convert(String text, boolean flag) {
+//        Scanner sc = new Scanner(text);
+//        return new AliasStmts(sc);
+//    }
 
     public static long myCompare(int v1, byte l1, int v2, byte l2) {
     return (v1 == v2) ? (l1 - l2) : (v1 - v2);

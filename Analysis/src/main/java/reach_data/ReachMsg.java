@@ -7,6 +7,10 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class ReachMsg implements Writable {
+    // predMsg=true, msgType=true: PA message sent to pred
+    // predMsg=true, msgType=false: PC message sent to pred
+    // predMsg=false, msgType=true: PA message sent to succ
+    // predMsg=false, msgType=false: PC message sent to succ
 
     public boolean predMsg;
     public boolean msgType;

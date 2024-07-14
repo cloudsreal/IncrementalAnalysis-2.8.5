@@ -1,9 +1,12 @@
 package reach_data;
 
+/*
+ReachInfo uses messages to predict vertex type : PU/UN(PA/PC)
+*/
 public class ReachInfo {
-  private boolean entry_flag = false;
-  private boolean pa_flag = false;
-  private boolean pc_flag = false;
+  private boolean entry_flag = false; // entry_flag = true: entry
+  private boolean pa_flag = false; // pa_flag = true: UN(PA/PC)
+  private boolean pc_flag = false; // pc_flag = true: PC;
 
   public ReachInfo(){
 
@@ -27,6 +30,10 @@ public class ReachInfo {
 
   public void setPC(boolean pc_flag) {
       this.pc_flag = pc_flag;
+  }
+
+  public boolean getPC() {
+    return pc_flag;
   }
   
 }

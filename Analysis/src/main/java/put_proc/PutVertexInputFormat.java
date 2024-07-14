@@ -54,10 +54,16 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
                     } else { // alias
                         factPart = str.substring(gsIndex).trim();
                     }
-                    try (Jedis jedis = pool.getResource()) {
+                    Jedis jedis = null;
+                    try {
+                        jedis = pool.getResource();
                         jedis.set(tokens[0] + "f", factPart);
                     } catch (Exception e) {
                         /// LOGGER.error("jedis set error:", e);
+                        System.out.println("jedis set error: STEP preprocessing output");
+                    } finally {
+                        if (null != jedis)
+                            jedis.close(); // release resource to the pool
                     }
                 }
                 return tokens;
@@ -71,19 +77,7 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
 
             @Override
             protected NullWritable getValue(String[] tokens) {
-                // PreVertexValue preVertexValue = new PreVertexValue();
-                // if (Integer.parseInt(tokens[1]) == 1) {
-                //     preVertexValue.setExist(true);
-                // }
-                // if (Integer.parseInt(tokens[2]) == 1) {
-                //     preVertexValue.setFlag(true);
-                // }
-                // for(int i = 3; i < tokens.length; i++)
-                // {
-                //     preVertexValue.addPC(Integer.parseInt(tokens[i]));
-                // }
-                // return preVertexValue;
-								return NullWritable.get();
+                return NullWritable.get();
             }
 
             @Override

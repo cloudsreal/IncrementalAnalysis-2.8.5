@@ -8,26 +8,21 @@ import java.io.IOException;
 
 public class ReachVertexValue implements Writable {
     private boolean entry_flag = false;
+    /*
+    pa_flag = false, pc_flag = false: PU
+    pa_flag = true, pc_flag = false: PA
+    pa_flag = true, pc_flag = true: PC
+    pa_flag = false, pc_flag = true: deleted nodes
+    PA's and PU's old fact can be reused.
+    */
     private boolean pa_flag = false;
     private boolean pc_flag = false;
-    /// private String stmtLine = null;
 
     public ReachVertexValue() {
 
     }
 
     public ReachVertexValue(char type){
-        // stmtLine = null;
-        // pa_flag = false;
-        // pc_flag = false;
-        // if ("a".equalsIgnoreCase(type)) {           // added node
-        //     pa_flag = true;
-        // } else if ("d".equalsIgnoreCase(type)) {    // deleted node
-        //     pc_flag = true;
-        // } else if ("c".equalsIgnoreCase(type)) {    // changed node
-        //     pa_flag = true;
-        //     pc_flag = true;
-        // }
         if (type == 'A') {           // added node
             pa_flag = true;
         } else if (type == 'D') {    // deleted node
@@ -49,14 +44,6 @@ public class ReachVertexValue implements Writable {
     public void setPC(boolean pc_flag) {
         this.pc_flag = pc_flag;
     }
-
-    // public void setStmtLine(String stmtLine) {
-    //     this.stmtLine = stmtLine;
-    // }
-
-    // public String getStmtLine() {
-    //     return stmtLine;
-    // }
 
     public boolean isPA(){
         return pa_flag;
@@ -83,13 +70,6 @@ public class ReachVertexValue implements Writable {
         out.writeBoolean(pa_flag);
         out.writeBoolean(pc_flag);
         out.writeBoolean(entry_flag);
-        // if(stmtLine != null){
-        //     out.writeBoolean(true);
-        //     Text.writeString(out, stmtLine);
-        // }
-        // else{
-        //     out.writeBoolean(false);
-        // }
     }
 
     @Override
@@ -97,12 +77,6 @@ public class ReachVertexValue implements Writable {
         pa_flag = in.readBoolean();
         pc_flag = in.readBoolean();
         entry_flag = in.readBoolean();
-        // if(in.readBoolean()){
-        //     stmtLine = Text.readString(in);
-        // }
-        // else{
-        //     stmtLine = null;
-        // }
     }
 
 }

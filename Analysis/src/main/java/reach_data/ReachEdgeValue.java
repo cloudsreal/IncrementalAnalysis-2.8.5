@@ -12,7 +12,7 @@ public class ReachEdgeValue implements Writable {
     // flag=false, type=false: U
     // flag=false, type=true: I (incoming)
 
-    boolean flag = false; // false for unchange, true for changed
+    boolean flag = false; // false for unchanged, true for changed
     boolean type = false; // true for added, false for deleted
 
     public ReachEdgeValue(){

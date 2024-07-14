@@ -40,7 +40,7 @@ public class IncreAliasAnalysis extends IncreAnalysis<AliasVertexValue, NullWrit
               beActive = true;
               // break;
           }
-          //update special graphstore
+          // update special graphstore
           if(curStmt.getStmt() == TYPE.Return){
               MapWritable oldGraphStore = aliasVertexValue.getGraphStore();
               NodeTuple nodeTuple = new NodeTuple();

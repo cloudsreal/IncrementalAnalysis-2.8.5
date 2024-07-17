@@ -26,6 +26,25 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     // msg = new CacheMsg();
   }
 
+  public String queryRedisforStmts(int vertexId){
+    MyWorkerContext context = getWorkerContext();
+    String stmt_str = null;
+    Jedis jedis = null;
+    try {
+      jedis = context.pool.getResource();
+      stmt_str = jedis.get(vertexId + "s");
+    } catch (Exception e) {
+      System.out.println("jedis set error: STEP preprocessing output");
+    } finally {
+      if (null != jedis)
+        jedis.close(); // release resouce to the pool
+      else{
+        /// CommonWrite.method2("\nId:" + vertex.getId().get() + ", jedis is null");
+      }
+    }
+    return stmt_str;
+  }
+
   public boolean beActive(Iterable<M> messages, VertexValue vertexValue){
     // TODO
     return true;
@@ -59,21 +78,7 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     else {
       // get stmts from redis
       if(vertex.getValue().getStmtList() == null){
-        MyWorkerContext context = getWorkerContext();
-        String stmt_str = null;
-        Jedis jedis = null;
-        try {
-          jedis = context.pool.getResource();
-          stmt_str = jedis.get(vertex.getId().get()+"s");
-        } catch (Exception e) {
-          System.out.println("jedis set error: STEP preprocessing output");
-        } finally {
-          if (null != jedis)
-            jedis.close(); // release resouce to the pool
-          else{
-//            CommonWrite.method2("\nId:" + vertex.getId().get() + ", jedis is null");
-          }
-        }
+        String stmt_str = queryRedisforStmts(vertex.getId().get());
         vertex.getValue().setStmts(stmt_str, false);
       }
 
@@ -91,7 +96,6 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
         boolean canPropagate = tool.propagate(out_old_fact, out_new_fact);
 
 //        CommonWrite.method2("\nstep" + getSuperstep() + ", Id:\t"+vertex.getId().toString());
-
 //        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+ out_new_fact.toString());
 
         if (canPropagate) {

@@ -107,61 +107,6 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
             }
 
             return cacheVertexValue;
-
-//            String value_str = null;
-//            Jedis jedis = null;
-//            try {
-//                jedis = pool.getResource();
-//                value_str = jedis.get(tokens[0]);
-//            } catch (Exception e) {
-//                /// LOGGER.error("jedis set error:", e);
-//                System.out.println("jedis set error: STEP preprocessing output");
-//            } finally {
-//                if (null != jedis)
-//                    jedis.close(); // release resouce to the pool
-//                else{
-//                    CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
-//                }
-//
-//            }
-//
-//            if(value_str == null){
-//                CommonWrite.method2("\nId:" + tokens[0] + " value is null, entry : " + String.valueOf(eFlag));
-//                return null;
-//            }
-//            else{
-//                /// CommonWrite.method2("\nId:" + tokens[0] + ", nFlag: " + String.valueOf(nFlag)
-//                ///                                         + ", eFlag: " + String.valueOf(eFlag));
-//                CommonWrite.method2("\nId:" + tokens[0] + " value: " + value_str);
-//            }
-//
-//            int index = value_str.indexOf('S');
-//            String stmt_str = null;
-//            if(index == -1) // id --> stmt → get only stmt
-//            {
-//                stmt_str = value_str;
-//            }
-//            else{ // id --> stmt+fact → get only stmt
-//                stmt_str = value_str.substring(0, index-1);
-//            }
-//
-//            if(nFlag){ // UA1
-//                if(index == -1){ // case : new added node, only stmt in redis
-//                    return new CacheVertexValue(stmt_str, false, eFlag);
-//                }
-//                else{ // case : PU or node influenced by new added node/edge, get fact in redis
-//                    if(value_str.charAt(index+3) == '1'){
-//                        String fact_str = value_str.substring(index+5); //S:\t1\t...
-//                        return new CacheVertexValue(stmt_str, false, fact_str, eFlag);
-//                    }
-//                    else{
-//                        return new CacheVertexValue(stmt_str, false, eFlag);
-//                    }
-//                }
-//            }
-//            else{ // PC0
-//                return new CacheVertexValue(stmt_str, false, eFlag);
-//            }
         }
 
         @Override

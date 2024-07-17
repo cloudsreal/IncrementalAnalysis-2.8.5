@@ -20,16 +20,16 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
         protected Text convertVertexToLine(Vertex<IntWritable, ReachVertexValue, ReachEdgeValue> vertex)
         {
             ReachVertexValue value = vertex.getValue();
-            if(!value.isPA() && value.isPC()) return null;      // deleted node
-            if(!value.isEntry() && value.isPU()) return null; // not in sub-CFG
+            if(!value.getPA() && value.getPC()) return null;      // deleted node
+            if(!value.getEntry() && value.isPU()) return null; // not in sub-CFG
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(vertex.getId()).append("\t");
-            if(!value.isPC()) { // UA
+            if(!value.getPC()) { // UA
                 stringBuilder.append("1\t");
             } else {
                 stringBuilder.append("0\t");
             }
-            if(value.isEntry()){ // Entry
+            if(value.getEntry()){ // Entry
                 stringBuilder.append("1\t");
             } else {
                 stringBuilder.append("0\t");

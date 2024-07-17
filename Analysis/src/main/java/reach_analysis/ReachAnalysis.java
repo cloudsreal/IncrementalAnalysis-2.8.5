@@ -23,8 +23,7 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
     public void compute(Vertex<IntWritable, ReachVertexValue, ReachEdgeValue> vertex, Iterable<ReachMsg> messages) throws IOException {
         setAnalysisConf();
         /*
-         Step 0: Adding incoming edge
-         Step 1-n: Reachability analysis
+         *   Step 0: Adding incoming edge
          */
         if(getSuperstep() == 0) {
             IntWritable vertexId = vertex.getId();
@@ -35,49 +34,62 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
                 }
             }
         } else if (getSuperstep() == 1) {
+            /*
+             *   Step 1: Initialization of Reachability Analysis :
+             *       changed type of dataflow facts start from the changed nodes and edges
+             */
+
             ReachVertexValue vertexValue = vertex.getValue();
             boolean entry_flag = false;
-            if(vertexValue.isPA() || vertexValue.isPC()) entry_flag = true; // every PA/PC can be entry
+            if(vertexValue.getPA() || vertexValue.getPC())
+                entry_flag = true; // every PA/PC can be entry
+
             for (Edge<IntWritable, ReachEdgeValue> edge : vertex.getEdges()) {
+
                 ReachEdgeValue edgeType = edge.getValue();
+
                 if (edgeType.isIn()){
-                    if(vertexValue.isPA() || vertexValue.isPC()){
-                        // if PA/PC has incoming edges, it cannot be entry
-                        entry_flag = false;
-                        // send PredMsg to its pred
+                    if(vertexValue.getPA() || vertexValue.getPC()){
+                        entry_flag = false; // if PA/PC has incoming edges, it cannot be entry
                         msg.setPredMsg(true);
-                        sendMessage(edge.getTargetVertexId(), msg);
+                        sendMessage(edge.getTargetVertexId(), msg); // send PredMsg to its pred
                     }
                 } else {
-                    // unchanged node and unchanged edge
-                    if(!vertexValue.isPA() && !vertexValue.isPC() && !edgeType.isFlag()) continue;
+                    if(vertexValue.isPU() && !edgeType.isFlag())
+                        continue; // unchanged node and unchanged edge
+
                     msg.setPredMsg(false);
-                    if(vertexValue.isPA() && !vertexValue.isPC()){
-                        // dataflow fact from added node
-                        msg.setMsgType(false);
-                    } else if (vertexValue.isPC()) {
-                        // dataflow fact from deleted edge or changed node
-                        msg.setMsgType(true);
+                    if(vertexValue.getPA() && !vertexValue.getPC()){
+                        msg.setMsgType(false); // changed type of dataflow fact from added node to its succs
+                    } else if (vertexValue.getPC()) {
+                        msg.setMsgType(true); // changed type of dataflow fact from deleted/changed node to its succs
                     } else {
-                        msg.setMsgType(!edgeType.isAdded());
+                        msg.setMsgType(!edgeType.isAdded()); // changed type of dataflow fact according to edge type
                     }
                     sendMessage(edge.getTargetVertexId(), msg);
 
-                    if(edgeType.isDeleted()){
-                        // Remove the deleted edges
-                        vertex.removeEdges(edge.getTargetVertexId());
-                    }
+                    if(edgeType.isDeleted())
+                        vertex.removeEdges(edge.getTargetVertexId()); // Remove all deleted edges
                 }
             }
             vertex.getValue().setEntry(entry_flag);
             vertex.voteToHalt();
         } else {
-            /// ReachVertexValue vertexValue = vertex.getValue();
-            /// boolean pa_flag = true; // UN
-            ReachInfo reach_info = new ReachInfo();
-            boolean pc_flag = tool.hasPCMsg(messages, reach_info);
-            boolean pa_flag = reach_info.getPA();
-            boolean canPropagate = tool.propagate(vertex.getValue(), pa_flag, pc_flag);
+            /*
+             *   Step 2-n: Reachability Analysis
+             */
+
+            if(vertex.getValue().getPC()){
+                // skip changed and deleted nodes, as they have already set entry_flag and no need to propagate vertex type again
+                vertex.voteToHalt();
+                return;
+            }
+
+            ReachVertexValue vertexValue = vertex.getValue();
+            ReachInfo reach_info = new ReachInfo(vertexValue);
+            tool.combine(messages, reach_info);
+            boolean canPropagate = tool.propagate(vertexValue, reach_info);
+
             if (canPropagate) {
 
                 boolean entry_flag = false;
@@ -95,14 +107,11 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
                     }
                 }
 
-                vertex.getValue().setPA(pa_flag);
-                vertex.getValue().setPC(pc_flag);
-                vertex.getValue().setEntry(entry_flag);
+                // notify its succs for updating the changed type of dataflow fact
+                vertex.getValue().setValues(entry_flag, reach_info.getPA(), reach_info.getPC());
                 msg.setPredMsg(false);
-                msg.setMsgType(pc_flag);
-
+                msg.setMsgType(reach_info.getPC());
                 for (Edge<IntWritable, ReachEdgeValue> edge : vertex.getEdges()) {
-                    /// sendMessage(edge.getTargetVertexId(), msg);
                     ReachEdgeValue edgeType = edge.getValue();
                     if(!edgeType.isIn()) {
 //                        CommonWrite.method2(getSuperstep() + ": " + vertex.getId().get() + " " + edge.getTargetVertexId().toString() + " C");

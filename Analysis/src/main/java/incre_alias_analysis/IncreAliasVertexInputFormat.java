@@ -108,68 +108,6 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
         }
 
         return aliasVertexValue;
-
-
-//        String value_str = null;
-//        Jedis jedis = null;
-//        try {
-//            jedis = pool.getResource();
-//            value_str = jedis.get(tokens[0]);
-//        } catch (Exception e) {
-//            /// LOGGER.error("jedis set error:", e);
-//            System.out.println("jedis set error: STEP preprocessing output");
-//        } finally {
-//            if (null != jedis)
-//                jedis.close(); // release resouce to the pool
-//            else{
-//                CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
-//            }
-//        }
-//
-//        if(value_str == null){
-//            CommonWrite.method2("\nId:" + tokens[0] + " value is null, entry : " + String.valueOf(eFlag));
-//            return null;
-//        }
-//        else{
-//            /// CommonWrite.method2("\nId:" + tokens[0] + ", nFlag: " + String.valueOf(nFlag)
-//            ///                                         + ", eFlag: " + String.valueOf(eFlag));
-//            CommonWrite.method2("\nId:" + tokens[0] + " value: " + value_str);
-//        }
-//
-//
-//        int gs_index = value_str.indexOf('G');
-//
-//
-//        // get stmt
-//        String stmt_str = null;
-//        String gs_str = null;
-//        if(gs_index == -1){ // new added node/changed node, only stmt in redis
-//            stmt_str = value_str;
-//            gs_str = "0";
-//        }
-//        else{
-//            stmt_str = value_str.substring(0, gs_index - 1);
-//        }
-//
-//        // get GS + Fact for UA1
-//        if(nFlag){ // UA1 : can use GS and Fact
-//            // get GS
-//            if(gs_index == -1){  // new added node, only stmt in redis
-//                gs_str = "0";
-//                return new AliasVertexValue(stmt_str, gs_str /*gs is "0"*/,eFlag);
-//            }
-//            else{ // id --> stmt+gs+fact
-//                int f_index = value_str.indexOf('F');
-//                gs_str = value_str.substring(gs_index + 3, f_index - 1);
-//                String fact_str = value_str.substring(f_index + 2);
-//                return new AliasVertexValue(stmt_str, gs_str, fact_str, eFlag);
-//            }
-//        }
-//        else{ // PC0
-//            gs_str = "0";
-//            return new AliasVertexValue(stmt_str, gs_str, eFlag);
-//        }
-
     }
 
     @Override

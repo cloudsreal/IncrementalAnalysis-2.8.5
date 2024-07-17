@@ -7,14 +7,24 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class ReachVertexValue implements Writable {
-    private boolean entry_flag = false;
     /*
-    pa_flag = false, pc_flag = false: PU
-    pa_flag = true, pc_flag = false: PA
-    pa_flag = true, pc_flag = true: PC
-    pa_flag = false, pc_flag = true: deleted nodes
-    PA's and PU's old fact can be reused.
-    */
+     *  @ zyj and szw :
+     *   each node can know if it is entry by checking whether its incoming edges exist
+     */
+    private boolean entry_flag = false;
+    /* @ zyj and szw :
+     *   We reprensent the influenced node type of CFG nodes in a compact form as follows:
+     *   1) pa_flag = false, pc_flag = false: PU.
+     *       Default Value
+     *   2) pa_flag = true, pc_flag = false: PA.
+     *       Influenced by only added cases, known by reachability analysis
+     *   3) pa_flag = true, pc_flag = true : PC.
+     *       Influenced by at least deleted or changed cases, known by reachability analysis
+     *   4) pa_flag = false, pc_flag = true: deleted nodes.
+     *       Known at the beginning
+     *
+     *   SUMMARY: PA's and PU's old fact can be reused.
+     */
     private boolean pa_flag = false;
     private boolean pc_flag = false;
 
@@ -33,6 +43,12 @@ public class ReachVertexValue implements Writable {
         }
     }
 
+    public void setValues(boolean entry_flag, boolean pa_flag, boolean pc_flag) {
+        this.entry_flag = entry_flag;
+        this.pa_flag = pa_flag;
+        this.pc_flag = pc_flag;
+    }
+
     public void setEntry(boolean entry_flag) {
         this.entry_flag = entry_flag;
     }
@@ -45,11 +61,11 @@ public class ReachVertexValue implements Writable {
         this.pc_flag = pc_flag;
     }
 
-    public boolean isPA(){
+    public boolean getPA(){
         return pa_flag;
     }
 
-    public boolean isPC(){
+    public boolean getPC(){
         return pc_flag;
     }
 
@@ -61,7 +77,7 @@ public class ReachVertexValue implements Writable {
         return !pa_flag && !pc_flag;
     }
 
-    public boolean isEntry(){
+    public boolean getEntry(){
         return entry_flag;
     }
 

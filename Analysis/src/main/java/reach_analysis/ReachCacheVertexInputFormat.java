@@ -45,7 +45,7 @@ public class ReachCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
             ReachVertexValue vertexValue = new ReachVertexValue(tokens[tokens.length - 1].charAt(0));
 
             int index = tokens.length - 1;
-            if (vertexValue.isPA() || vertexValue.isPC()){
+            if (vertexValue.getPA() || vertexValue.getPC()){
                 index -= 1;
             }
             else{

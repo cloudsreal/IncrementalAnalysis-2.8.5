@@ -25,7 +25,7 @@ public class ReachEdgeOutputFormat extends TextEdgeOutputFormat<IntWritable, Rea
             // return new Text(stringBuilder.toString());
 
             /// if(!sourceValue.isSub()) return null;
-            if((sourceValue.isPC() || sourceValue.isPA()) && edge.getValue().isIn()){
+            if((sourceValue.getPC() || sourceValue.getPA()) && edge.getValue().isIn()){
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append(edge.getTargetVertexId().get()).append("\t");
                 stringBuilder.append(sourceId.get());

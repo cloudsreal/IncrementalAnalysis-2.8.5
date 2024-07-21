@@ -25,21 +25,20 @@ import java.util.regex.Matcher;
 public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, NullWritable, NullWritable> {
 
     private static final Pattern SEPARATOR = Pattern.compile("\t");
-		public static JedisPool pool = new JedisPool("localhost", 6379);
+//		public static JedisPool pool = new JedisPool("localhost", 6379);
         public JedisPoolConfig config = new JedisPoolConfig();
-//        public static JedisPool pool = null;
+        public static JedisPool pool = null;
 
     @Override
     public TextVertexInputFormat<IntWritable, NullWritable, NullWritable>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
     {
-        config.setMaxIdle(200);
-        config.setMaxTotal(300);
+        config.setMaxIdle(2000);
+        config.setMaxTotal(3000);
         config.setTestOnBorrow(false);
         config.setTestOnReturn(false);
-        /// String host = "r-bp1lcicbadtj7j5g76.redis.rds.aliyuncs.com";
-//        String host = "r-bp1rkfthkdyc2z2ghq.redis.rds.aliyuncs.com";
-//        int port = 6379;
-//        pool = new JedisPool(config, host, port);
+        String host = "r-bp1bf7htsdwzpgil6l.redis.rds.aliyuncs.com";
+        int port = 6379;
+        pool = new JedisPool(config, host, port);
         return new PreVertexReader();
     }
 
@@ -87,18 +86,6 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
 
             @Override
             protected NullWritable getValue(String[] tokens) {
-                // PreVertexValue preVertexValue = new PreVertexValue();
-                // if (Integer.parseInt(tokens[1]) == 1) {
-                //     preVertexValue.setExist(true);
-                // }
-                // if (Integer.parseInt(tokens[2]) == 1) {
-                //     preVertexValue.setFlag(true);
-                // }
-                // for(int i = 3; i < tokens.length; i++)
-                // {
-                //     preVertexValue.addPC(Integer.parseInt(tokens[i]));
-                // }
-                // return preVertexValue;
 								return NullWritable.get();
             }
 

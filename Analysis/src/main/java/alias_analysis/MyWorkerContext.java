@@ -61,8 +61,8 @@ public class MyWorkerContext extends WorkerContext {
         try
         {
             // BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
-            BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/client/analysis_conf"));
-            /// BufferedReader pa = new BufferedReader(readHDFS("hdfs://master-1-1.c-11cc17c11851bf17.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
+//            BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/client/analysis_conf"));
+            BufferedReader pa = new BufferedReader(readHDFS("hdfs://master-1-1.c-85fee2f0c4b693c8.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
             pa.readLine();
             singletonPath = pa.readLine();
             grammarPath = pa.readLine();

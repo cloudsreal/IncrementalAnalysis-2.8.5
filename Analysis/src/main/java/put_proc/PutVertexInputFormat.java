@@ -19,9 +19,9 @@ import java.util.regex.Pattern;
 public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, NullWritable, NullWritable> {
 
     private static final Pattern SEPARATOR = Pattern.compile("\t");
-		public static JedisPool pool = new JedisPool("localhost", 6379);
+//		public static JedisPool pool = new JedisPool("localhost", 6379);
         public JedisPoolConfig config = new JedisPoolConfig();
-//        public static JedisPool pool = null;
+        public static JedisPool pool = null;
 
     @Override
     public TextVertexInputFormat<IntWritable, NullWritable, NullWritable>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
@@ -30,9 +30,9 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
         config.setMaxTotal(300);
         config.setTestOnBorrow(false);
         config.setTestOnReturn(false);
-//        String host = "r-bp1rkfthkdyc2z2ghq.redis.rds.aliyuncs.com";
-//        int port = 6379;
-//        pool = new JedisPool(config, host, port);
+        String host = "r-bp1bf7htsdwzpgil6l.redis.rds.aliyuncs.com";
+        int port = 6379;
+        pool = new JedisPool(config, host, port);
         return new PreVertexReader();
     }
 

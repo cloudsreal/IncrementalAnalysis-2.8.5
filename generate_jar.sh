@@ -23,6 +23,6 @@ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../data_reach/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../reach_analysis/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../reach_data/*.class ; \
 
-mv giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHOT-shaded-reach.jar
+mv giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHOT-shaded-reach-5000.jar
 
-cp giraph-examples-1.4.0-SNAPSHOT-shaded-reach.jar /Users/zhangyujin/Desktop/Experiment/jar
+cp giraph-examples-1.4.0-SNAPSHOT-shaded-reach-5000.jar /Users/zhangyujin/Desktop/Experiment/jar

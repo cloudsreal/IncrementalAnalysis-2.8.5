@@ -66,9 +66,9 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
             } else {
                 return vertexValue;
             }
-            StringBuilder stmt = null;
+            StringBuilder stmt = new StringBuilder();
             if (index >= 1) {
-                stmt = new StringBuilder();
+//                stmt = new StringBuilder();
                 for (int i = 1; i < index; i++) {
                     stmt.append(tokens[i]);
                     stmt.append('\t');
@@ -76,32 +76,30 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
                 stmt.append(tokens[index]);
             }
 
-            if (stmt != null) {
-                if (pipeline == null) {
-                    jedis = pool.getResource();
-                    pipeline = jedis.pipelined();
-                }
-                if (vertexValue.isDel()) {
-                    pipeline.del(tokens[0] + "s");
-                    pipeline.del(tokens[0] + "f");
-                } else {
-                    pipeline.set(tokens[0] + "s", stmt.toString());
-                    pipeline.del(tokens[0] + "f");
-                }
-                batchCount++;
-                if (batchCount >= BATCH_SIZE) {
-                    if (pipeline != null) {
-                        try {
-                            pipeline.sync();
-                        } catch (Exception e) {
-                            System.out.println("Pipeline sync error: " + e.getMessage());
-                        } finally {
-                            pipeline.close();
-                            pipeline = null;
-                            jedis.close();
-                            jedis = null;
-                            batchCount = 0;
-                        }
+            if (pipeline == null) {
+                jedis = pool.getResource();
+                pipeline = jedis.pipelined();
+            }
+            if (vertexValue.isDel()) {
+                pipeline.del(tokens[0] + "s");
+                pipeline.del(tokens[0] + "f");
+            } else {
+                pipeline.set(tokens[0] + "s", stmt.toString());
+                pipeline.del(tokens[0] + "f");
+            }
+            batchCount++;
+            if (batchCount >= BATCH_SIZE) {
+                if (pipeline != null) {
+                    try {
+                        pipeline.sync();
+                    } catch (Exception e) {
+                        System.out.println("Pipeline sync error: " + e.getMessage());
+                    } finally {
+                        pipeline.close();
+                        pipeline = null;
+                        jedis.close();
+                        jedis = null;
+                        batchCount = 0;
                     }
                 }
             }

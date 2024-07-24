@@ -23,7 +23,7 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
     private static final Pattern SEPARATOR = Pattern.compile("\t");
 //    public static JedisPool pool = new JedisPool("localhost", 6379);
     public JedisPoolConfig config = new JedisPoolConfig();
-    private static final int BATCH_SIZE = 5000;
+    private static final int BATCH_SIZE = 1000;
     private int batchCount = 0;
     private Pipeline pipeline = null;
     private Jedis jedis = null;

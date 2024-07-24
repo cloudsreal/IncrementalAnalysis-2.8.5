@@ -11,18 +11,18 @@ cd new_jar
 
 mv giraph-examples-1.4.0-SNAPSHOT-shaded-redis.jar giraph-examples-1.4.0-SNAPSHOT-shaded.jar
 
-#jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../alias_data/*.class ; \
-#jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../alias_stmt/*.class ; \
-#jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../cache_data/*.class ; \
-#jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../data_incre/*.class ; \
+jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../alias_data/*.class ; \
+jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../alias_stmt/*.class ; \
+jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../cache_data/*.class ; \
+jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../data_incre/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../data_reach/*.class ; \
-#jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../incre_cache_analysis/*.class ; \
-#jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../incre_analysis/*.class ; \
-#jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../incre_alias_analysis/*.class ; \
-#jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../put_proc/*.class ; \
+jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../incre_cache_analysis/*.class ; \
+jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../incre_analysis/*.class ; \
+jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../incre_alias_analysis/*.class ; \
+jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../put_proc/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../reach_analysis/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../reach_data/*.class ; \
 
-mv giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHOT-shaded-reach-5000.jar
+mv giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHOT-shaded-reach-incre.jar
 
-cp giraph-examples-1.4.0-SNAPSHOT-shaded-reach-5000.jar /Users/zhangyujin/Desktop/Experiment/jar
+cp giraph-examples-1.4.0-SNAPSHOT-shaded-reach-incre.jar /Users/zhangyujin/Desktop/Experiment/jar

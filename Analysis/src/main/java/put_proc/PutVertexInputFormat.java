@@ -16,6 +16,7 @@ import org.python.antlr.op.In;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Pipeline;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -27,7 +28,11 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
     private static final Pattern SEPARATOR = Pattern.compile("\t");
 //		public static JedisPool pool = new JedisPool("localhost", 6379);
         public JedisPoolConfig config = new JedisPoolConfig();
-        public static JedisPool pool = null;
+        private static final int BATCH_SIZE = 1000;
+        private int batchCount = 0;
+        private Pipeline pipeline = null;
+        private Jedis jedis = null;
+        JedisPool pool = null;
 
     @Override
     public TextVertexInputFormat<IntWritable, NullWritable, NullWritable>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
@@ -56,24 +61,45 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
                     int index = m.start();
                     String stmtPart;
                     String factPart;
-                    if(gsIndex == -1){ //cachedata
+                    if(gsIndex == -1){ // cache
                         stmtPart = str.substring(index+1, sIndex).trim();
                         factPart = str.substring(sIndex).trim();
-                    } else {
+                    } else { // alias
                         stmtPart = str.substring(index+1, gsIndex).trim();
                         factPart = str.substring(gsIndex).trim();
                     }
-                    Jedis jedis = null;
-                    try {
+                    if (pipeline == null) {
                         jedis = pool.getResource();
-                        jedis.mset(tokens[0] + "s", stmtPart, tokens[0] + "f", factPart);
-                    } catch (Exception e) {
-                        /// LOGGER.error("jedis set error:", e);
-                    } finally {
-                        if (null != jedis) {
-                            jedis.close(); // release resource to the pool
+                        pipeline = jedis.pipelined();
+                    }
+                    pipeline.mset(tokens[0] + "s", stmtPart, tokens[0] + "f", factPart);
+                    batchCount++;
+                    if (batchCount >= BATCH_SIZE) {
+                        if (pipeline != null) {
+                            try {
+                                pipeline.sync();
+                            } catch (Exception e) {
+                                System.out.println("Pipeline sync error: " + e.getMessage());
+                            } finally {
+                                pipeline.close();
+                                pipeline = null;
+                                jedis.close();
+                                jedis = null;
+                                batchCount = 0;
+                            }
                         }
                     }
+//                    Jedis jedis = null;
+//                    try {
+//                        jedis = pool.getResource();
+//                        jedis.mset(tokens[0] + "s", stmtPart, tokens[0] + "f", factPart);
+//                    } catch (Exception e) {
+//                        /// LOGGER.error("jedis set error:", e);
+//                    } finally {
+//                        if (null != jedis) {
+//                            jedis.close(); // release resource to the pool
+//                        }
+//                    }
                 }
                 return tokens;
             }
@@ -97,8 +123,17 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
 
 						@Override
 						public void close() throws IOException {
-							super.close();
-							pool.close();
+                            super.close();
+                            if (pipeline != null) {
+                                pipeline.sync();
+                                pipeline.close();
+                            }
+                            if (jedis != null) {
+                                jedis.close(); // Return Jedis instance to pool
+                            }
+                            pool.close();
+//							super.close();
+//							pool.close();
 						}
         }
 }

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 public class CommonWrite{
-  public  static String file = "~/wen/zyj_exten/next_console/hadoop-2.8.5/bin/test.txt";
+  public  static String file = "/home/szw/wen/zyj_exten/next_console/hadoop-2.8.5/bin/test.txt";
   
   public static void method2(String conent) {
     BufferedWriter out = null;

@@ -79,6 +79,9 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
       // get stmts from redis
       if(vertex.getValue().getStmtList() == null){
         String stmt_str = queryRedisforStmts(vertex.getId().get());
+        if(stmt_str == null){
+          stmt_str = "";
+        }
         vertex.getValue().setStmts(stmt_str, false);
       }
 

@@ -140,6 +140,7 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
 //                if (null != stmt_jedis)
 //                    stmt_jedis.close(); // release resource to the pool
 //            }
+//            if(stmt_str == null) stmt_str = "";
 //            aliasVertexValue.setStmts(stmt_str);
 //        }
 //

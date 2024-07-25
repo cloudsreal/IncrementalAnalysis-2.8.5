@@ -103,6 +103,7 @@ public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritab
 //                        CommonWrite.method2("\nId:" + tokens[0] + ", jedis is null");
 //                    }
                 }
+                if(stmt_str == null) stmt_str = "";
                 cacheVertexValue.setStmts(stmt_str, false);
             }
 

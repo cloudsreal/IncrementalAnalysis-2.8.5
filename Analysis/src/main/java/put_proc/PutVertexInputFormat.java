@@ -28,7 +28,7 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
     private static final Pattern SEPARATOR = Pattern.compile("\t");
 //		public static JedisPool pool = new JedisPool("localhost", 6379);
         public JedisPoolConfig config = new JedisPoolConfig();
-        private static final int BATCH_SIZE = 1000;
+        private static final int BATCH_SIZE = 500;
         private int batchCount = 0;
         private Pipeline pipeline = null;
         private Jedis jedis = null;
@@ -37,10 +37,13 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
     @Override
     public TextVertexInputFormat<IntWritable, NullWritable, NullWritable>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
     {
-        config.setMaxIdle(2000);
-        config.setMaxTotal(3000);
-        config.setTestOnBorrow(false);
-        config.setTestOnReturn(false);
+        config.setMaxIdle(800);
+        config.setMaxTotal(1000);
+//        config.setTestOnBorrow(false);
+//        config.setTestOnReturn(false);
+        config.setTestOnBorrow(true); // 在借用连接时测试连接有效性
+        config.setTestOnReturn(true); // 在归还连接时测试连接有效性
+        config.setTestWhileIdle(true); // 在空闲时测试连接有效性
         String host = "r-bp1bf7htsdwzpgil6l.redis.rds.aliyuncs.com";
         int port = 6379;
         pool = new JedisPool(config, host, port);

@@ -25,17 +25,19 @@ public class AliasVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             stringBuilder.append(vertex.getId()).append("\t");
 
             AliasVertexValue value = (AliasVertexValue)vertex.getValue();
-            Fact fact = vertex.getValue().getFact();
-            int sum = 0;
-            if (fact != null) {
-                sum = ((Pegraph)fact).getNumEdges();
-                stringBuilder.append(sum);
-            } else {
-                stringBuilder.append("0");
-            }
-//            stringBuilder.append(value.stmtstoString());
-//            stringBuilder.append(value.gstoretoString());
-//            stringBuilder.append(value.pegtoString());
+
+//            Fact fact = vertex.getValue().getFact();
+//            int sum = 0;
+//            if (fact != null) {
+//                sum = ((Pegraph)fact).getNumEdges();
+//                stringBuilder.append(sum);
+//            } else {
+//                stringBuilder.append("0");
+//            }
+
+            stringBuilder.append(value.stmtstoString());
+            stringBuilder.append(value.gstoretoString());
+            stringBuilder.append(value.pegtoString());
 
             // Fact fact = vertex.getValue().getFact();
             // int sum = 0;

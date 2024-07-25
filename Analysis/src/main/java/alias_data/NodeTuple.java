@@ -43,7 +43,10 @@ public class NodeTuple implements Writable{
 
     StringBuilder strBuilder = new StringBuilder();
     // strBuilder.append(stmtlist.toString()).append(",");
-    strBuilder.append(stmtlist.to_string()).append(",");
+//    old
+//    strBuilder.append(stmtlist.to_string()).append(",");
+//    new
+    strBuilder.append(stmtlist.to_string());
     if(pegraph != null){
       strBuilder.append("1\t");
       strBuilder.append(pegraph.graphtoString());

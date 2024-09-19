@@ -7,6 +7,7 @@ alias_stmt/RetAStmt.class
 alias_data/AliasVertexValue.class
 alias_stmt/AllocAStmt.class
 alias_stmt/ReturnAStmt.class
+put_proc/PutVertexValue.class
 analysis/MasterBroadcast.class
 put_proc/PutVertexOutputFormat.class
 alias_analysis/AliasVertexOutputFormat.class

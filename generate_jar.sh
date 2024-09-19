@@ -20,6 +20,6 @@ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../alias_stmt/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../alias_analysis/*.class ; \
 jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ../put_proc/*.class ; \
 
-mv giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHOT-shaded-opt-put.jar
+mv giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHOT-shaded-opt-put-116.jar
 
-cp giraph-examples-1.4.0-SNAPSHOT-shaded-opt-put.jar /Users/zhangyujin/Desktop/Experiment/jar
+cp giraph-examples-1.4.0-SNAPSHOT-shaded-opt-put-116.jar /Users/zhangyujin/Desktop/Experiment/jar

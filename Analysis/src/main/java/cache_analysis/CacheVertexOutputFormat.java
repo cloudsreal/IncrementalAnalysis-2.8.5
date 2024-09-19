@@ -36,7 +36,11 @@ public class CacheVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             CacheIRs irs = vertex.getValue().getCacheIRs();
             /// stringBuilder.append("id: ").append(vertex.getId()).append("\tS:\t");
             stringBuilder.append(vertex.getId() + "\t");
-            stringBuilder.append(irs.toString()).append("\tS:\t");
+
+//            stringBuilder.append(irs.toString()).append("\tS:\t");
+
+            stringBuilder.append("S:\t");
+
             if (fact != null) {
                 /// Tool tool = new CacheTool();
                 /// fact = tool.transfer(vertex.getValue().getStmtList(), fact);

@@ -15,8 +15,7 @@ import data.SetWritable;
 public class MasterBroadcast extends MasterCompute
 {
     // public static String entry = "hdfs://localhost:8000/cache_entrys/entry";
-//    public static String conf_path = "hdfs://localhost:8000/client/analysis_conf";
-    public static String conf_path = "hdfs://master-1-1.c-85fee2f0c4b693c8.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf";
+    public static String conf_path = "hdfs://localhost:8000/client/analysis_conf";
 
     public InputStreamReader readHDFS(String path) throws IOException
     {
@@ -51,6 +50,10 @@ public class MasterBroadcast extends MasterCompute
         // MasterCompute body
         if (getSuperstep() == 0)
         {
+            // File file = new File(Tools.entry);
+            // SetWritable entrys = new SetWritable();
+            // readEntrysLocal(file, entrys);
+
             SetWritable entrys = new SetWritable();
             try {
                 // BufferedReader start = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));

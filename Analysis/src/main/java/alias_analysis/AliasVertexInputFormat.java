@@ -24,36 +24,36 @@ public class AliasVertexInputFormat extends TextVertexInputFormat<IntWritable, A
         return new AliasVertexReader();
     }
 
-        public class AliasVertexReader extends TextVertexReaderFromEachLineProcessed<String[]>
-        {
-            @Override
-            protected String[] preprocessLine(Text line) {
-                String[] tokens = SEPARATOR.split(line.toString());
-                return tokens;
-            }
-
-            @Override
-            protected IntWritable getId(String[] tokens) {
-                int id = Integer.parseInt(tokens[0]);
-                return new IntWritable(id);
-            }
-
-            @Override
-            protected AliasVertexValue getValue(String[] tokens) {
-                StringBuilder stmt = new StringBuilder();
-                for(int i = 1; i < tokens.length - 1; i++)
-                {
-                    stmt.append(tokens[i]);
-                    stmt.append('\t');
-                }
-                stmt.append(tokens[tokens.length - 1]);
-                return new AliasVertexValue(stmt.toString());
-            }
-
-            @Override
-            protected Iterable<Edge<IntWritable, NullWritable>> getEdges(String[] tokens) throws IOException
-            {
-                return ImmutableList.of();
-            }
+    public class AliasVertexReader extends TextVertexReaderFromEachLineProcessed<String[]>
+    {
+        @Override
+        protected String[] preprocessLine(Text line) {
+            String[] tokens = SEPARATOR.split(line.toString());
+            return tokens;
         }
+
+        @Override
+        protected IntWritable getId(String[] tokens) {
+            int id = Integer.parseInt(tokens[0]);
+            return new IntWritable(id);
+        }
+
+        @Override
+        protected AliasVertexValue getValue(String[] tokens) {
+            StringBuilder stmt = new StringBuilder();
+            for(int i = 1; i < tokens.length - 1; i++)
+            {
+                stmt.append(tokens[i]);
+                stmt.append('\t');
+            }
+            stmt.append(tokens[tokens.length - 1]);
+            return new AliasVertexValue(stmt.toString());
+        }
+
+        @Override
+        protected Iterable<Edge<IntWritable, NullWritable>> getEdges(String[] tokens) throws IOException
+        {
+            return ImmutableList.of();
+        }
+    }
 }

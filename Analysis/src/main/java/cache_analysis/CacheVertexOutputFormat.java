@@ -18,7 +18,6 @@ import org.apache.hadoop.conf.Configuration;
 import data.Fact;
 import data.Tool;
 import cache_data.CacheState;
-import cache_data.CacheIRs;
 import cache_data.CacheVertexValue;
 
 public class CacheVertexOutputFormat extends TextVertexOutputFormat<IntWritable, CacheVertexValue, NullWritable> {
@@ -26,6 +25,8 @@ public class CacheVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
     public TextVertexWriter createVertexWriter(TaskAttemptContext context) {
         return new LabelPropagationTextVertexLineWriter();
     }
+
+    
     
     private class LabelPropagationTextVertexLineWriter extends TextVertexWriterToEachLine {
         @Override
@@ -33,16 +34,11 @@ public class CacheVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
         {
             StringBuilder stringBuilder = new StringBuilder();
             Fact fact = vertex.getValue().getFact();
-            CacheIRs irs = vertex.getValue().getCacheIRs();
-            /// stringBuilder.append("id: ").append(vertex.getId()).append("\tS:\t");
-            stringBuilder.append(vertex.getId() + "\t");
-            stringBuilder.append(irs.toString()).append("\tS:\t");
+            stringBuilder.append("id: ").append(vertex.getId()).append(" State: ");
             if (fact != null) {
-                /// Tool tool = new CacheTool();
-                /// fact = tool.transfer(vertex.getValue().getStmtList(), fact);
-                /// stringBuilder.append((CacheState)fact);
-                
-                stringBuilder.append(((CacheState)fact).statetoString());
+//                Tool tool = new CacheTool();
+//                fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+                stringBuilder.append((CacheState)fact);
             }
             else{
                 stringBuilder.append("0");

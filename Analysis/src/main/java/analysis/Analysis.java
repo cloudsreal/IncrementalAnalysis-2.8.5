@@ -11,9 +11,8 @@ import java.util.*;
 import java.lang.Iterable;
 
 import data.*;
-import org.apache.hadoop.io.Writable;
 
-public class Analysis<V extends VertexValue, E extends Writable, M extends Msg> extends BasicComputation<IntWritable, V , E, M> {
+public class Analysis<V extends VertexValue, M extends Msg> extends BasicComputation<IntWritable, V , NullWritable, M> {
   public Tool tool = null;
   public Fact fact = null;
   public M msg  = null;
@@ -24,7 +23,6 @@ public class Analysis<V extends VertexValue, E extends Writable, M extends Msg> 
     // tool = new CacheTool(); 
     // fact = new CacheState(); 
     // msg = new CacheMsg();
-
   }
 
   public boolean beActive(Iterable<M> messages, VertexValue vertexValue){
@@ -33,7 +31,7 @@ public class Analysis<V extends VertexValue, E extends Writable, M extends Msg> 
   }
 
   @Override
-  public void compute(Vertex<IntWritable, V, E> vertex, Iterable<M> messages) {
+  public void compute(Vertex<IntWritable, V, NullWritable> vertex, Iterable<M> messages) {
     setAnalysisConf();
 
     if (getSuperstep() == 0) {
@@ -44,12 +42,9 @@ public class Analysis<V extends VertexValue, E extends Writable, M extends Msg> 
         //initialize new fact
         // fact = new Fact(); // done by setAnalysisConf
         vertex.getValue().setFact(fact);
-        if(vertex.getValue().getTool() == null){
-          vertex.getValue().setTool(tool);
-        }
         // transfer
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
-        for(Edge<IntWritable, E> edge : vertex.getEdges()) {
+        for(Edge<IntWritable, NullWritable> edge : vertex.getEdges()) {
             msg.setVertexID(vertex.getId());
             msg.setExtra(vertex.getValue());
             msg.setFact(out_fact.getNew());
@@ -60,12 +55,8 @@ public class Analysis<V extends VertexValue, E extends Writable, M extends Msg> 
     }
     else {
       if(beActive(messages, vertex.getValue())){
-        // merge based on old incoming fact and current messages to get the new incoming fact
+        // merge based on old incoming fact and curretn messages to get the new incoming fact
         fact = tool.combine(messages, vertex.getValue());
-
-        if(vertex.getValue().getTool() == null){
-          vertex.getValue().setTool(tool);
-        }
 
         // transfer
         Fact out_old_fact = null;
@@ -77,9 +68,9 @@ public class Analysis<V extends VertexValue, E extends Writable, M extends Msg> 
         }
         Fact out_new_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
 
-        // after transfer(in_fact), different in_facts can result in same out_fact,
-        // so omitted, just compare out_facts
-        // if(!fact.consistent(vertex.getValue().getFact())){
+        // after transfer(in_fact), different in_facts can result in same out_fact, 
+        // so omitted, just compare out_facts 
+        // if(!fact.consistent(vertex.getValue().getFact())){ 
         //   vertex.getValue().setFact(fact);
         // }
         
@@ -90,7 +81,7 @@ public class Analysis<V extends VertexValue, E extends Writable, M extends Msg> 
           msg.setVertexID(vertex.getId());
           msg.setExtra(vertex.getValue());
           msg.setFact(out_new_fact.getNew());
-          for(Edge<IntWritable,E> edge : vertex.getEdges()){
+          for(Edge<IntWritable,NullWritable> edge : vertex.getEdges()){
             sendMessage(edge.getTargetVertexId(), msg);
           }
         }

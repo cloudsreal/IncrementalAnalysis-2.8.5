@@ -5,7 +5,6 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 
 import org.apache.hadoop.io.Writable;
 
@@ -65,27 +64,6 @@ public class EdgeArray implements Writable
         for (byte tmp : labels) {
             out.writeByte(tmp);
         }
-    }
-
-    public String toString(){
-        StringBuilder strBuilder = new StringBuilder();
-        
-        strBuilder.append(size).append("\t");
-        strBuilder.append(capacity).append("\t");
-//        for (int tmp : edges) {
-//            strBuilder.append(tmp).append("\t");
-//        }
-//        for (byte tmp : labels) {
-//            strBuilder.append(tmp).append("\t");
-//        }
-        for(int i = 0; i < size; i++){
-            strBuilder.append(edges[i]).append("\t");
-        }
-        for(int i = 0; i < size; i++){
-            strBuilder.append(labels[i]).append("\t");
-        }
-        
-        return strBuilder.toString();
     }
 
     @Override

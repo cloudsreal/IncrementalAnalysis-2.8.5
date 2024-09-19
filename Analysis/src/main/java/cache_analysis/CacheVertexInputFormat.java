@@ -50,7 +50,7 @@ public class CacheVertexInputFormat extends TextVertexInputFormat<IntWritable, C
             if(tokens.length > 1){
                 stmt.append(tokens[tokens.length - 1]);
             }
-            return new CacheVertexValue(stmt.toString(), false);
+            return new CacheVertexValue(stmt.toString());
         }
 
         @Override

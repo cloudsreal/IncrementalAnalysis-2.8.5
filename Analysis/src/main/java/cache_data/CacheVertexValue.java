@@ -14,9 +14,9 @@ public class CacheVertexValue extends VertexValue {
     fact = null;
   }
 
-  public CacheVertexValue(String text, boolean flag) {
+  public CacheVertexValue(String text) {
     Scanner sc = new Scanner(text);
-    stmts = new CacheIRs(sc, flag);
+    stmts = new CacheIRs(sc);
     fact = null;
   }
 

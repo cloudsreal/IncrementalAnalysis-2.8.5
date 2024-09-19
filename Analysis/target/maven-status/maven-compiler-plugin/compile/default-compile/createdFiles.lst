@@ -8,10 +8,7 @@ alias_data/AliasVertexValue.class
 alias_stmt/AllocAStmt.class
 alias_stmt/ReturnAStmt.class
 analysis/MasterBroadcast.class
-put_proc/PutVertexOutputFormat.class
 alias_analysis/AliasVertexOutputFormat.class
-put_proc/PutVertexInputFormat$PreVertexReader.class
-put_proc/PutVertexOutputFormat$1.class
 alias_data/AliasStmts.class
 alias_data/ComputationSet.class
 alias_data/MinHeap.class
@@ -28,12 +25,10 @@ alias_data/ArraysToMerge.class
 alias_analysis/AliasVertexOutputFormat$1.class
 alias_data/EdgeArray.class
 alias_stmt/EmptyAStmt.class
-put_proc/PutEdgeInputFormat.class
 alias_data/ArrayWritable.class
 alias_data/Singletons.class
 alias_analysis/AliasEdgeInputFormat$IntNullTextEdgeReader.class
 analysis/Analysis.class
-put_proc/PutVertexOutputFormat$LabelPropagationTextVertexLineWriter.class
 alias_analysis/MyWorkerContext.class
 alias_stmt/CallfptrAStmt.class
 data/Tool.class
@@ -42,9 +37,7 @@ data/StmtList.class
 alias_stmt/CalleefptrAStmt.class
 cache_data/CacheState.class
 cache_analysis/CacheEdgeInputFormat$IntNullTextEdgeReader.class
-put_proc/PutVertexInputFormat.class
 cache_analysis/CacheEdgeInputFormat.class
-put_proc/PutAnalysis.class
 alias_data/AliasTool.class
 alias_analysis/AliasVertexInputFormat.class
 cache_analysis/CacheVertexOutputFormat$1.class
@@ -52,7 +45,6 @@ alias_stmt/TYPE.class
 data/Fact.class
 data/Stmt.class
 alias_data/MinHeapNode.class
-put_proc/PutEdgeInputFormat$IntNullTextEdgeReader.class
 alias_data/IntArrayWritable.class
 alias_stmt/StoreAStmt.class
 alias_analysis/AliasVertexOutputFormat$LabelPropagationTextVertexLineWriter.class

@@ -18,15 +18,6 @@ public class AStmt extends Stmt<TYPE> implements Writable{
       return out.toString();
   }
 
-  public String to_string()
-  {
-      StringBuilder out = new StringBuilder();
-      out.append("(");
-      toString_sub(out);
-      out.append(")");
-      return out.toString();
-  }
-
   public void toString_sub(StringBuilder str){}
 
   public AStmt decopy(){

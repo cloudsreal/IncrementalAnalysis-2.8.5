@@ -29,7 +29,7 @@ public class CacheState extends Fact {
 
     HashMap<Integer, Integer> IRs_Set = (HashMap<Integer, Integer>) this.IRs_Icache[setNum];
 
-    if (IRs_Set.containsKey(ir)) { //case1:  in the cache set, so is hit
+    if (IRs_Set.containsKey(ir)) {//case1:  in the cache set, so is hit
         flag = 1;
         int CacheLoc = IRs_Set.get(ir);
         int age = CacheLoc % 128;
@@ -180,31 +180,5 @@ public class CacheState extends Fact {
 
   public String toString() {
     return String.valueOf(this.size());
-  }
-
-  public String statetoString() {
-    /// return String.valueOf(this.size());
-
-    StringBuilder stateStr = new StringBuilder();
-
-    if(IRs_Icache != null){
-      /// out.writeBoolean(true);
-      stateStr.append("1\t");
-      for (int i = 0; i < 128; i++) {
-        HashMap<Integer, Integer> hashMap = (HashMap<Integer, Integer>) IRs_Icache[i];
-        /// out.writeInt(hashMap.size());
-        stateStr.append(hashMap.size()).append("\t");
-        for (Map.Entry<Integer, Integer> tmp : hashMap.entrySet()) {
-          /// out.writeInt(tmp.getKey());
-          /// out.writeInt(tmp.getValue());
-          stateStr.append(tmp.getKey()).append("\t").append(tmp.getValue()).append("\t");
-        }
-      }
-    }
-    else{
-      /// out.writeBoolean(false);
-      /// stateStr.append("0");
-    }
-    return stateStr.toString();
   }
 }

@@ -71,29 +71,6 @@ public class CallAStmt extends AStmt
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder strBuilder = new StringBuilder();
-		// strBuilder.append(length).append("\t");
-		// strBuilder.append(ret).append("\t");
-		strBuilder.append("r_" + ret).append("\t");
-		for (int i = 0; i < length; i++) {
-			strBuilder.append("a_" + args[i]).append("\t");
-		}
-		return strBuilder.toString();
-	}
-
-	@Override
-	public String to_string(){
-		StringBuilder strBuilder = new StringBuilder();
-		strBuilder.append(length).append("\t");
-		strBuilder.append(ret).append("\t");
-		for (int i = 0; i < length; i++) {
-			strBuilder.append(args[i]).append("\t");
-		}
-		return strBuilder.toString();
-	}
-
-	@Override
 	public AStmt decopy() {
 		CallAStmt stmt = new CallAStmt();
 		stmt.length = this.length;

@@ -1,3 +1,49 @@
+ 
+
+   
+    
+      
+      
+    
+    
+    
+     
+      
+    
+    
+    
+    
+    
+    
+    
+    
+      
+      
+      
+      
+        
+         
+        
+        
+        
+        
+        
+        
+            
+            
+            
+
+           
+          
+      
+      
+      
+        
+      
+        
+       
+       
+
 package alias_data;
 
 import data_incre.Fact;
@@ -154,6 +200,27 @@ public class Pegraph extends Fact{
         }
     }
     return true;
+  }
+
+
+  // @ new collection function added by szw
+  public String getAliasNumEdges(Grammar grammar){
+    int size_mem_graphitems = 0;
+    int size_val_graphitems = 0;
+    
+    for(Map.Entry<Integer, EdgeArray> entry : graph.entrySet()){
+      byte[] prt_labels = entry.getValue().getLabels();
+      for(int i = 0; i < entry.getValue().getSize(); i++){
+        if(grammar.isMemoryAlias(prt_labels[i]))
+          size_mem_graphitems++;
+        if(grammar.isValueAlias(prt_labels[i]))
+          size_val_graphitems++;
+      }
+    }
+
+    StringBuilder mv_num = new StringBuilder();
+    mv_num.append(size_mem_graphitems).append("\t").append(size_val_graphitems);
+    return mv_num.toString();
   }
 
   @Override

@@ -8,7 +8,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import redis.clients.jedis.JedisPool;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,10 +62,11 @@ public class IncreAliasWorkerContext extends MyWorkerContext {
         String grammarPath = null;
         try
         {
-            // BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
-//            BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/client/analysis_conf"));
+//             BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
+            BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/client/analysis_conf"));
             /// @szw, configuration according to Ali EMR
-            BufferedReader pa = new BufferedReader(readHDFS("hdfs://master-1-1.c-85fee2f0c4b693c8.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
+//            BufferedReader pa = new BufferedReader(readHDFS("hdfs://xxx.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
+
             pa.readLine();
             singletonPath = pa.readLine();
             grammarPath = pa.readLine();

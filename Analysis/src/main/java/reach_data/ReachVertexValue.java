@@ -27,6 +27,7 @@ public class ReachVertexValue implements Writable {
      */
     private boolean pa_flag = false;
     private boolean pc_flag = false;
+    private String stmt_str = null;
 
     public ReachVertexValue() {
 
@@ -42,6 +43,15 @@ public class ReachVertexValue implements Writable {
             pc_flag = true;
         }
     }
+
+    public void setStmt(String stmt_string) {
+        this.stmt_str = stmt_string;
+    }
+
+    public String getStmt(){
+        return stmt_str;
+    }
+
 
     public void setValues(boolean entry_flag, boolean pa_flag, boolean pc_flag) {
         this.entry_flag = entry_flag;
@@ -86,6 +96,16 @@ public class ReachVertexValue implements Writable {
         out.writeBoolean(pa_flag);
         out.writeBoolean(pc_flag);
         out.writeBoolean(entry_flag);
+        if(stmt_str != null){
+            out.writeBoolean(true);
+            // out.writeInt(stmt_str.length()); 
+            // out.writeChars(stmt_str);
+            out.writeBytes(stmt_str+"\n");
+        }
+        else{
+            out.writeBoolean(false);
+        }
+        
     }
 
     @Override
@@ -93,6 +113,16 @@ public class ReachVertexValue implements Writable {
         pa_flag = in.readBoolean();
         pc_flag = in.readBoolean();
         entry_flag = in.readBoolean();
+        if(in.readBoolean()){
+            // int len = in.readInt();
+            // StringBuilder stmt_build = new StringBuilder();
+            // while(len > 0){
+            //     stmt_build.append(in.readChar());
+            //     len--;
+            // }
+            // stmt_str = stmt_build.toString();
+            stmt_str = in.readLine();
+        }
     }
 
 }

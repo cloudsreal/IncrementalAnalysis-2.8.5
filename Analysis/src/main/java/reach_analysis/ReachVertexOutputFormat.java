@@ -34,6 +34,10 @@ public class ReachVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             } else {
                 stringBuilder.append("0\t");
             }
+
+            if(value.getStmt() != null){
+                stringBuilder.append(value.getStmt() + "\t");
+            }
             return new Text(stringBuilder.toString());
         }
     }

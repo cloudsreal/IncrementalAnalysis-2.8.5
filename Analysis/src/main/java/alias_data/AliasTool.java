@@ -1064,6 +1064,24 @@ public class AliasTool implements Tool<AliasMsg>{
 
     vertices_changed.add(x);
 
+    // //add *x into vertices as well
+    // for (int xx : vertices_changed) {
+    //     int numEdgess = out.getNumEdges(xx);
+    //     int[] edgess = out.getEdges(xx);
+    //     byte[] labelss = out.getLabels(xx);
+
+    //     for (int i = 0; i < numEdgess; ++i) {
+    //         if (grammar.isDereference(labelss[i])) {
+    //             vertices_changed.add(edgess[i]);
+    //         }
+
+    //         if (grammar.isDereference_reverse(labelss[i])) {
+    //             vertices_affected.add(edgess[i]);
+    //         }
+    //     }
+    // }
+
+    Set<Integer> extra_set1 = new HashSet<>();
     //add *x into vertices as well
     for (int xx : vertices_changed) {
         int numEdgess = out.getNumEdges(xx);
@@ -1072,7 +1090,9 @@ public class AliasTool implements Tool<AliasMsg>{
 
         for (int i = 0; i < numEdgess; ++i) {
             if (grammar.isDereference(labelss[i])) {
-                vertices_changed.add(edgess[i]);
+                /// @szw annotation
+                /// vertices_changed.add(edgess[i]);
+                extra_set1.add(edgess[i]);
             }
 
             if (grammar.isDereference_reverse(labelss[i])) {
@@ -1080,6 +1100,8 @@ public class AliasTool implements Tool<AliasMsg>{
             }
         }
     }
+    vertices_changed.addAll(extra_set1);
+    extra_set1.clear();
   }
 
   private static boolean is_strong_update_aux(int aux, Pegraph out, Grammar grammar, Singletons singletons) {
@@ -1193,6 +1215,23 @@ public class AliasTool implements Tool<AliasMsg>{
 
     vertices_changed.add(x);
 
+    // //add *x into vertices as well
+    // for (int xx : vertices_changed) {
+    //     int numEdgess = out.getNumEdges(xx);
+    //     int[] edgess = out.getEdges(xx);
+    //     byte[] labelss = out.getLabels(xx);
+
+    //     for (int i = 0; i < numEdgess; ++i) {
+    //         if (grammar.isDereference(labelss[i])) {
+    //             vertices_changed.add(edgess[i]);
+    //         }
+    //         if (grammar.isDereference_reverse(labelss[i])) {
+    //             vertices_affected.add(edgess[i]);
+    //         }
+    //     }
+    // }
+
+    Set<Integer> extra_set1 = new HashSet<>();
     //add *x into vertices as well
     for (int xx : vertices_changed) {
         int numEdgess = out.getNumEdges(xx);
@@ -1201,13 +1240,17 @@ public class AliasTool implements Tool<AliasMsg>{
 
         for (int i = 0; i < numEdgess; ++i) {
             if (grammar.isDereference(labelss[i])) {
-                vertices_changed.add(edgess[i]);
+                /// @szw annotation
+                /// vertices_changed.add(edgess[i]);
+                extra_set1.add(edgess[i]);
             }
             if (grammar.isDereference_reverse(labelss[i])) {
                 vertices_affected.add(edgess[i]);
             }
         }
     }
+    vertices_changed.addAll(extra_set1);
+    extra_set1.clear();
   }
 
   private static void transfer_calleefptr(Pegraph pegraph, CalleefptrAStmt stmt, Grammar grammar, Singletons singletons) {

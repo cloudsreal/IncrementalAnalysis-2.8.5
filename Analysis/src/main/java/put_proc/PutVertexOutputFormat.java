@@ -2,6 +2,7 @@ package put_proc;
 
 import org.apache.giraph.graph.Vertex;
 import org.apache.giraph.io.formats.TextVertexOutputFormat;
+import org.apache.giraph.worker.WorkerContext;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -14,6 +15,7 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 // import pre_data.PreVertexValue;
 // import pre_data.PreState;
 
+import java.util.HashSet;
 
 public class PutVertexOutputFormat extends TextVertexOutputFormat<IntWritable, NullWritable, NullWritable> {
     @Override

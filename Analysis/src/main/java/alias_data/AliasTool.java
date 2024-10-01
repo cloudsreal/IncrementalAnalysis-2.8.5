@@ -2,10 +2,10 @@ package alias_data;
 
 //import alias_analysis.MyWorkerContext;
 import alias_stmt.*;
-import data_incre.Fact;
-import data_incre.StmtList;
-import data_incre.Tool;
-import data_incre.VertexValue;
+import incre_data.Fact;
+import incre_data.StmtList;
+import incre_data.Tool;
+import incre_data.VertexValue;
 import incre_alias_analysis.IncreAliasWorkerContext;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;

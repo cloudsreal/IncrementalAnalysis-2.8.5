@@ -1,4 +1,4 @@
-package data_incre;
+package incre_data;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Writable;

@@ -7,7 +7,7 @@ import org.apache.hadoop.io.IntWritable;
 
 import java.lang.Iterable;
 
-import data_incre.*;
+import incre_data.*;
 import org.apache.hadoop.io.Writable;
 
 public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends Msg> extends BasicComputation<IntWritable, V , E, M> {

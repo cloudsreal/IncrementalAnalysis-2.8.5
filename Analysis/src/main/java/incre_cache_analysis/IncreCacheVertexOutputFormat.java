@@ -1,6 +1,5 @@
 package incre_cache_analysis;
 
-import cache_data.CacheTool;
 import org.apache.giraph.graph.Vertex;
 import org.apache.giraph.io.formats.TextVertexOutputFormat;
 import org.apache.hadoop.io.IntWritable;
@@ -9,8 +8,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 
-import data_incre.Fact;
-import data_incre.Tool;
+import incre_data.Fact;
 import cache_data.CacheState;
 import cache_data.CacheVertexValue;
 

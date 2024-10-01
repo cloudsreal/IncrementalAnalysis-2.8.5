@@ -1,7 +1,7 @@
 package alias_data;
 
 import alias_stmt.AStmt;
-import data_incre.StmtList;
+import incre_data.StmtList;
 import org.apache.hadoop.io.Writable;
 
 import java.io.DataInput;

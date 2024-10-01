@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
-import data_incre.Fact;
+import incre_data.Fact;
 
 import java.util.regex.Pattern;
 

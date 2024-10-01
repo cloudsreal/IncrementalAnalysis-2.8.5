@@ -46,7 +46,7 @@
 
 package alias_data;
 
-import data_incre.Fact;
+import incre_data.Fact;
 
 import java.io.DataInput;
 import java.io.DataOutput;

@@ -1,9 +1,9 @@
 package alias_data;
 
 import alias_stmt.AStmt;
-import data_incre.Msg;
-import data_incre.StmtList;
-import data_incre.VertexValue;
+import incre_data.Msg;
+import incre_data.StmtList;
+import incre_data.VertexValue;
 import org.apache.hadoop.io.IntWritable;
 
 import java.io.DataInput;

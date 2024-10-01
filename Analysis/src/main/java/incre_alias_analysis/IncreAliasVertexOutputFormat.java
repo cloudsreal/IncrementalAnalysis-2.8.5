@@ -1,10 +1,9 @@
 package incre_alias_analysis;
 
-import alias_data.AliasTool;
 import alias_data.AliasVertexValue;
 import alias_data.Grammar;
 import alias_data.Pegraph;
-import data_incre.Fact;
+import incre_data.Fact;
 
 import org.apache.giraph.graph.Vertex;
 import org.apache.giraph.io.formats.TextVertexOutputFormat;

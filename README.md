@@ -9,7 +9,7 @@ As the distributed analysis framework is implemented atop the general distribute
 Versions for use with BigDataflow:
 
 -  jdk version >= 1.8.0.
--  Apache Hadoop >= 2.7.2 , or EMR version >= 3.14.0
+-  Apache Hadoop >= 2.8.5 & Redis >= 5.0.0 , or EMR version >= 3.45.0
 
 Apache Hadoop has three different installation modes: `Standalone`, `Pseudo-distributed`, and `Fully Distributed`.
 
@@ -20,10 +20,11 @@ If you plan to run BigDataflow on the cloud (i.e. in `Fully Distributed` mode), 
 1, Download the Hadoop file.
 
 ```bash
-$ wget https://archive.apache.org/dist/hadoop/common/hadoop-2.7.2/
-$ tar -xzf hadoop-2.7.2.tar.gz
-$ cd hadoop-2.7.2
+$ wget https://archive.apache.org/dist/hadoop/common/hadoop-2.8.5/
+$ tar -xzf hadoop-2.8.5.tar.gz
+$ cd hadoop-2.8.5
 ```
+
 2, vi `/etc/hosts`
 
 ```bash
@@ -32,7 +33,7 @@ $ cd hadoop-2.7.2
 
 3, vi `etc/hadoop/core-site.xml`
 
-**Remember to change the Hadoop path according to your hadoop-2.7.2 installation directory**
+**Remember to change the Hadoop path according to your hadoop-2.8.5 installation directory**
 
 ```xml
 <configuration>
@@ -50,12 +51,12 @@ $ cd hadoop-2.7.2
 <configuration>
     <property>
         <name>dfs.namenode.name.dir</name>
-        <value>/path/to/your/hadoop-2.7.2/tmp/dfs/namenode</value>
+        <value>/path/to/your/hadoop-2.8.5/tmp/dfs/namenode</value>
     </property>
 
     <property>
-        <name>dfs.datanode.data_incre.dir</name>
-        <value>/path/to/your/hadoop-2.7.2/tmp/dfs/datanode</value>
+        <name>dfs.datanode.incre_data.dir</name>
+        <value>/path/to/your/hadoop-2.8.5/tmp/dfs/datanode</value>
     </property>
 
     <property>
@@ -111,7 +112,7 @@ $ cd hadoop-2.7.2
     </property>
     <property>
         <name>mapreduce.application.classpath</name>
-        <value>/path/to/your/hadoop-2.7.2/share/hadoop/giraph/*:/path/to/your/hadoop-2.7.2/share/hadoop/mapreduce/*:/path/to/your/hadoop-2.7.2/share/hadoop/mapreduce/lib/*</value>
+        <value>/path/to/your/hadoop-2.8.5/share/hadoop/giraph/*:/path/to/your/hadoop-2.8.5/share/hadoop/mapreduce/*:/path/to/your/hadoop-2.8.5/share/hadoop/mapreduce/lib/*</value>
     </property>
     <property>
         <name>mapreduce.job.counters.limit</name>
@@ -131,7 +132,7 @@ $ cd hadoop-2.7.2
 7, Format NameNode
 
 ```bash
-$ cd hadoop-2.5.1/bin && hdfs namenode -format
+$ cd hadoop-2.8.5/bin && hdfs namenode -format
 ```
 
 8, Start HDFS and YARN
@@ -139,6 +140,26 @@ $ cd hadoop-2.5.1/bin && hdfs namenode -format
 ```bash
 $ cd ../sbin/start-all.sh
 ```
+
+### Installing Redis in Local Mode
+
+1, Download the Redis file.
+
+```bash
+$ wget https://download.redis.io/releases/redis-5.0.9.tar.gz
+$ tar xzf redis-5.0.9.tar.gz
+$ cd redis-5.0.9
+$ make -j4
+```
+
+2, Test Redis.
+
+```Bash
+$ cd redis-5.0.9/src
+$ ./redis-cli 
+```
+
+In the redis-cli, you can type PING to check if the connection is successful.
 
 ### Implementing the APIs of BigDataflow according to the specific analysis
 
@@ -148,7 +169,7 @@ $ cd ../sbin/start-all.sh
 $ git clone git@github.com:BigDataflow-system/BigDataflow.git
 ```
 
-2, Interfaces under the `BigDataflow/analysis/src/main/java/data_incre`
+2, Interfaces under the `BigDataflow/analysis/src/main/java/incre_data`
 
 `Fact`: Fact of dataflow analysis. 
 
@@ -162,11 +183,11 @@ $ git clone git@github.com:BigDataflow-system/BigDataflow.git
 
 `VertexValue`: Vertex attribute of each vertex in CFG, consisting of its statement list and fact.
 
-3, Interfaces under the `BigDataflow/analysis/src/main/java/analysis`
+3, Interfaces under the `BigDataflow/analysis/src/main/java/incre_analysis`
 
-`Analysis` : The implementation of the optimized distributed worklist algorithm. Users can instantiate the `Msg`, `Fact`, `Tool` by overriding its functions according to their client analysis.
+`IncreAnalysis` : The implementation of the incremental distributed worklist algorithm. Users can instantiate the `Msg`, `Fact`, `Tool` by overriding its functions according to their client analysis.
 
-`MasterBroadcast`: Executed in the master node at the beginning of each superstep, used to broadcast the entries to CFG.
+`MyWorkerContext`: Users can implement methods that executed on each Worker before superstep starts and after superstep ends
 
 4, After implementing the interfaces, compile the code to produce the jar
 
@@ -183,19 +204,23 @@ $ mv emr-giraph-examples-1.4.0-SNAPSHOT-shaded.jar giraph-examples-1.4.0-SNAPSHO
 
 # add your analysis class files into the jar
 $ cd target/classes/
-$ cp -r analysis/ data_incre/ your_analysis/ your_data/ jar_directoty/
+$ cp -r analysis/ incre_data/ your_analysis/ your_data/ jar_directoty/
 $ cd jar_directoty/
+$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./incre_analysis/*.class ; \
+$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./incre_data/*.class ; \
+$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./incre_your_analysis/*.class ; \
+$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./your_data/*.class ;\
 $ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./analysis/*.class ; \
-$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./data_incre/*.class ; \
-$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./your_analysis/*.class ; \
-$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./your_data/*.class
+$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./reach_analysis/*.class ; \
+$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./reach_data/*.class ; \
+$ jar uvf giraph-examples-1.4.0-SNAPSHOT-shaded.jar  ./put_proc/*.class
 ```
 
 5, Put your analysis jar into your corresponding Hadoop directory
 
 ```bash
 # jar directory at local
-$ cp jar_directoty/giraph-examples-1.4.0-SNAPSHOT-shaded.jar /path/to/your/hadoop-2.7.2/share/hadoop/giraph
+$ cp jar_directoty/giraph-examples-1.4.0-SNAPSHOT-shaded.jar /path/to/your/hadoop-2.8.5/share/hadoop/giraph
 
 # jar directory on the cloud
 $ cp jar_directoty/giraph-examples-1.4.0-SNAPSHOT-shaded.jar /opt/apps/extra-jars
@@ -203,15 +228,145 @@ $ cp jar_directoty/giraph-examples-1.4.0-SNAPSHOT-shaded.jar /opt/apps/extra-jar
 
 ### Usage Examples on the Cloud
 
-**Running Alias Analysis**
+There are some parameters used to fit your own analysis and running environment:
+
+`-vif` : the vertex input format of specific dataflow analysis
+
+`-vip` : the vertex input path on HDFS of specific dataflow analysis
+
+`-vof` : the vertex output format of specific dataflow analysis
+
+`-vsd` : the nodes output path on HDFS of specific dataflow analysis
+
+`-eif` : the edge input format of specific dataflow analysis
+
+`-eip` : the edge input path of specific dataflow analysis
+
+`-esd` : the edge output path on HDFS of specific dataflow analysis
+
+`-op`  : the parent directory output path on HDFS for `-vsd` and `-esd` of specific dataflow analysis
+
+`-wc`  : WorkerContext class, used by the workers to access the global incre_data
+
+`-mc`  : MasterBroadcast Class, used by the master to broadcast the entries of the  CFG
+
+`-w `  : number of workers to use for computation
+
+`-ca ` : custom arguments include maximum milliseconds to wait before giving up waiting for the workers and heap memory limits for the workers. For example, if each physical core of one node can not exceed 10GB, then the heap memory is set to 10×1024 = 10240MB.
+
+
+**Put old analysis results to Redis**
+
+1, Test the connection to Redis
+
+```bash
+$ cd  /mnt/disk1/redis-5.0.9/src # where you install redis-5.0.9
+$ ./redis-cli  -h r-xxx.redis.rds.aliyuncs.com -p 6379 # r-xxx.redis.rds.aliyuncs.com refers to a Redis instance hosted on Alibaba Cloud's RDS
+```
+
+2, Prepare the Files and Check the old results on HDFS
+
+```bash
+$ touch edge_empty
+$ hadoop fs -put edge_empty /  # an empty file to save output in this step on HDFS
+$ hadoop fs -ls /alias_opt_res # the old analysis results on HDFS
+```
+
+3, Put old results to Redis
+
+```bash
+i=XX # i is set according to the predicted number of workers
+j=YY # j is set according to the number of workers used in optimized analysis
+
+if hadoop jar /opt/apps/extra-jars/giraph-examples-1.4.0-SNAPSHOT-shaded.jar \
+  org.apache.giraph.GiraphRunner put_proc.PutAnalysis \
+  -vif reach_analysis.ReachVertexInputFormat \
+  -vip /alias_opt_res/CFG_W"$j" \
+  -vof put_proc.PutVertexOutputFormat \
+  -op /alias_put_res/null/CFG_W"$i" \
+  -eip /edge_empty \
+  -w "$i" \
+  -ca giraph.maxCounterWaitMsecs=-1,giraph.yarn.task.heap.mb=14336 \
+  > /alias_put_W"$i"_result.txt 2>&1
+then
+  echo "alias, put------Success"
+else
+  echo "alias, put------Fail"
+fi
+```
+
+
+**Running Reachability Analysis**
+
+We use reachability analysis for alias analysis as an example. For different analysis, you won't need to change the API in reachability analysis, just put the CFG files into related HDFS dir.
+
+1, Prepare the CFG Files for Reachability Analysis
+
+```bash
+# prebuild HDFS dir for Reachability analysis
+$ hadoop fs -mkdir -p /alias_bench/diff_CFG
+
+# put diff-CFG(CFG with a batch of updates) Files on HDFS
+$ hadoop fs -put /alias_bench/diff_CFG/final /alias_graphs/diff_CFG  && \
+hadoop fs -put /alias_bench/diff_CFG/id_stmt_info.txt /alias_graphs/diff_CFG
+
+$ hadoop fs -mv /alias_graphs/diff_CFG/id_stmt_info.txt /alias_graphs/diff_CFG/id_stmt_info
+```
+
+2, Run Reachability Analysis
+
+```bash
+i=XX # i is set according to the predicted number of workers
+startdate=$(date "+%Y-%m-%d %H:%M:%S")
+echo "$startdate"
+
+if hadoop jar /opt/apps/extra-jars/giraph-examples-1.4.0-SNAPSHOT-shaded.jar \
+  org.apache.giraph.GiraphRunner reach_analysis.ReachAnalysis \
+  -vif reach_analysis.ReachVertexInputFormat \
+  -vip /alias_graphs/diff_CFG/id_stmt_info \
+  -vof reach_analysis.ReachVertexOutputFormat \
+  -vsd /alias_reach_res/CFG_W"$i"/nodes \
+  -eif reach_analysis.ReachEdgeInputFormat \
+  -eip /alias_graphs/diff_CFG/final \
+  -eof reach_analysis.ReachEdgeOutputFormat \
+  -esd /alias_reach_res/CFG_W"$i"/edges \
+  -op /alias_reach_res/CFG_W"$i" \
+  -w "$i" \
+  -ca giraph.maxCounterWaitMsecs=-1,giraph.yarn.task.heap.mb=14336 \
+  > /alias_reach_res_CFG_W"$i"_result.txt 2>&1
+then
+  enddate=$(date "+%Y-%m-%d %H:%M:%S")
+  echo "$enddate"
+  echo "$startdate" >> /alias_reach_res_CFG_W"$i"_result.txt 2>&1
+  echo "$enddate" >> /alias_reach_res_CFG_W"$i"_result.txt 2>&1
+  echo "alias, reach------Success"
+else
+  enddate=$(date "+%Y-%m-%d %H:%M:%S")
+  echo "$enddate"
+  echo "$startdate" >> /alias_reach_res_CFG_W"$i"_result.txt 2>&1
+  echo "$enddate" >> /alias_reach_res_CFG_W"$i"_result.txt 2>&1
+  echo "alias, reach------Fail"
+fi
+```
+
+3, Check the results
+
+You can get and check the sub-CFG after executing the following command.
+
+```bash
+# supposed i=100
+$ hadoop fs -getmerge /alias_reach_res/CFG_W100/nodes  alias_reach_res_nodes.res # nodes in sub-CFG is saved to alias_reach_res_nodes.res
+$ hadoop fs -getmerge /alias_reach_res/CFG_W100/edges  alias_reach_res_edges.res # edges in sub-CFG is saves to alias_reach_res_edges.res
+```
+
+**Running Incre Alias Analysis**
 
 1, vi `alias_analysis_conf` for each CFG of a program
 
 If the BigDataflow is run locally, the content of `alias_analysis_conf.CFG` for each CFG is as follows:
 
 ```bash
-hdfs://localhost:8000/alias_bench/CFG/entry
-hdfs://localhost:8000/alias_bench/CFG/singleton
+hdfs://localhost:8000/alias_graphs/CFG/singleton
 hdfs://localhost:8000/grammar
 ```
 
@@ -219,8 +374,7 @@ Else, set the content of `alias_analysis_conf.CFG` as follows if BigDataflow is 
 
 ```bash
 # the `ClusterID` is automatically assigned by the EMR service
-hdfs://emr-header-1.cluster-ClusterID:9000/alias_bench/CFG/entry
-hdfs://emr-header-1.cluster-ClusterID:9000/alias_bench/CFG/singleton
+hdfs://emr-header-1.cluster-ClusterID:9000/alias_graphs/CFG/singleton
 hdfs://emr-header-1.cluster-ClusterID:9000/grammar
 ```
 
@@ -231,81 +385,58 @@ $ ./hadoop fs -put alias_analysis_conf.CFG /client
 $ ./hadoop fs -put /path/to/AliasAnalysis/grammar /
 ```
 
-3, Prepare the CFG Files for Alias Analysis
+3, Prepare the CFG Files for Incre Alias Analysis
+
+Please check the nodes output and edges output in reachability analysis first.
 
 ```bash
-# prebuild HDFS dir for alias analysis
-$ hadoop fs -mkdir -p /alias_bench/CFG
-
-# put alias CFG Files on HDFS  
-$ hadoop fs -put /alias_bench/CFG/var_singleton_info.txt /alias_graphs/CFG && \
-  hadoop fs -put /alias_bench/CFG/new_entry.txt /alias_graphs/CFG  && \
-  hadoop fs -put /alias_bench/CFG/final /alias_graphs/CFG  && \
-  hadoop fs -put /alias_bench/CFG/id_stmt_info.txt /alias_graphs/CFG
-  
-$ hadoop fs -mv /alias_graphs/CFG/var_singleton_info.txt /alias_graphs/CFG/singleton && \
-  hadoop fs -mv /alias_graphs/CFG/new_entry.txt /alias_graphs/CFG/entry   && \
-  hadoop fs -mv /alias_graphs/CFG/id_stmt_info.txt /alias_graphs/CFG/id_stmt_info
+# supposed i=100 in reachability analysis
+$ hadoop fs -getmerge /alias_reach_res/CFG_W100/nodes  alias_reach_res_nodes.res # nodes in sub-CFG is saved to sub_nodes.res
+$ hadoop fs -getmerge /alias_reach_res/CFG_W100/edges  alias_reach_res_edges.res # edges in sub-CFG is saves to sub_edges.res
 ```
 
-4, Run Alias Analysis
+Then execute the following command:
 
-And there are also some parameters used to fit your own analysis and running environment:
+```bash
+# put singleton File for alias analysis on HDFS  
+$ hadoop fs -put /alias_bench/CFG/var_singleton_info.txt /alias_graphs/CFG
+$ hadoop fs -mv /alias_graphs/CFG/var_singleton_info.txt /alias_graphs/CFG/singleton
+```
 
-`-vif` : the vertex input format of specific dataflow analysis
-
-`-vip` : the vertex input path on HDFS of specific dataflow analysis
-
-`-vof` : the vertex output format of specific dataflow analysis
-
-`-op`   : the results' output path of specific dataflow analysis
-
-`-eif` : the edge input format of specific dataflow analysis
-
-`-eip`:  the edge input path of specific dataflow analysis
-
-`-wc`  : WorkerContext class, used by the workers to access the global data_incre
-
-`-mc`  : MasterBroadcast Class, used by the master to broadcast the entries of the  CFG
-
-`-w `    : number of workers to use for computation
-
-`-ca `  : custom arguments include maximum milliseconds to wait before giving up waiting for the workers and heap memory limits for the workers. For example, if each physical core of one node can not exceed 10GB, then the heap memory is set to 10×1024 = 10240MB.
-
-Then, by executing the commands below, the alias analysis is launched.
+4, Run Incre Alias Analysis
 
 ```bash
 $ hadoop fs -mv /client/alias_analysis_conf.CFG /client/analysis_conf
 
 i=XX # i is set according to the predicted number of workers
+j=YY # j is set according to the number of workers used in reachability analysis
 startdate=$(date "+%Y-%m-%d %H:%M:%S")
 echo "$startdate"
 
 if hadoop jar /opt/apps/extra-jars/giraph-examples-1.4.0-SNAPSHOT-shaded.jar \
-  org.apache.giraph.GiraphRunner alias_analysis.AliasAnalysis \
-  -vif alias_analysis.AliasVertexInputFormat \
-  -vip /alias_graphs/CFG/id_stmt_info \
+  org.apache.giraph.GiraphRunner incre_alias_analysis.IncreAliasAnalysis \
+  -vif incre_alias_analysis.IncreAliasVertexInputFormat \
+  -vip /alias_reach_res/CFG_W"$j"/nodes \
   -vof alias_analysis.AliasVertexOutputFormat \
-  -op /alias_res/CFG_W"$i" \
-  -eif alias_analysis.AliasEdgeInputFormat \
-  -eip /alias_graphs/CFG/final \
-  -wc alias_analysis.MyWorkerContext \
-  -mc analysis.MasterBroadcast \
-  -w "$j" \
+  -op /alias_incre_res/CFG_W"$i" \
+  -eif incre_alias_analysis.IncreAliasEdgeInputFormat \
+  -eip /alias_reach_res/CFG_W"$j"/edges \
+  -wc incre_alias_analysis.IncreAliasWorkerContext \
+  -w "$i" \
   -ca giraph.maxCounterWaitMsecs=-1,giraph.yarn.task.heap.mb=14336 \
-  > /alias_CFG_W"$i"_result.txt 2>&1
+  > /alias_incre_res_CFG_W"$i"_result.txt 2>&1
 then
   enddate=$(date "+%Y-%m-%d %H:%M:%S")
   echo "$enddate"
-  echo "$startdate" >> /alias_CFG_W"$i"_result.txt 2>&1
-  echo "$enddate" >> /alias_CFG_W"$i"_result.txt 2>&1
-  echo "alias CFG------Success"
+  echo "$startdate" >> /alias_incre_res_CFG_W"$i"_result.txt 2>&1
+  echo "$enddate" >> /alias_incre_res_CFG_W"$i"_result.txt 2>&1
+  echo "alias, incre------Success"
 else
   enddate=$(date "+%Y-%m-%d %H:%M:%S")
   echo "$enddate"
-  echo "$startdate" >> /alias_CFG_W"$i"_result.txt 2>&1
-  echo "$enddate" >> /alias_CFG_W"$i"_result.txt 2>&1
-  echo "alias CFG------Fail"
+  echo "$startdate" >> /alias_incre_res_CFG_W"$i"_result.txt 2>&1
+  echo "$enddate" >> /alias_incre_res_CFG_W"$i"_result.txt 2>&1
+  echo "alias, incre------Fail"
 fi
 
 $ hadoop fs -mv /client/analysis_conf /client/alias_analysis_conf.CFG 
@@ -313,79 +444,64 @@ $ hadoop fs -mv /client/analysis_conf /client/alias_analysis_conf.CFG
 
 5, Check the results
 
-You can see the results in the file `cache_CFG.res` after executing the following command.
+You can see the results in the file `alias_incre_CFG.res` after executing the following command.
 
 ```bash
 # supposed i=100
-$ hadoop fs -cat /alias_res/CFG_W100/p* > cache_CFG.res
+$ hadoop fs -cat /alias_incre_res/CFG_W100/p* > alias_incre_CFG.res
 ```
 
-**Running Cache Analysis**
+**Running Incre Cache Analysis**
 
-1, vi `cache_analysis_conf`
-
-Similar to alias analysis, the content of `cache_analysis_conf` is as follows.
+1, Check the nodes output and edges output in reachability analysis
 
 ```bash
-# run BigDataflow at local
-hdfs://localhost:8000/cache_entrys/entry
-
-# run BigDataflow on the EMR
-hdfs://emr-header-1.cluster-ClusterID:9000/cache_entrys/entry
+# supposed i=100 in reachability analysis
+$ hadoop fs -getmerge /cache_reach_res/CFG_W100/nodes  cache_reach_res_nodes.res # nodes in sub-CFG is saved to sub_nodes.res
+$ hadoop fs -getmerge /cache_reach_res/CFG_W100/edges  cache_reach_res_edges.res # edges in sub-CFG is saves to sub_edges.res
 ```
 
-2, Prepare the CFG Files for Cache Analysis
+2, Run Cache Analysis
 
 ```bash
-# prebuild HDFS dir for cache analysis
-$ hadoop fs -mkdir -p /cache_bench/CFG
-
-# put cache CFG Files on HDFS 
-$ hadoop fs -put /cache_bench/CFG/entry.txt /cache_entrys
-$ hadoop fs -mv /cache_entrys/entry.txt /cache_entrys/CFG.entry
-
-$ hadoop fs -put /cache_bench/CFG/new-final.txt /cache_graphs/CFG && \
-$ hadoop fs -put /cache_bench/CFG/new-nodes.txt /cache_graphs/CFG
-$ hadoop fs -mv /cache_graphs/CFG/new-nodes.txt /cache_graphs/CFG/new_nodes && \
-$ hadoop fs -mv /cache_graphs/CFG/new-final.txt /cache_graphs/CFG/final
-```
-
-3, Run Cache Analysis
-
-```bash
-$ hadoop fs -mv /client/cache_analysis_conf /client/analysis_conf
-$ hadoop fs -mv /cache_entrys/CFG.entry /cache_entrys/entry
 
 i=XX # i is set according to the predicted number of workers
+j=YY # j is set according to the number of workers used in reachability analysis
 startdate=$(date "+%Y-%m-%d %H:%M:%S")
 echo "$startdate"
 
 $ if hadoop jar /opt/apps/extra-jars/giraph-examples-1.4.0-SNAPSHOT-shaded.jar \
-  org.apache.giraph.GiraphRunner cache_analysis.CacheAnalysis \
-  -vif cache_analysis.CacheVertexInputFormat \
-  -vip /cache_graphs/CFG/new_nodes \
+  org.apache.giraph.GiraphRunner incre_cache_analysis.IncreCacheAnalysis \
+  -vif incre_cache_analysis.IncreCacheVertexInputFormat \
+  -vip /cache_reach_res/CFG_W"$j"/nodes \
   -vof cache_analysis.CacheVertexOutputFormat \
-  -op /cache_res/CFG_W"$i" \
-  -eif cache_analysis.CacheEdgeInputFormat \
-  -eip /cache_graphs/CFG/final \
-  -mc analysis.MasterBroadcast \
+  -op /cache_incre_res/CFG_W"$i" \
+  -eif incre_cache_analysis.IncreCacheEdgeInputFormat \
+  -eip /cache_reach_res/CFG_W"$j"/final \
+  -wc incre_cache_analysis.IncreCacheWorkerContext \
   -w "$i" \
   -ca giraph.maxCounterWaitMsecs=-1,giraph.yarn.task.heap.mb=14336 \
-  > /cache_CFG_W"$i"_result.txt 2>&1
+  > /cache_incre_res_CFG_W"$i"_result.txt 2>&1
 then
    enddate=$(date "+%Y-%m-%d %H:%M:%S")
    echo "$enddate"
-   echo "$startdate" >> /cache_CFG_W"$i"_result.txt 2>&1
-   echo "$enddate" >> /cache_CFG_W"$i"_result.txt 2>&1
-   echo "CFG------Success"
+   echo "$startdate" >> /cache_incre_res_CFG_W"$i"_result.txt 2>&1
+   echo "$enddate" >> /cache_incre_res_CFG_W"$i"_result.txt 2>&1
+   echo "cache, incre------Success"
 else
    enddate=$(date "+%Y-%m-%d %H:%M:%S")
    echo "$enddate"
-   echo "$startdate" >> /cache_CFG_W"$i"_result.txt 2>&1
-   echo "$enddate" >> /cache_CFG_W"$i"_result.txt 2>&1
-   echo "cache CFG------Fail"
+   echo "$startdate" >> /cache_incre_res_CFG_W"$i"_result.txt 2>&1
+   echo "$enddate" >> /cache_incre_res_CFG_W"$i"_result.txt 2>&1
+   echo "cache, incre------Fail"
 fi
+```
 
-$ hadoop fs -mv /cache_entrys/entry /cache_entrys/CFG.entry 
-$ hadoop fs -mv /client/analysis_conf /client/cache_analysis_conf
+3, Check the results
+
+You can see the results in the file `cache_incre_CFG.res` after executing the following command.
+
+```bash
+# supposed i=100
+$ hadoop fs -cat /cache_incre_res/CFG_W100/p* > cache_incre_CFG.res
 ```

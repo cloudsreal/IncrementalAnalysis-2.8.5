@@ -4,7 +4,7 @@ import alias_data.*;
 import alias_stmt.AStmt;
 import alias_stmt.ReturnAStmt;
 import alias_stmt.TYPE;
-import data_incre.VertexValue;
+import incre_data.VertexValue;
 import incre_analysis.IncreAnalysis;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;

@@ -1,7 +1,7 @@
 package alias_data;
 
 import alias_stmt.AStmt;
-import data_incre.VertexValue;
+import incre_data.VertexValue;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Writable;

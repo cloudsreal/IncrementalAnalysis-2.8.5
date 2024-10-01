@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import data_incre.Stmt;
-import data_incre.StmtList;
+import incre_data.Stmt;
+import incre_data.StmtList;
 
 public class CacheIRs extends StmtList{
 

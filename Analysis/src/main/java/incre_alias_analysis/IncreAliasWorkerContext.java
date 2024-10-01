@@ -66,8 +66,7 @@ public class IncreAliasWorkerContext extends MyWorkerContext {
             BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/client/analysis_conf"));
             /// @szw, configuration according to Ali EMR
 //            BufferedReader pa = new BufferedReader(readHDFS("hdfs://xxx.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
-
-            pa.readLine();
+//            pa.readLine();
             singletonPath = pa.readLine();
             grammarPath = pa.readLine();
         } catch (IOException e) {

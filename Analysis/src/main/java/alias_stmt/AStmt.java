@@ -1,6 +1,6 @@
 package alias_stmt;
 
-import data_incre.Stmt;
+import incre_data.Stmt;
 import org.apache.hadoop.io.Writable;
 
 import java.io.DataInput;

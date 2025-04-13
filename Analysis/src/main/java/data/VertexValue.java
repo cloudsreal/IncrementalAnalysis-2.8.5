@@ -8,29 +8,29 @@ import java.io.IOException;
 public class VertexValue implements Writable {
     protected StmtList stmts;
     protected Fact fact;
-    protected Tool tool;
+//    protected Tool tool;
 
     public VertexValue() {
         stmts = null;
         fact = null;
-        tool = null;
+//        tool = null;
     }
     
     public Fact getFact() {
         return fact;
     }
 
-    public Tool getTool() {
-        return tool;
-    }
+//    public Tool getTool() {
+//        return tool;
+//    }
 
     public void setFact(Fact fact) {
         this.fact = fact;
     }
 
-    public void setTool(Tool tool) {
-        this.tool = tool;
-    }
+//    public void setTool(Tool tool) {
+//        this.tool = tool;
+//    }
 
     public StmtList getStmtList() {
         return stmts;

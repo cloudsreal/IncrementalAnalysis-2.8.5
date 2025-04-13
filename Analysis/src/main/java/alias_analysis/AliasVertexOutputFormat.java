@@ -6,7 +6,7 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 import data.Fact;
-import data.Tool;
+//import data.Tool;
 import alias_data.AliasVertexValue;
 import alias_data.Pegraph;
 import alias_data.Grammar;

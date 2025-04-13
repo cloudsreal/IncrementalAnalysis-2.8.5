@@ -9,8 +9,8 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import data.Fact;
 import alias_data.AliasVertexValue;
 import alias_data.Pegraph;
-import data.Tool;
-import alias_data.AliasTool;
+//import data.Tool;
+//import alias_data.AliasTool;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -72,8 +72,8 @@ public class AliasVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
                 
                 // /// AliasTool tool = (AliasTool)(vertex.getValue().getTool());
                 // /// Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
-                AliasTool tool = (AliasTool) (vertex.getValue().getTool());
-                fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+//                AliasTool tool = (AliasTool) (vertex.getValue().getTool());
+//                fact = tool.transfer(vertex.getValue().getStmtList(), fact);
 
                 sum = ((Pegraph)fact).getNumEdges();
                 stringBuilder.append(sum);

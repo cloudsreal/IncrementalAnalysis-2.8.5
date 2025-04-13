@@ -8,6 +8,7 @@ import java.io.IOException;
 public class VertexValue implements Writable {
     protected StmtList stmts;
     protected Fact fact;
+    protected Tool tool; // added by zewen at 2025.04.09
 
     public VertexValue() {
         stmts = null;
@@ -16,6 +17,16 @@ public class VertexValue implements Writable {
     
     public Fact getFact() {
         return fact;
+    }
+
+
+    // added by zewen at 2025.04.09
+    public Tool getTool() {
+        return tool;
+    }
+
+    public void setTool(Tool tool) {
+        this.tool = tool;
     }
 
     public void setFact(Fact fact) {

@@ -9,7 +9,8 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import data.Fact;
 import alias_data.AliasVertexValue;
 import alias_data.Pegraph;
-
+import data.Tool;
+import alias_data.AliasTool;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -33,7 +34,17 @@ public class AliasVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
 
     public void readGrammar() {
         try {
-            BufferedReader br = new BufferedReader(readHDFS(grammarPath));
+            /// BufferedReader br = new BufferedReader(readHDFS(grammarPath));
+            /// BufferedReader br = new BufferedReader(readHDFS("hdfs://master-1-1.c-b0a67c86e8bdeaf7.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+            /// BufferedReader br = new BufferedReader(readHDFS("hdfs://master-1-1.c-11b44a6bbd4ede7c.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+            /// master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000
+            
+            /// g6, region H, core27
+            /// BufferedReader br = new BufferedReader(readHDFS("hdfs://master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+            
+            /// g7, region J, core120
+            BufferedReader br = new BufferedReader(readHDFS("hdfs://master-1-1.c-18efa09a29555ff2.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+            
             grammar.loadGrammar(br);
             br.close();
         } catch (Exception e) {
@@ -58,6 +69,12 @@ public class AliasVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             stringBuilder.append("id: ").append(vertex.getId()).append(" edge sum: ");
             int sum = 0;
             if (fact != null) {
+                
+                // /// AliasTool tool = (AliasTool)(vertex.getValue().getTool());
+                // /// Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+                AliasTool tool = (AliasTool) (vertex.getValue().getTool());
+                fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+
                 sum = ((Pegraph)fact).getNumEdges();
                 stringBuilder.append(sum);
                 stringBuilder.append("\t").append(((Pegraph) fact).getAliasNumEdges(grammar));
@@ -69,3 +86,4 @@ public class AliasVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
         }
     }
 }
+

@@ -42,7 +42,15 @@ public class Analysis<V extends VertexValue, M extends Msg> extends BasicComputa
         //initialize new fact
         // fact = new Fact(); // done by setAnalysisConf
         vertex.getValue().setFact(fact);
-        // transfer
+
+        // if (vertex.getValue().getTool() == null) {
+        // vertex.getValue().setTool(tool);
+        // }
+        if (vertex.getValue().getTool() == null) {
+          vertex.getValue().setTool(tool);
+        }
+
+	// transfer
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
         for(Edge<IntWritable, NullWritable> edge : vertex.getEdges()) {
             msg.setVertexID(vertex.getId());
@@ -57,6 +65,14 @@ public class Analysis<V extends VertexValue, M extends Msg> extends BasicComputa
       if(beActive(messages, vertex.getValue())){
         // merge based on old incoming fact and curretn messages to get the new incoming fact
         fact = tool.combine(messages, vertex.getValue());
+
+        // if (vertex.getValue().getTool() == null) {
+        // vertex.getValue().setTool(tool);
+        // }
+        if (vertex.getValue().getTool() == null) {
+          vertex.getValue().setTool(tool);
+        }
+
 
         // transfer
         Fact out_old_fact = null;
@@ -90,4 +106,6 @@ public class Analysis<V extends VertexValue, M extends Msg> extends BasicComputa
     }
   }
 }
+
+
 

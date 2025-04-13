@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import alias_data.Grammar;
 import alias_data.Singletons;
 
+
 public class MyWorkerContext extends WorkerContext {
     public Singletons singletons;
     public Grammar grammar;
@@ -60,8 +61,18 @@ public class MyWorkerContext extends WorkerContext {
         String grammarPath = null;
         try
         {
-             BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
-//            BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/client/analysis_conf"));
+            /// BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
+            /// BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/client/analysis_conf"));
+            /// master-1-1.c-11b44a6bbd4ede7c.cn-hangzhou.emr.aliyuncs.com:9000
+            /// BufferedReader pa = new BufferedReader(readHDFS("hdfs://master-1-1.c-11b44a6bbd4ede7c.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
+            // master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000
+            
+            /// g6, region H, core27
+            /// BufferedReader pa = new BufferedReader(readHDFS("hdfs://master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
+            
+            /// g7, region J, core120
+            BufferedReader pa = new BufferedReader(readHDFS("hdfs://master-1-1.c-18efa09a29555ff2.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
+
             pa.readLine();
             singletonPath = pa.readLine();
             grammarPath = pa.readLine();

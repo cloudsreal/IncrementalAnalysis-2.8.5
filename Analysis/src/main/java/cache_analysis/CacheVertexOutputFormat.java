@@ -38,6 +38,9 @@ public class CacheVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
             if (fact != null) {
 //                Tool tool = new CacheTool();
 //                fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+
+                Tool tool = new CacheTool();
+                fact = tool.transfer(vertex.getValue().getStmtList(), fact);
                 stringBuilder.append((CacheState)fact);
             }
             else{

@@ -46,9 +46,6 @@ public class Analysis<V extends VertexValue, M extends Msg> extends BasicComputa
         // if (vertex.getValue().getTool() == null) {
         // vertex.getValue().setTool(tool);
         // }
-        if (vertex.getValue().getTool() == null) {
-          vertex.getValue().setTool(tool);
-        }
 
 	// transfer
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
@@ -69,9 +66,6 @@ public class Analysis<V extends VertexValue, M extends Msg> extends BasicComputa
         // if (vertex.getValue().getTool() == null) {
         // vertex.getValue().setTool(tool);
         // }
-        if (vertex.getValue().getTool() == null) {
-          vertex.getValue().setTool(tool);
-        }
 
 
         // transfer

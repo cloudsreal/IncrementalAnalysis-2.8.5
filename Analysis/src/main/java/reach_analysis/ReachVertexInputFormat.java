@@ -17,7 +17,8 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
     private static final Pattern SEPARATOR = Pattern.compile("\t");
 
     @Override
-    public TextVertexInputFormat<IntWritable, ReachVertexValue, ReachEdgeValue>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException {
+    public TextVertexInputFormat<IntWritable, ReachVertexValue, ReachEdgeValue>.TextVertexReader createVertexReader(
+            InputSplit split, TaskAttemptContext context) throws IOException {
         return new ReachVertexReader();
     }
 
@@ -37,13 +38,20 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
 
         @Override
         protected ReachVertexValue getValue(String[] tokens) {
-            ReachVertexValue vertexValue = new ReachVertexValue(tokens[tokens.length - 1].charAt(0));
+            /// ReachVertexValue vertexValue = new ReachVertexValue(tokens[tokens.length -
+            /// 1].charAt(0));
+
+            ReachVertexValue vertexValue;
+            if (tokens[tokens.length - 1].length() == 1) {
+                vertexValue = new ReachVertexValue(tokens[tokens.length - 1].charAt(0));
+            } else {
+                vertexValue = new ReachVertexValue('O');
+            }
 
             int index = tokens.length - 1;
             if (vertexValue.getPA() || vertexValue.getPC()) {
                 index -= 1;
             }
-            
 
             StringBuilder stmt = null;
             /// StringBuilder stmt = new StringBuilder();
@@ -56,8 +64,7 @@ public class ReachVertexInputFormat extends TextVertexInputFormat<IntWritable, R
                 stmt.append(tokens[index]);
             }
 
-
-            if(stmt != null){
+            if (stmt != null) {
                 vertexValue.setStmt(stmt.toString());
             }
 

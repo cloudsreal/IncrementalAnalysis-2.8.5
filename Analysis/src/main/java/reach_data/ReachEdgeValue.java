@@ -15,34 +15,40 @@ public class ReachEdgeValue implements Writable {
     boolean flag = false; // false for unchanged, true for changed
     boolean type = false; // true for added, false for deleted
 
-    public ReachEdgeValue(){
+    public ReachEdgeValue() {
         flag = false;
         type = false;
     }
 
-    public ReachEdgeValue(boolean flag, boolean type){
+    public ReachEdgeValue(boolean flag, boolean type) {
         this.flag = flag;
         this.type = type;
     }
 
-    public boolean isOld(){
+    public boolean isOld() {
         return !flag && !type;
     }
 
-    public boolean isFlag(){
+    public boolean isFlag() {
         return flag; // added or deleted edge
     }
 
-    public boolean isIn(){ // incoming edge
+    public boolean isIn() { // incoming edge
         return !flag && type;
     }
 
-    public boolean isAdded(){
+    public boolean isExist() {
+        // flag=true, type=true: A
+        // flag=false, type=false: U
+        return flag == type;
+    }
+
+    public boolean isAdded() {
         // return type;
         return flag && type;
     }
 
-    public boolean isDeleted(){
+    public boolean isDeleted() {
         // return type;
         return flag && !type;
     }

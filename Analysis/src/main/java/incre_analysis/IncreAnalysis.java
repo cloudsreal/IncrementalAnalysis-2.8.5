@@ -10,21 +10,22 @@ import java.lang.Iterable;
 import incre_data.*;
 import org.apache.hadoop.io.Writable;
 
-public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends Msg> extends BasicComputation<IntWritable, V , E, M> {
+public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends Msg>
+    extends BasicComputation<IntWritable, V, E, M> {
   public Tool tool = null;
   public Fact fact = null;
-  public M msg  = null;
+  public M msg = null;
 
-  public void setAnalysisConf(){
-    // TODO for initialize tool. fact/msg type according to specific dataflow analysis
+  public void setAnalysisConf() {
+    // TODO for initialize tool. fact/msg type according to specific dataflow
+    // analysis
     // e.g.
     // tool = new CacheTool();
     // fact = new CacheState();
     // msg = new CacheMsg();
   }
 
-
-  public boolean beActive(Iterable<M> messages, VertexValue vertexValue){
+  public boolean beActive(Iterable<M> messages, VertexValue vertexValue) {
     // TODO
     return true;
   }
@@ -35,15 +36,22 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
     setAnalysisConf();
 
     if (getSuperstep() == 0) {
-      if(vertex.getValue().isEntry()) {
+      if (vertex.getValue().isEntry()) {
 
         Fact in_fact = vertex.getValue().getFact();
-        if(in_fact == null){
+        if (in_fact == null) {
           vertex.getValue().setNewFact();
         }
+        // if (vertex.getValue().getTool() == null) {
+        // vertex.getValue().setTool(tool);
+        // }
+        if (vertex.getValue().getTool() == null) {
+          vertex.getValue().setTool(tool);
+        }
+
         vertex.getValue().setPropagate(true);
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
-        for(Edge<IntWritable, E> edge : vertex.getEdges()) {
+        for (Edge<IntWritable, E> edge : vertex.getEdges()) {
           msg.setVertexID(vertex.getId());
           msg.setExtra(vertex.getValue());
           msg.setFact(out_fact.getNew());
@@ -51,22 +59,30 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
         }
       }
       vertex.voteToHalt();
-    }
-    else {
+    } else {
 
-      if(beActive(messages, vertex.getValue())){
+      if (beActive(messages, vertex.getValue())) {
         fact = tool.combine(messages, vertex.getValue());
 
+        // if (vertex.getValue().getTool() == null) {
+        // vertex.getValue().setTool(tool);
+        // }
+        if (vertex.getValue().getTool() == null) {
+          vertex.getValue().setTool(tool);
+        }
+
         Fact out_old_fact = null;
-        if(vertex.getValue().isPropagate() && vertex.getValue().getFact() != null){
+        if (vertex.getValue().isPropagate() && vertex.getValue().getFact() != null) {
           out_old_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
         }
         Fact out_new_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
 
         boolean canPropagate = tool.propagate(out_old_fact, out_new_fact);
 
-//        CommonWrite.method2("\nstep" + getSuperstep() + ", Id:\t"+vertex.getId().toString());
-//        CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+ out_new_fact.toString());
+        // CommonWrite.method2("\nstep" + getSuperstep() + ",
+        // Id:\t"+vertex.getId().toString());
+        // CommonWrite.method2("\nId:\t"+vertex.getId().toString()+", State:\t"+
+        // out_new_fact.toString());
 
         if (canPropagate) {
           vertex.getValue().setPropagate(true);
@@ -74,9 +90,13 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
           msg.setVertexID(vertex.getId());
           msg.setExtra(vertex.getValue());
           msg.setFact(out_new_fact.getNew());
-          for(Edge<IntWritable,E> edge : vertex.getEdges()){
+          for (Edge<IntWritable, E> edge : vertex.getEdges()) {
             sendMessage(edge.getTargetVertexId(), msg);
           }
+        }
+      } else {
+        if (vertex.getValue().getTool() == null) {
+          vertex.getValue().setTool(tool);
         }
       }
       vertex.voteToHalt();

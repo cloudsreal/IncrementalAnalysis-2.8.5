@@ -34,8 +34,16 @@ public class IncreAliasVertexOutputFormat extends TextVertexOutputFormat<IntWrit
     public void readGrammar() {
         try {
             /// BufferedReader br = new BufferedReader(readHDFS(grammarPath));
+            // BufferedReader br = new BufferedReader(readHDFS(
+            // "hdfs://master-1-1.c-b0a67c86e8bdeaf7.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+
+            // /// g6, region H, core27
+            // BufferedReader br = new BufferedReader(readHDFS(
+            // "hdfs://master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+
+            /// g7, region J, core120
             BufferedReader br = new BufferedReader(readHDFS(
-                    "hdfs://master-1-1.c-b0a67c86e8bdeaf7.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+                    "hdfs://master-1-1.c-18efa09a29555ff2.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
 
             grammar.loadGrammar(br);
             br.close();
@@ -69,9 +77,6 @@ public class IncreAliasVertexOutputFormat extends TextVertexOutputFormat<IntWrit
             }
             return new Text(stringBuilder.toString());
 
-            // stringBuilder.append(value.gstoretoString()); // GS
-            // stringBuilder.append(value.pegtoString()); // S
-            // return new Text(stringBuilder.toString());
         }
     }
 }

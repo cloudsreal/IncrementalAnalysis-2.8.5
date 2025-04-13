@@ -9,7 +9,7 @@ import incre_data.*;
 
 public class CacheVertexValue extends VertexValue {
 
-  public CacheVertexValue(){
+  public CacheVertexValue() {
     stmts = null;
     fact = null;
   }
@@ -21,8 +21,7 @@ public class CacheVertexValue extends VertexValue {
     this.entry = entry;
   }
 
-
-  public CacheVertexValue(boolean entry){
+  public CacheVertexValue(boolean entry) {
     stmts = null;
     fact = null;
     this.entry = entry;
@@ -45,39 +44,37 @@ public class CacheVertexValue extends VertexValue {
     this.entry = entry;
   }
 
-  public CacheIRs getCacheIRs(){
-    return (CacheIRs)stmts;
+  public CacheIRs getCacheIRs() {
+    return (CacheIRs) stmts;
   }
 
-  public CacheState getCacheState(){
-    return (CacheState)fact;
+  public CacheState getCacheState() {
+    return (CacheState) fact;
   }
-
 
   @Override
   public void setNewFact() {
-    fact = new CacheState(); 
+    fact = new CacheState();
   }
 
   @Override
-  public void setStmts(String text, boolean flag){
+  public void setStmts(String text, boolean flag) {
     Scanner sc = new Scanner(text);
     stmts = new CacheIRs(sc, flag);
   }
 
   public void write(DataOutput out) throws IOException {
-    if(stmts != null) {
+    if (stmts != null) {
       out.writeByte(1);
       stmts.write(out);
     } else {
       out.writeByte(0);
     }
-//    stmts.write(out);
+    // stmts.write(out);
     if (fact != null) {
       out.writeByte(1);
       fact.write(out);
-    }
-    else {
+    } else {
       out.writeByte(0);
     }
     out.writeBoolean(propagate);
@@ -86,12 +83,12 @@ public class CacheVertexValue extends VertexValue {
 
   public void readFields(DataInput in) throws IOException {
     if (in.readByte() == 1) {
-      if(stmts == null){
+      if (stmts == null) {
         stmts = new CacheIRs();
       }
       stmts.readFields(in);
     }
-//    stmts.readFields(in);
+    // stmts.readFields(in);
     if (in.readByte() == 1) {
       if (fact == null) {
         fact = new CacheState();

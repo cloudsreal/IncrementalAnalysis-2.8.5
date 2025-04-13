@@ -1,3 +1,4 @@
+
 package put_proc;
 
 import com.google.common.collect.ImmutableList;
@@ -18,7 +19,6 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Pipeline;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -36,7 +36,7 @@ import java.net.URI;
 public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, NullWritable, NullWritable> {
 
     private static final Pattern SEPARATOR = Pattern.compile("\t");
-    //		public static JedisPool pool = new JedisPool("localhost", 6379);
+    // public static JedisPool pool = new JedisPool("localhost", 6379);
     public JedisPoolConfig config = new JedisPoolConfig();
     /// private static final int BATCH_SIZE = 300;
     private static final int BATCH_SIZE = 1000;
@@ -47,11 +47,18 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
     JedisPool pool = null;
     private Set<Integer> un_nodes = new TreeSet<>();
     // small
-    private String un_hpath ="hdfs://localhost:8080/client/un_reach";
+    /// private String un_hpath ="hdfs://localhost:8080/client/un_reach";
+
+    // /// g6, region H, core27
+    // private String un_hpath =
+    // "hdfs://master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000/client/un_reach";
+
+    /// g7, region J, core120
+    private String un_hpath = "hdfs://master-1-1.c-18efa09a29555ff2.cn-hangzhou.emr.aliyuncs.com:9000/client/un_reach";
 
     @Override
-    public TextVertexInputFormat<IntWritable, NullWritable, NullWritable>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
-    {
+    public TextVertexInputFormat<IntWritable, NullWritable, NullWritable>.TextVertexReader createVertexReader(
+            InputSplit split, TaskAttemptContext context) throws IOException {
         // config.setMaxIdle(800);
         // config.setMaxTotal(1000);
         config.setMaxIdle(2000);
@@ -60,7 +67,8 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
         config.setTestOnBorrow(true); // 在借用连接时测试连接有效性
         config.setTestOnReturn(true); // 在归还连接时测试连接有效性
         config.setTestWhileIdle(true); // 在空闲时测试连接有效性
-        String host = "r-bp1r9wn09qjvy0wnyz.redis.rds.aliyuncs.com";
+        /// String host = "r-bp1r9wn09qjvy0wnyz.redis.rds.aliyuncs.com";
+        String host = "r-bp1gb3nndcdyy35u28.redis.rds.aliyuncs.com";
         int port = 6379;
         pool = new JedisPool(config, host, port);
 
@@ -71,9 +79,8 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
 
             BufferedReader br = new BufferedReader(readHDFS(unsPath));
             String s;
-            while((s = br.readLine())!=null)
-            {
-                if(!s.isEmpty()){
+            while ((s = br.readLine()) != null) {
+                if (!s.isEmpty()) {
                     un_nodes.add(Integer.parseInt(s));
                 }
             }
@@ -84,61 +91,59 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
 
         jedis = pool.getResource();
 
-//        try {
-//            jedis = pool.getResource();
-//            jedis.set("hello", "world");
-//            System.out.println(jedis.get("hello"));
-//        }
-//        catch (Exception e) {
-//            // 超时或其他异常处理。
-//            e.printStackTrace();
-//        }
-//        finally {
-//            if (jedis != null) {
-//                jedis.close();
-//            }
-//        }
+        // try {
+        // jedis = pool.getResource();
+        // jedis.set("hello", "world");
+        // System.out.println(jedis.get("hello"));
+        // }
+        // catch (Exception e) {
+        // // 超时或其他异常处理。
+        // e.printStackTrace();
+        // }
+        // finally {
+        // if (jedis != null) {
+        // jedis.close();
+        // }
+        // }
 
         return new PreVertexReader();
     }
 
-    public InputStreamReader readHDFS(String path) throws IOException
-    {
+    public InputStreamReader readHDFS(String path) throws IOException {
         Configuration conf = new Configuration();
         FileSystem fs = FileSystem.get(URI.create(path), conf);
         FSDataInputStream hdfsInStream = fs.open(new Path(path));
         return new InputStreamReader(hdfsInStream, StandardCharsets.UTF_8);
     }
 
-    public class PreVertexReader extends TextVertexReaderFromEachLineProcessed<String[]>
-    {
+    public class PreVertexReader extends TextVertexReaderFromEachLineProcessed<String[]> {
         @Override
         protected String[] preprocessLine(Text line) {
             String str = line.toString();
             String[] tokens = SEPARATOR.split(str);
             num_count++;
 
-            if(!un_nodes.contains(Integer.parseInt(tokens[0])))
-//                    return null;
+            if (!un_nodes.contains(Integer.parseInt(tokens[0])))
+                // return null;
                 return tokens;
 
             int sIndex = str.indexOf("S");
             int gsIndex = str.indexOf("GS");
 
             Matcher m = SEPARATOR.matcher(str);
-            if(m.find()){
+            if (m.find()) {
                 int index = m.start();
-//                    String stmtPart;
+                // String stmtPart;
                 String factPart;
-                if(gsIndex == -1){ // cache
-//                        stmtPart = str.substring(index+1, sIndex).trim();
+                if (gsIndex == -1) { // cache
+                    // stmtPart = str.substring(index+1, sIndex).trim();
                     factPart = str.substring(sIndex).trim();
                 } else { // alias
-//                        stmtPart = str.substring(index+1, gsIndex).trim();
+                    // stmtPart = str.substring(index+1, gsIndex).trim();
                     factPart = str.substring(gsIndex).trim();
                 }
                 if (pipeline == null) {
-//                    jedis = pool.getResource();
+                    // jedis = pool.getResource();
                     pipeline = jedis.pipelined();
                 }
                 /// pipeline.mset(tokens[0] + "s", stmtPart, tokens[0] + "f", factPart);
@@ -153,8 +158,8 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
                         } finally {
                             pipeline.close();
                             pipeline = null;
-//                            jedis.close();
-//                            jedis = null;
+                            // jedis.close();
+                            // jedis = null;
                             batchCount = 0;
                             num_count = 0;
                         }
@@ -177,8 +182,7 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
         }
 
         @Override
-        protected Iterable<Edge<IntWritable, NullWritable>> getEdges(String[] tokens) throws IOException
-        {
+        protected Iterable<Edge<IntWritable, NullWritable>> getEdges(String[] tokens) throws IOException {
             return ImmutableList.of();
         }
 
@@ -193,8 +197,8 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Nul
                 jedis.close(); // Return Jedis instance to pool
             }
             pool.close();
-//							super.close();
-//							pool.close();
+            // super.close();
+            // pool.close();
         }
     }
 }

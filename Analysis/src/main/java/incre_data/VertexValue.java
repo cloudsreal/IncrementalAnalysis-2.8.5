@@ -2,6 +2,8 @@ package incre_data;
 
 import org.apache.hadoop.io.Writable;
 
+import incre_data.StmtList;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class VertexValue implements Writable {
         propagate = false;
         entry = false;
     }
-    
+
     public void setFact(Fact fact) {
         this.fact = fact;
     }
@@ -35,7 +37,7 @@ public class VertexValue implements Writable {
         return propagate;
     }
 
-    public void setPropagate(boolean propagate){
+    public void setPropagate(boolean propagate) {
         this.propagate = propagate;
     }
 
@@ -51,18 +53,21 @@ public class VertexValue implements Writable {
         this.stmts = stmts;
     }
 
-    public void setStmts(String text, boolean flag){
-        // wait for implementation to initialize stmts in CacheVertexValue/AliasVertexValue
+    public void setStmts(String text, boolean flag) {
+        // wait for implementation to initialize stmts in
+        // CacheVertexValue/AliasVertexValue
     }
 
     @Override
     public void write(DataOutput dataOutput) throws IOException {
-        // wait for implementation to serialize vertexvalue under specific dataflow analysis
+        // wait for implementation to serialize vertexvalue under specific dataflow
+        // analysis
     }
 
     @Override
     public void readFields(DataInput dataInput) throws IOException {
-        // wait for implementation to deserialize vertexvalue under specific dataflow analysis
+        // wait for implementation to deserialize vertexvalue under specific dataflow
+        // analysis
     }
-    
+
 }

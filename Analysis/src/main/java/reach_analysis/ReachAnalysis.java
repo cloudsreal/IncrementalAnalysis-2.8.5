@@ -6,10 +6,13 @@ import org.apache.giraph.edge.EdgeFactory;
 import org.apache.giraph.graph.BasicComputation;
 import org.apache.giraph.graph.Vertex;
 import org.apache.hadoop.io.IntWritable;
+
+import javafx.scene.text.Text;
 import reach_data.*;
 
 import java.io.IOException;
-
+import java.util.Set;
+import java.util.HashSet;
 
 public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValue, ReachEdgeValue, ReachMsg> {
     public ReachTool tool = null;
@@ -20,46 +23,57 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
         msg = new ReachMsg();
     }
 
-    public void compute(Vertex<IntWritable, ReachVertexValue, ReachEdgeValue> vertex, Iterable<ReachMsg> messages) throws IOException {
+    public void compute(Vertex<IntWritable, ReachVertexValue, ReachEdgeValue> vertex, Iterable<ReachMsg> messages)
+            throws IOException {
         setAnalysisConf();
         /*
-         *   Step 0: Adding incoming edge
+         * Step 0: Adding incoming edge
          */
-        if(getSuperstep() == 0) {
+        if (getSuperstep() == 0) {
             IntWritable vertexId = vertex.getId();
+            Set<Integer> succs = new HashSet<>();
             for (Edge<IntWritable, ReachEdgeValue> edge : vertex.getEdges()) {
-                if(!edge.getValue().isDeleted()) {
-                    int targetVertexId = edge.getTargetVertexId().get();
-                    addEdgeRequest(new IntWritable(targetVertexId), EdgeFactory.create(vertexId, new ReachEdgeValue(false, true)));
+                if (!edge.getValue().isDeleted()) {
+                    // int targetVertexId = edge.getTargetVertexId().get();
+                    // addEdgeRequest(new IntWritable(targetVertexId),
+                    // EdgeFactory.create(vertexId, new ReachEdgeValue(false, true)));
+                    // super.addEdgeRequest(edge.getTargetVertexId(),
+                    // EdgeFactory.create(vertexId, new ReachEdgeValue(false, true)));
+                    succs.add(edge.getTargetVertexId().get());
                 }
             }
+
+            for (Integer succ : succs) {
+                addEdgeRequest(new IntWritable(succ), EdgeFactory.create(vertexId, new ReachEdgeValue(false, true)));
+            }
+
         } else if (getSuperstep() == 1) {
             /*
-             *   Step 1: Initialization of Reachability Analysis :
-             *       changed type of dataflow facts start from the changed nodes and edges
+             * Step 1: Initialization of Reachability Analysis :
+             * changed type of dataflow facts start from the changed nodes and edges
              */
 
             ReachVertexValue vertexValue = vertex.getValue();
             boolean entry_flag = false;
-            if(vertexValue.getPA() || vertexValue.getPC())
+            if (vertexValue.getPA() || vertexValue.getPC())
                 entry_flag = true; // every PA/PC can be entry
 
             for (Edge<IntWritable, ReachEdgeValue> edge : vertex.getEdges()) {
 
                 ReachEdgeValue edgeType = edge.getValue();
 
-                if (edgeType.isIn()){
-                    if(vertexValue.getPA() || vertexValue.getPC()){
+                if (edgeType.isIn()) {
+                    if (vertexValue.getPA() || vertexValue.getPC()) {
                         entry_flag = false; // if PA/PC has incoming edges, it cannot be entry
                         msg.setPredMsg(true);
                         sendMessage(edge.getTargetVertexId(), msg); // send PredMsg to its pred
                     }
                 } else {
-                    if(vertexValue.isPU() && !edgeType.isFlag())
+                    if (vertexValue.isPU() && !edgeType.isFlag())
                         continue; // unchanged node and unchanged edge
 
                     msg.setPredMsg(false);
-                    if(vertexValue.getPA() && !vertexValue.getPC()){
+                    if (vertexValue.getPA() && !vertexValue.getPC()) {
                         msg.setMsgType(false); // changed type of dataflow fact from added node to its succs
                     } else if (vertexValue.getPC()) {
                         msg.setMsgType(true); // changed type of dataflow fact from deleted/changed node to its succs
@@ -68,19 +82,21 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
                     }
                     sendMessage(edge.getTargetVertexId(), msg);
 
-                    if(edgeType.isDeleted())
-                        vertex.removeEdges(edge.getTargetVertexId()); // Remove all deleted edges
+                    /// if(edgeType.isDeleted())
+                    /// vertex.removeEdges(edge.getTargetVertexId()); // Remove all deleted edges
                 }
             }
+
             vertex.getValue().setEntry(entry_flag);
             vertex.voteToHalt();
         } else {
             /*
-             *   Step 2-n: Reachability Analysis
+             * Step 2-n: Reachability Analysis
              */
 
-            if(vertex.getValue().getPC()){
-                // skip changed and deleted nodes, as they have already set entry_flag and no need to propagate vertex type again
+            if (vertex.getValue().getPC()) {
+                // skip changed and deleted nodes, as they have already set entry_flag and no
+                // need to propagate vertex type again
                 vertex.voteToHalt();
                 return;
             }
@@ -95,12 +111,12 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
                 boolean entry_flag = false;
 
                 // notify its PU for just once
-                if(vertex.getValue().isPU()){
+                if (vertex.getValue().isPU()) {
                     entry_flag = true;
                     msg.setPredMsg(true);
                     for (Edge<IntWritable, ReachEdgeValue> edge : vertex.getEdges()) {
                         ReachEdgeValue edgeType = edge.getValue();
-                        if(edgeType.isIn()){
+                        if (edgeType.isIn()) {
                             sendMessage(edge.getTargetVertexId(), msg);
                             entry_flag = false;
                         }
@@ -113,14 +129,15 @@ public class ReachAnalysis extends BasicComputation<IntWritable, ReachVertexValu
                 msg.setMsgType(reach_info.getPC());
                 for (Edge<IntWritable, ReachEdgeValue> edge : vertex.getEdges()) {
                     ReachEdgeValue edgeType = edge.getValue();
-                    if(!edgeType.isIn()) {
-//                        CommonWrite.method2(getSuperstep() + ": " + vertex.getId().get() + " " + edge.getTargetVertexId().toString() + " C");
+                    /// if (!edgeType.isIn()) {
+                    if (edgeType.isExist()) {
+                        // CommonWrite.method2(getSuperstep() + ": " + vertex.getId().get() + " " +
+                        // edge.getTargetVertexId().toString() + " C");
                         sendMessage(edge.getTargetVertexId(), msg);
                     }
                 }
-            }
-            else {
-                if(vertex.getValue().isPU() && reach_info.getEntry())
+            } else {
+                if (vertex.getValue().isPU() && reach_info.getEntry())
                     vertex.getValue().setEntry(true);
             }
             vertex.voteToHalt();

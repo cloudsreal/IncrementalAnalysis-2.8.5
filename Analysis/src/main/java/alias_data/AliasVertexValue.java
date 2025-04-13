@@ -55,7 +55,7 @@ public class AliasVertexValue extends VertexValue{
   public void setStmts(String text){
     Scanner sc = new Scanner(text);
     stmts = new AliasStmts(sc);
-//    CommonWrite.method2( stmtstoString());
+  //    CommonWrite.method2( stmtstoString());
   }
 
   public AStmt getStmt() {

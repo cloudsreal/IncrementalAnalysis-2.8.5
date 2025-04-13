@@ -53,7 +53,7 @@ public class PutVertexOutputFormat extends TextVertexOutputFormat<IntWritable, P
             // method1 , to HDFS
             PutVertexValue value = vertex.getValue();
 
-            if (value == null)
+            if (value == null || vertex.getId().get() == -1)
                 return null;
 
             StringBuilder stringBuilder = new StringBuilder();

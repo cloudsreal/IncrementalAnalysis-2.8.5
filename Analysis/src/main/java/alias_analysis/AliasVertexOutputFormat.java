@@ -33,11 +33,20 @@ public class AliasVertexOutputFormat extends TextVertexOutputFormat<IntWritable,
     public void readGrammar() {
         try {
             /// BufferedReader br = new BufferedReader(readHDFS(grammarPath));
-//            BufferedReader br = new BufferedReader(readHDFS(
-//                    "hdfs://master-1-1.c-5d52d5e1d3ac3468.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+            /// BufferedReader br = new BufferedReader(readHDFS("hdfs://master-1-1.c-5d52d5e1d3ac3468.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
             // 116
+            // BufferedReader br = new BufferedReader(readHDFS(
+            //         "hdfs://master-1-1.c-9056493f92112533.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+
+            /// g6, region H, core27
+            /// BufferedReader br = new BufferedReader(readHDFS(
+            ///         "hdfs://master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+
+            // g7, region J, core120
             BufferedReader br = new BufferedReader(readHDFS(
-                    "hdfs://master-1-1.c-9056493f92112533.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+                "hdfs://master-1-1.c-18efa09a29555ff2.cn-hangzhou.emr.aliyuncs.com:9000/grammar"));
+
+
             grammar.loadGrammar(br);
             br.close();
         } catch (Exception e) {

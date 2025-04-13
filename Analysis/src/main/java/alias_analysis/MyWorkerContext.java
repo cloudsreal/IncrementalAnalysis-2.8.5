@@ -1,3 +1,4 @@
+
 package alias_analysis;
 
 import org.apache.giraph.worker.WorkerContext;
@@ -17,8 +18,7 @@ public class MyWorkerContext extends WorkerContext {
     public Singletons singletons;
     public Grammar grammar;
 
-    public InputStreamReader readHDFS(String path) throws IOException
-    {
+    public InputStreamReader readHDFS(String path) throws IOException {
         Configuration conf = new Configuration();
         FileSystem fs = FileSystem.get(URI.create(path), conf);
         FSDataInputStream hdfsInStream = fs.open(new Path(path));
@@ -27,40 +27,52 @@ public class MyWorkerContext extends WorkerContext {
 
     @Override
     public void preApplication() {
-//-----------------------------------------------------read from local----------------------------------------------------------------
-//        File singletonFile = new File("/Downloads/hadoop-2.5.1/share/hadoop/common/var_singleton_info.txt");
-//        File grammarFile = new File("/Downloads/hadoop-2.5.1/share/hadoop/common/rules_pointsto.txt");
-//        BufferedReader singletonReader;
-//        BufferedReader grammarReader;
-//        singletons = new Singletons();
-//        grammar = new Grammar();
-//        try {
-//            singletonReader = new BufferedReader(new FileReader(singletonFile));
-//            String s;
-//            while((s = singletonReader.readLine()) != null)
-//            {
-//                singletons.addOneSingleton(Integer.parseInt(s));
-//            }
-//            singletonReader.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            grammarReader = new BufferedReader(new FileReader(grammarFile));
-//            grammar.loadGrammar(grammarReader);
-//            grammar.test();
-//            grammarReader.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        // -----------------------------------------------------read from
+        // local----------------------------------------------------------------
+        // File singletonFile = new
+        // File("/Downloads/hadoop-2.5.1/share/hadoop/common/var_singleton_info.txt");
+        // File grammarFile = new
+        // File("/Downloads/hadoop-2.5.1/share/hadoop/common/rules_pointsto.txt");
+        // BufferedReader singletonReader;
+        // BufferedReader grammarReader;
+        // singletons = new Singletons();
+        // grammar = new Grammar();
+        // try {
+        // singletonReader = new BufferedReader(new FileReader(singletonFile));
+        // String s;
+        // while((s = singletonReader.readLine()) != null)
+        // {
+        // singletons.addOneSingleton(Integer.parseInt(s));
+        // }
+        // singletonReader.close();
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        //
+        // try {
+        // grammarReader = new BufferedReader(new FileReader(grammarFile));
+        // grammar.loadGrammar(grammarReader);
+        // grammar.test();
+        // grammarReader.close();
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
 
-//-----------------------------------------------------read from HDFS----------------------------------------------------------------
+        // -----------------------------------------------------read from
+        // HDFS----------------------------------------------------------------
         String singletonPath = null;
         String grammarPath = null;
-        try
-        {
-            BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
+        try {
+            /// BufferedReader pa = new
+            /// BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
+
+            /// g6, region H, core27
+            // BufferedReader pa = new BufferedReader(readHDFS(
+            // "hdfs://master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
+
+            // g7, region J, core120
+            BufferedReader pa = new BufferedReader(readHDFS(
+                    "hdfs://master-1-1.c-18efa09a29555ff2.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
             pa.readLine();
             singletonPath = pa.readLine();
             grammarPath = pa.readLine();
@@ -73,18 +85,15 @@ public class MyWorkerContext extends WorkerContext {
         readGrammar(grammarPath, grammar);
     }
 
-    public void readSingletons(String singletonPath, Singletons singletons)
-    {
+    public void readSingletons(String singletonPath, Singletons singletons) {
         try {
             BufferedReader br = new BufferedReader(readHDFS(singletonPath));
             String s;
-            while((s = br.readLine()) != null)
-            {
+            while ((s = br.readLine()) != null) {
                 singletons.addOneSingleton(Integer.parseInt(s));
             }
             br.close();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -95,8 +104,7 @@ public class MyWorkerContext extends WorkerContext {
             grammar.loadGrammar(br);
             // grammar.test();
             br.close();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

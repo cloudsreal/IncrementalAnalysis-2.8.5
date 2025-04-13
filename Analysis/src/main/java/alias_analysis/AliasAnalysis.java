@@ -38,7 +38,10 @@ public class AliasAnalysis extends Analysis<AliasVertexValue, NullWritable, Alia
                   (preStmt.getStmt() == TYPE.Callfptr || preStmt.getStmt() == TYPE.Call))) {
               beActive = true;
               // break;
+          }else {
+            continue;
           }
+
           //update special graphstore
           if(curStmt.getStmt() == TYPE.Return){
               MapWritable oldGraphStore = aliasVertexValue.getGraphStore();

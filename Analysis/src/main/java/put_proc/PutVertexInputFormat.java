@@ -38,10 +38,17 @@ public class PutVertexInputFormat extends TextVertexInputFormat<IntWritable, Put
         private Jedis jedis = null;
         JedisPool pool = null;
         private Set<Integer> un_nodes = new TreeSet<>();
-        // 120
-//        private String un_hpath = "hdfs://master-1-1.c-5624ec5b03a3b36b.cn-hangzhou.emr.aliyuncs.com:9000/client/un_reach";
-        // 116
-         private String un_hpath = "hdfs://master-1-1.c-9056493f92112533.cn-hangzhou.emr.aliyuncs.com:9000/client/un_reach";
+        /// 120
+        /// private String un_hpath = "hdfs://master-1-1.c-5624ec5b03a3b36b.cn-hangzhou.emr.aliyuncs.com:9000/client/un_reach";
+        /// 116
+        /// private String un_hpath = "hdfs://master-1-1.c-9056493f92112533.cn-hangzhou.emr.aliyuncs.com:9000/client/un_reach";
+        /// private String un_hpath = "hdfs://master-1-1.c-11b44a6bbd4ede7c.cn-hangzhou.emr.aliyuncs.com:9000/client/un_reach";
+        
+        /// g6, region H, core27
+        /// private String un_hpath = "hdfs://master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000/client/un_reach";
+
+        // g7, region J, core120
+        private String un_hpath = "hdfs://master-1-1.c-18efa09a29555ff2.cn-hangzhou.emr.aliyuncs.com:9000/client/un_reach";
     
         @Override
         public TextVertexInputFormat<IntWritable, PutVertexValue, NullWritable>.TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException

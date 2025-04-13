@@ -6,36 +6,39 @@ import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-
 import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import data.SetWritable;
 
-public class MasterBroadcast extends MasterCompute
-{
-//     public static String entry = "hdfs://localhost:8000/cache_entrys/entry";
-    public static String conf_path = "hdfs://localhost:8000/client/analysis_conf";
+public class MasterBroadcast extends MasterCompute {
+    // public static String entry = "hdfs://localhost:8000/cache_entrys/entry";
+    /// public static String conf_path =
+    // "hdfs://localhost:8000/client/analysis_conf";
 
-    public InputStreamReader readHDFS(String path) throws IOException
-    {
+    /// g6, region H, core27
+    /// public static String conf_path =
+    /// "hdfs://master-1-1.c-6c696d6821822669.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf";
+
+    // g7, region J, core120
+    public static String conf_path = "hdfs://master-1-1.c-18efa09a29555ff2.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf";
+
+    public InputStreamReader readHDFS(String path) throws IOException {
         Configuration conf = new Configuration();
         FileSystem fs = FileSystem.get(URI.create(path), conf);
         FSDataInputStream hdfsInStream = fs.open(new Path(path));
         return new InputStreamReader(hdfsInStream, StandardCharsets.UTF_8);
     }
 
-    public void readEntrys(String entryPath, SetWritable entrys)
-    {
+    public void readEntrys(String entryPath, SetWritable entrys) {
         try {
             BufferedReader br = new BufferedReader(readHDFS(entryPath));
             String s;
-            while((s = br.readLine())!=null)
-            {
+            while ((s = br.readLine()) != null) {
                 entrys.addEntry(Integer.parseInt(s));
             }
             br.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -48,12 +51,13 @@ public class MasterBroadcast extends MasterCompute
     @Override
     public void compute() {
         // MasterCompute body
-        if (getSuperstep() == 0)
-        {
+        if (getSuperstep() == 0) {
             SetWritable entrys = new SetWritable();
             try {
-                // BufferedReader start = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
-                // BufferedReader start = new BufferedReader(readHDFS("hdfs://emr-header-1.cluster-289320:9000/analysis/start"));
+                // BufferedReader start = new
+                // BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
+                // BufferedReader start = new
+                // BufferedReader(readHDFS("hdfs://emr-header-1.cluster-289320:9000/analysis/start"));
                 BufferedReader start = new BufferedReader(readHDFS(conf_path));
                 String entryPath = start.readLine();
                 start.close();
@@ -69,12 +73,11 @@ public class MasterBroadcast extends MasterCompute
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String s;
-            while ((s = br.readLine())!=null)
-            {
+            while ((s = br.readLine()) != null) {
                 entrys.addEntry(Integer.parseInt(s));
             }
             br.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -88,4 +91,3 @@ public class MasterBroadcast extends MasterCompute
         // To serialize this class fields (global variables) if any
     }
 }
-

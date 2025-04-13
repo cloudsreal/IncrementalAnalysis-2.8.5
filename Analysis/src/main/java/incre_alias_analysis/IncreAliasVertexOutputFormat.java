@@ -21,6 +21,9 @@ import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
+//import incre_data.Tool;
+//import alias_data.AliasTool;
+
 public class IncreAliasVertexOutputFormat extends TextVertexOutputFormat<IntWritable, AliasVertexValue, NullWritable> {
     public Grammar grammar = null;
 
@@ -69,6 +72,13 @@ public class IncreAliasVertexOutputFormat extends TextVertexOutputFormat<IntWrit
             Fact fact = vertex.getValue().getFact();
             int sum = 0;
             if (fact != null) {
+
+                // /// AliasTool tool = (AliasTool)(vertex.getValue().getTool());
+                // /// Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+//                AliasTool tool = (AliasTool) (vertex.getValue().getTool());
+//                if (tool != null)
+//                    fact = tool.transfer(vertex.getValue().getStmtList(), fact);
+
                 sum = ((Pegraph) fact).getNumEdges();
                 stringBuilder.append(sum);
                 stringBuilder.append("\t").append(((Pegraph) fact).getAliasNumEdges(grammar));
@@ -77,6 +87,9 @@ public class IncreAliasVertexOutputFormat extends TextVertexOutputFormat<IntWrit
             }
             return new Text(stringBuilder.toString());
 
+            // stringBuilder.append(value.gstoretoString()); // GS
+            // stringBuilder.append(value.pegtoString()); // S
+            // return new Text(stringBuilder.toString());
         }
     }
 }

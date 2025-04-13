@@ -11,6 +11,8 @@ import incre_data.Fact;
 import cache_data.CacheState;
 import cache_data.CacheVertexValue;
 
+//import cache_data.CacheTool;
+//import incre_data.Tool;
 
 public class IncreCacheVertexOutputFormat extends TextVertexOutputFormat<IntWritable, CacheVertexValue, NullWritable> {
     @Override
@@ -25,7 +27,12 @@ public class IncreCacheVertexOutputFormat extends TextVertexOutputFormat<IntWrit
             Fact fact = vertex.getValue().getFact();
             stringBuilder.append(vertex.getId()).append("\t");
             if (fact != null) {
+                /// stringBuilder.append("S:\t").append(((CacheState)fact).statetoString()); //
                 /// in_fact
+
+                /// cache state
+//                Tool tool = new CacheTool();
+//                fact = tool.transfer(vertex.getValue().getStmtList(), fact);
                 stringBuilder.append(((CacheState) fact).toString());
             } else {
                 stringBuilder.append("0");

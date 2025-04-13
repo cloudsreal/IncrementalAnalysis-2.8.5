@@ -45,9 +45,6 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
         // if (vertex.getValue().getTool() == null) {
         // vertex.getValue().setTool(tool);
         // }
-        if (vertex.getValue().getTool() == null) {
-          vertex.getValue().setTool(tool);
-        }
 
         vertex.getValue().setPropagate(true);
         Fact out_fact = tool.transfer(vertex.getValue().getStmtList(), vertex.getValue().getFact());
@@ -67,9 +64,6 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
         // if (vertex.getValue().getTool() == null) {
         // vertex.getValue().setTool(tool);
         // }
-        if (vertex.getValue().getTool() == null) {
-          vertex.getValue().setTool(tool);
-        }
 
         Fact out_old_fact = null;
         if (vertex.getValue().isPropagate() && vertex.getValue().getFact() != null) {
@@ -94,11 +88,12 @@ public class IncreAnalysis<V extends VertexValue, E extends Writable, M extends 
             sendMessage(edge.getTargetVertexId(), msg);
           }
         }
-      } else {
-        if (vertex.getValue().getTool() == null) {
-          vertex.getValue().setTool(tool);
-        }
       }
+//      else {
+//        if (vertex.getValue().getTool() == null) {
+//          vertex.getValue().setTool(tool);
+//        }
+//      }
       vertex.voteToHalt();
     }
   }

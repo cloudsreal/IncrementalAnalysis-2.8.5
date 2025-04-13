@@ -13,6 +13,7 @@ public class VertexValue implements Writable {
     protected Fact fact;
     protected boolean propagate;
     protected boolean entry;
+//    protected Tool tool; // added by zewen at 2025.04.09
 
     public VertexValue() {
         stmts = null;
@@ -20,6 +21,15 @@ public class VertexValue implements Writable {
         propagate = false;
         entry = false;
     }
+
+    // added by zewen at 2025.04.09
+//    public Tool getTool() {
+//        return tool;
+//    }
+//
+//    public void setTool(Tool tool) {
+//        this.tool = tool;
+//    }
 
     public void setFact(Fact fact) {
         this.fact = fact;

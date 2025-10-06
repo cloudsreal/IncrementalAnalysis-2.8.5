@@ -9,6 +9,7 @@ public class MyWorkerContext extends WorkerContext {
 
     JedisPoolConfig config = new JedisPoolConfig();
     public static JedisPool pool = null;
+    private static final ConfigurationManager configManager = ConfigurationManager.getInstance();
 
     @Override
     public void preApplication() {
@@ -18,11 +19,7 @@ public class MyWorkerContext extends WorkerContext {
         config.setTestOnBorrow(true); //在获取Jedis连接时，自动检验连接是否可用
         config.setTestOnReturn(true);  //在将连接放回池中前，自动检验连接是否有效
         config.setTestWhileIdle(true);  //自动测试池中的空闲连接是否都是可用连接
-        pool = new JedisPool(config, "localhost", 6379);
-        /// @szw, configuration according to Ali EMR
-//        String host = "r-bp1zmxl3k5ypxoho2d.redis.rds.aliyuncs.com";
-//        int port = 6379;
-//        pool = new JedisPool(config, host, port);
+        pool = new JedisPool(config, configManager.getRedisHost(), configManager.getRedisPort());
     }
 
     @Override

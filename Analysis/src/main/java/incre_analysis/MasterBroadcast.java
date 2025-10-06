@@ -14,10 +14,8 @@ import data.SetWritable;
 
 public class MasterBroadcast extends MasterCompute
 {
-    // public static String entry = "hdfs://localhost:8000/cache_entrys/entry";
-    public static String conf_path = "hdfs://localhost:8000/client/analysis_conf";
-    /// @szw, configuration according to Ali EMR
-//    public static String conf_path = "hdfs://master-1-1.c-db548736175e8161.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf";
+    private static final ConfigurationManager config = ConfigurationManager.getInstance();
+    public static String conf_path = config.getFullHdfsAnalysisConfPath();
 
 
     public InputStreamReader readHDFS(String path) throws IOException
@@ -55,8 +53,6 @@ public class MasterBroadcast extends MasterCompute
         {
             SetWritable entrys = new SetWritable();
             try {
-                // BufferedReader start = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
-                // BufferedReader start = new BufferedReader(readHDFS("hdfs://emr-header-1.cluster-289320:9000/analysis/start"));
                 BufferedReader start = new BufferedReader(readHDFS(conf_path));
                 String entryPath = start.readLine();
                 start.close();

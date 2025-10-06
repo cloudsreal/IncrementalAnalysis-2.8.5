@@ -1,6 +1,7 @@
 package incre_cache_analysis;
 
 import com.google.common.collect.ImmutableList;
+import incre_analysis.ConfigurationManager;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.io.formats.TextVertexInputFormat;
 import org.apache.hadoop.io.IntWritable;
@@ -23,21 +24,18 @@ import redis.clients.jedis.JedisPoolConfig;
 public class IncreCacheVertexInputFormat extends TextVertexInputFormat<IntWritable, CacheVertexValue, NullWritable> {
 
     private static final Pattern SEPARATOR = Pattern.compile("\t");
+    private static final ConfigurationManager configManager = ConfigurationManager.getInstance();
     JedisPoolConfig config = new JedisPoolConfig();
-    public static JedisPool pool = new JedisPool("localhost", 6379);
+    public static JedisPool pool;
 
     @Override
     public TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context) throws IOException
     {
         config.setMaxTotal(300);
         config.setMaxIdle(200); //最大空闲连接数
-//        config.setMaxWaitMillis(50 * 1000); //获取Jedis连接的最大等待时间（50秒）
         config.setTestOnBorrow(false);
         config.setTestOnReturn(false);
-//        pool = new JedisPool(config, "localhost", 6379);
-//        String host = "r-bp1zmxl3k5ypxoho2d.redis.rds.aliyuncs.com";
-//        int port = 6379;
-//        pool = new JedisPool(config, host, port);
+        pool = new JedisPool(config, configManager.getRedisHost(), configManager.getRedisPort());
         return new IncreCacheVertexReader();
     }
 

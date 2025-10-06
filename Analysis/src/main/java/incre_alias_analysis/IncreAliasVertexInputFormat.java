@@ -5,6 +5,7 @@ import cache_data.CacheVertexValue;
 
 import com.google.common.collect.ImmutableList;
 import data.CommonWrite;
+import incre_analysis.ConfigurationManager;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.io.formats.TextVertexInputFormat;
 import org.apache.hadoop.io.IntWritable;
@@ -23,6 +24,7 @@ import redis.clients.jedis.JedisPoolConfig;
 public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritable, AliasVertexValue, NullWritable> {
 
   private static final Pattern SEPARATOR = Pattern.compile("\t");
+  private static final ConfigurationManager configManager = ConfigurationManager.getInstance();
   JedisPoolConfig config = new JedisPoolConfig();
   public static JedisPool pool; 
 
@@ -35,10 +37,7 @@ public class IncreAliasVertexInputFormat extends TextVertexInputFormat<IntWritab
       config.setTestOnBorrow(true); //在获取Jedis连接时，自动检验连接是否可用
       config.setTestOnReturn(true);  //在将连接放回池中前，自动检验连接是否有效
       config.setTestWhileIdle(true);  //自动测试池中的空闲连接是否都是可用连接
-        pool = new JedisPool(config, "localhost", 6379);
-//      String host = "r-bp1zmxl3k5ypxoho2d.redis.rds.aliyuncs.com";
-//      int port = 6379;
-//      pool = new JedisPool(config, host, port);
+      pool = new JedisPool(config, configManager.getRedisHost(), configManager.getRedisPort());
       return new AliasVertexReader();
   }
 

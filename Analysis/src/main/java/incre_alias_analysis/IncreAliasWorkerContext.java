@@ -2,6 +2,7 @@ package incre_alias_analysis;
 
 import alias_data.Grammar;
 import alias_data.Singletons;
+import incre_analysis.ConfigurationManager;
 import incre_analysis.MyWorkerContext;
 import org.apache.giraph.worker.WorkerContext;
 import org.apache.hadoop.conf.Configuration;
@@ -19,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 public class IncreAliasWorkerContext extends MyWorkerContext {
     public Singletons singletons;
     public Grammar grammar;
+    private static final ConfigurationManager configManager = ConfigurationManager.getInstance();
 
     public InputStreamReader readHDFS(String path) throws IOException
     {
@@ -63,10 +65,7 @@ public class IncreAliasWorkerContext extends MyWorkerContext {
         String grammarPath = null;
         try
         {
-            // BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/analysis/start"));
-            BufferedReader pa = new BufferedReader(readHDFS("hdfs://localhost:8000/client/analysis_conf"));
-            /// @szw, configuration according to Ali EMR
-//            BufferedReader pa = new BufferedReader(readHDFS("hdfs://master-1-1.c-db548736175e8161.cn-hangzhou.emr.aliyuncs.com:9000/client/analysis_conf"));
+            BufferedReader pa = new BufferedReader(readHDFS(configManager.getFullHdfsAnalysisConfPath()));
             pa.readLine();
             singletonPath = pa.readLine();
             grammarPath = pa.readLine();

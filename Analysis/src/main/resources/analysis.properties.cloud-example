@@ -1,0 +1,15 @@
+# Sample configuration for cloud environments (e.g., Alibaba Cloud EMR)
+# Copy this file to analysis.properties and update with your cloud settings
+
+# HDFS Configuration for EMR
+# Replace ClusterID with your actual EMR cluster ID
+# Example: hdfs://emr-header-1.cluster-289320:9000
+hdfs.namenode.uri=hdfs://emr-header-1.cluster-ClusterID:9000
+
+# HDFS paths
+hdfs.client.analysis.conf.path=/client/analysis_conf
+
+# Redis Configuration for Cloud (e.g., Alibaba Cloud Redis RDS)
+# Replace with your actual Redis RDS address
+redis.host=r-bp1zmxl3k5ypxoho2d.redis.rds.aliyuncs.com
+redis.port=6379
